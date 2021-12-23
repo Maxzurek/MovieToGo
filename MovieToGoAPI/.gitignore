@@ -8,6 +8,9 @@ project.lock.json
 .DS_Store
 *.pyc
 
+# debug dir
+Debug/
+
 # Visual Studio Code
 .vscode
 
