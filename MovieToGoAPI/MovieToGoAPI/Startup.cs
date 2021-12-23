@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MovieToGoAPI.APIBehavior;
+using MovieToGoAPI.Filters;
 
 namespace MovieToGoAPI
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
-
 
         public Startup(IConfiguration configuration)
         {
@@ -17,8 +18,14 @@ namespace MovieToGoAPI
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(ExceptionFilter));
+                options.Filters.Add(typeof(ParseBadRequestFilter));
+            }).ConfigureApiBehaviorOptions(BadRequestBehavior.Parse);
+
             services.AddEndpointsApiExplorer();
+
             services.AddSwaggerGen();
         }
 

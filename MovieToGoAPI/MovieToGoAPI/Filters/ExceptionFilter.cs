@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace MoviesAPI.Filters
+namespace MovieToGoAPI.Filters
 {
     public class ExceptionFilter : ExceptionFilterAttribute
     {
