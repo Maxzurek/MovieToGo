@@ -8,20 +8,16 @@ namespace MovieToGoAPI.Controllers
     [ApiController]
     public class GenreController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> logger;
         private readonly ApplicationDbContext dbContext;
 
-        public GenreController(ILogger<WeatherForecastController> logger, ApplicationDbContext dbContext)
+        public GenreController(ApplicationDbContext dbContext)
         {
-            this.logger = logger;
             this.dbContext = dbContext;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Genre>>> Get()
         {
-            logger.LogInformation("Getting all the genres");
-
             return await dbContext.Genres.ToListAsync();
         }
 
