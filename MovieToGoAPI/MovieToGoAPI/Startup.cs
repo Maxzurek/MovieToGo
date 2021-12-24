@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MovieToGoAPI.APIBehavior;
 using MovieToGoAPI.Filters;
 
 namespace MovieToGoAPI
@@ -21,8 +20,7 @@ namespace MovieToGoAPI
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(ExceptionFilter));
-                options.Filters.Add(typeof(ParseBadRequestFilter));
-            }).ConfigureApiBehaviorOptions(BadRequestBehavior.Parse);
+            });
 
             services.AddEndpointsApiExplorer();
 
