@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MovieToGoAPI.DTOs;
 using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.Controllers
@@ -10,11 +12,13 @@ namespace MovieToGoAPI.Controllers
     {
         private readonly ILogger<GenresController> logger;
         private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
 
-        public GenresController(ILogger<GenresController> logger, ApplicationDbContext context)
+        public GenresController(ILogger<GenresController> logger, ApplicationDbContext context, IMapper mapper)
         {
             this.logger = logger;
             this.context = context;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -24,14 +28,19 @@ namespace MovieToGoAPI.Controllers
         }
 
         [HttpGet("{Id:int}")]
-        public async Task<ActionResult<List<Genre>>> Get(int Id)
+        public async Task<ActionResult<List<GenreDTO>>> Get(int Id)
         {
-            return await context.Genres.Where( genre =>genre.GenreId == Id).ToListAsync();
+            logger.LogInformation("Getting all genres");
+
+            List<Genre> genres = await context.Genres.Where( genre =>genre.GenreId == Id).ToListAsync();
+
+            return mapper.Map<List<GenreDTO>>(genres);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Genre genre)
+        public async Task<ActionResult> Post([FromBody] GenreDTO genreDTO)
         {
+            Genre genre = mapper.Map<Genre>(genreDTO);
             context.Genres.Add(genre);
             await context.SaveChangesAsync();
 
