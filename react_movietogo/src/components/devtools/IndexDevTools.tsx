@@ -18,6 +18,9 @@ export default function IndexAdminTools() {
                 return(<DatabaseTool />)
             case 'testform':
                 return(<TestFormsTool />)
+            case 'usermanagement':
+                console.log("TODO: Render user management tool")
+                break;
             default:
         }
     }
@@ -47,6 +50,14 @@ export default function IndexAdminTools() {
                                 onClick={handleItemClick}
                             >
                                 Test Forms
+                            </MenuItem>
+
+                            <MenuItem
+                                name='usermanagement'
+                                active={activeItem === 'usermanagement'}
+                                onClick={handleItemClick}
+                            >
+                                User Management
                             </MenuItem>
 
                         </Menu>
