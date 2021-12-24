@@ -25,6 +25,15 @@ namespace MovieToGoAPI
             services.AddEndpointsApiExplorer();
 
             services.AddSwaggerGen();
+
+            services.AddCors(options =>
+            {
+                string frontEndUrl = Configuration.GetValue<string>("FrontEnd_Url");
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins(frontEndUrl).AllowAnyMethod().AllowAnyHeader();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -39,6 +48,8 @@ namespace MovieToGoAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
 
