@@ -30,19 +30,20 @@ namespace MovieToGoAPI.Controllers
 
         [HttpPost]
         [Route("register")]
+        [ProducesResponseType(typeof(IdentityResult), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Post([FromBody]UserRegistrationDTO userRegistrationDTO)
         {
             User user = mapper.Map<User>(userRegistrationDTO);
 
-            try
+            IdentityResult result = await userManager.CreateAsync(user, userRegistrationDTO.Password);
+
+            if(!result.Succeeded)
             {
-                var result = await userManager.CreateAsync(user, userRegistrationDTO.Password);
-                return Ok(result);
+                return BadRequest(result);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+
+            
+            return Ok(result);
         }
     }
 }
