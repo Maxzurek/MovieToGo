@@ -46,7 +46,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting genre by id");
 
-            var genre = await context.Genres.FirstOrDefaultAsync(x => x.GenreId == Id);
+            var genre = await context.Genres.FirstOrDefaultAsync(x => x.Id == Id);
 
             if (genre == null)
             {
@@ -74,7 +74,7 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Put(int id, [FromBody] GenreCreationDTO genreCreationDTO)
         {
-            var genre = await context.Genres.FirstOrDefaultAsync(x => x.GenreId == id);
+            var genre = await context.Genres.FirstOrDefaultAsync(x => x.Id == id);
 
             if(genre == null)
             {
@@ -92,7 +92,7 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(int id)
         {
-            var genre = await context.Genres.FirstOrDefaultAsync(x => x.GenreId == id);
+            var genre = await context.Genres.FirstOrDefaultAsync(x => x.Id == id);
 
             if(genre == null)
             {

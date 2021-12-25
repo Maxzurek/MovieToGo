@@ -4,7 +4,7 @@ namespace MovieToGoAPI.Entities
 {
     public class Genre
     {
-        public int GenreId { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage ="The field {0} is required")]
         [StringLength(50)]
