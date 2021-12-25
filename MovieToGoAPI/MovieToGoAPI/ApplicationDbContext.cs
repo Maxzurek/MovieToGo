@@ -20,5 +20,7 @@ namespace MovieToGoAPI
         public DbSet<WatchList> WatchLists { get; set; }
 
         public DbSet<WatchListItem> WatchListItems { get; set; }
+
+        public DbSet<Movie> Movies { get; set; }
     }
 }
