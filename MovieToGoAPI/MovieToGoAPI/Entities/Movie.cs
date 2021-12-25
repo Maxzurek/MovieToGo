@@ -10,6 +10,7 @@ namespace MovieToGoAPI.Entities
         public Movie()
         {
             this.WatchListItems = new HashSet<WatchListItem>();
+            this.MovieReviews = new HashSet<MovieReview>();
         }
 
         /**********************************************************************************************************
@@ -28,5 +29,7 @@ namespace MovieToGoAPI.Entities
         * References
         ***********************************************************************************************************/
         public ICollection<WatchListItem> WatchListItems { get; set; }
+
+        public ICollection<MovieReview> MovieReviews { get; set; }
     }
 }
