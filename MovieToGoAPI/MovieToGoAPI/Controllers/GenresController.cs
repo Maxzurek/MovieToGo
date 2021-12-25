@@ -8,6 +8,7 @@ namespace MovieToGoAPI.Controllers
 {
     [Route("api/genres")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class GenresController : ControllerBase
     {
         private readonly ILogger<GenresController> logger;
@@ -22,16 +23,25 @@ namespace MovieToGoAPI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<GenreDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<GenreDTO>>> Get()
         {
             logger.LogInformation("Getting all genres");
 
             var genres = await context.Genres.ToListAsync();
 
+            if(genres.Count == 0)
+            {
+                return NoContent();
+            }
+
             return mapper.Map<List<GenreDTO>>(genres);
         }
 
         [HttpGet("{Id:int}")]
+        [ProducesResponseType(typeof(GenreDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<GenreDTO>> Get(int Id)
         {
             logger.LogInformation("Getting genre by id");
@@ -47,9 +57,12 @@ namespace MovieToGoAPI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Post([FromBody] GenreCreationDTO genreCreationDTO)
         {
             Genre genre = mapper.Map<Genre>(genreCreationDTO);
+
             context.Genres.Add(genre);
             await context.SaveChangesAsync();
 
@@ -57,6 +70,8 @@ namespace MovieToGoAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Put(int id, [FromBody] GenreCreationDTO genreCreationDTO)
         {
             var genre = await context.Genres.FirstOrDefaultAsync(x => x.GenreId == id);
@@ -73,6 +88,8 @@ namespace MovieToGoAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(int id)
         {
             var genre = await context.Genres.FirstOrDefaultAsync(x => x.GenreId == id);
