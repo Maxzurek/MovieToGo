@@ -1,31 +1,32 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MovieToGoAPI.Entities
 {
-    public class User : IdentityUser
+    public class Movie
     {
         /**********************************************************************************************************
         * Constructor
         ***********************************************************************************************************/
-        public User() : base()
+        public Movie()
         {
-            this.WatchLists = new HashSet<WatchList>();
+            this.WatchListItems = new HashSet<WatchListItem>();
         }
 
         /**********************************************************************************************************
         * Properties
         ***********************************************************************************************************/
-        [StringLength(150)]
-        public string FirstName { get; set; }
+        public int Id { get; set; }
 
-        [StringLength(150)]
-        public string LastName { get; set; }
+        [Required(ErrorMessage = "The field {0} is required")]
+        public int TheMovieDbApiId { get; set; }
 
+        public int? VoteAverage { get; set; }
+
+        public int? VoteCount { get; set; }
 
         /**********************************************************************************************************
         * References
         ***********************************************************************************************************/
-        public ICollection<WatchList> WatchLists { get; set; }
+        public ICollection<WatchListItem> WatchListItems { get; set; }
     }
 }

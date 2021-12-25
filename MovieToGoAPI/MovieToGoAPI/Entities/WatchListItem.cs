@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace MovieToGoAPI.Entities
 {
@@ -17,6 +16,8 @@ namespace MovieToGoAPI.Entities
         * References
         ***********************************************************************************************************/
         public WatchList WatchList { get; set; }
+
+        public Movie Movie { get; set; }
     }
 }
     
