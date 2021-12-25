@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MovieToGoAPI.DTOs;
+using Microsoft.EntityFrameworkCore;
+using MovieToGoAPI.DTOs.Users;
 using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.Controllers
 {
-    [Route("api/user")]
+    [Route("api/users")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IMapper mapper;
 
-        public UserController(UserManager<User> userManager, IMapper mapper)
+        public UsersController(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -22,14 +23,14 @@ namespace MovieToGoAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<List<User>>> Get()
         {
-            return NoContent();
+            return await userManager.Users.ToListAsync();
         }
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Post([FromBody]UserRegistrationDTO userRegistrationDTO)
+        public async Task<ActionResult> Post([FromBody]UserRegistrationDTO userRegistrationDTO)
         {
             User user = mapper.Map<User>(userRegistrationDTO);
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using MovieToGoAPI.DTOs;
+using MovieToGoAPI.DTOs.Genres;
+using MovieToGoAPI.DTOs.Users;
 using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.Helpers
@@ -8,8 +9,12 @@ namespace MovieToGoAPI.Helpers
     {
         public AutoMapperProfiles()
         {
+            // Users
             CreateMap<UserRegistrationDTO, User>().ReverseMap();
+
+            //Genres
             CreateMap<GenreDTO, Genre>().ReverseMap();
+            CreateMap<GenreCreationDTO, Genre>().ReverseMap();    
         }
     }
 }
