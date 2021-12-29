@@ -11,8 +11,7 @@ namespace MovieToGoAPI.DTOs.Movies
         ***********************************************************************************************************/
         public MovieDTO()
         {
-            this.WatchListItemsDTOs = new HashSet<WatchListItemDTO>();
-            this.MovieReviewsDTOs = new HashSet<MovieReviewDTO>();
+            this.MovieReviewDTOs = new HashSet<MovieReviewDTO>();
         }
 
         /**********************************************************************************************************
@@ -26,8 +25,6 @@ namespace MovieToGoAPI.DTOs.Movies
 
         public int? VoteCount { get; set; }
 
-        public ICollection<WatchListItemDTO> WatchListItemsDTOs { get; set; }
-
-        public ICollection<MovieReviewDTO> MovieReviewsDTOs { get; set; }
+        public ICollection<MovieReviewDTO> MovieReviewDTOs { get; set; }
     }
 }

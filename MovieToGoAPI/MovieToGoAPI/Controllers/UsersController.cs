@@ -42,7 +42,6 @@ namespace MovieToGoAPI.Controllers
                 return BadRequest(result);
             }
 
-            
             return Ok(result);
         }
     }

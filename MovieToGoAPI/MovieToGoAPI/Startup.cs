@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using MovieToGoAPI.Entities;
 using MovieToGoAPI.Filters;
+using System.Reflection;
 
 namespace MovieToGoAPI
 {
@@ -42,7 +44,18 @@ namespace MovieToGoAPI
 
             services.AddEndpointsApiExplorer();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen( options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "MovieToGo API",
+                    Description = "An ASP.NET Core Web API for the MovieToGo web application",
+                });
+
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            });
 
             services.AddCors(options =>
             {

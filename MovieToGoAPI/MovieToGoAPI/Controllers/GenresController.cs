@@ -61,6 +61,8 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Post([FromBody] GenreCreationDTO genreCreationDTO)
         {
+            logger.LogInformation("Creating genre");
+
             Genre genre = mapper.Map<Genre>(genreCreationDTO);
 
             context.Genres.Add(genre);

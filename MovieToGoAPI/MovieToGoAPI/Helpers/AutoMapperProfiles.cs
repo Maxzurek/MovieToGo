@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using MovieToGoAPI.DTOs.Genres;
+using MovieToGoAPI.DTOs.MovieReviews;
+using MovieToGoAPI.DTOs.Movies;
 using MovieToGoAPI.DTOs.Users;
+using MovieToGoAPI.DTOs.WatchListItems;
 using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.Helpers
@@ -12,9 +15,18 @@ namespace MovieToGoAPI.Helpers
             // Users
             CreateMap<UserRegistrationDTO, User>().ReverseMap();
 
-            //Genres
+            // Genres
             CreateMap<GenreDTO, Genre>().ReverseMap();
-            CreateMap<GenreCreationDTO, Genre>().ReverseMap();    
+            CreateMap<GenreCreationDTO, Genre>().ReverseMap();
+
+            // Movies
+            CreateMap<MovieDTO, Movie>().ReverseMap();
+
+            // WatchListItem
+            CreateMap<WatchListItemDTO, WatchListItem>().ReverseMap();
+
+            // MovieReview
+            CreateMap<MovieReviewDTO, MovieReview>().ReverseMap();
         }
     }
 }
