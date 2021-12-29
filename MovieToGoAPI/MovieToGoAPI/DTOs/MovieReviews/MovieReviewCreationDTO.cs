@@ -12,6 +12,6 @@ namespace MovieToGoAPI.DTOs.MovieReviews
         public int MovieId { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
     }
 }
