@@ -21,6 +21,10 @@ namespace MovieToGoAPI.Controllers
             this.mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all TheMovieDb movies references with MovieToGo votes
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<MovieDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -39,18 +43,18 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Test
+        /// Get a movie by his TheMovieDb Id
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="TheMovieDbId"></param>
         /// <returns></returns>
-        [HttpGet("{Id:int}")]
+        [HttpGet("{TheMovieDbId:int}")]
         [ProducesResponseType(typeof(MovieDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MovieDTO>> GetByTheMovieDbId(int Id)
+        public async Task<ActionResult<MovieDTO>> GetByTheMovieDbId(int TheMovieDbId)
         {
-            logger.LogInformation("Getting movie by TheMovieDb Id");
+            logger.LogInformation("Getting movie by his TheMovieDb Id");
 
-            var movie = await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbApiId == Id);
+            var movie = await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbApiId == TheMovieDbId);
 
             if (movie == null)
             {
