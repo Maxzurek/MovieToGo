@@ -10,7 +10,7 @@ namespace MovieToGoAPI.Entities
         public int Id { get; set; }
 
         [DefaultValue(false)]
-        public bool Watched { get; set; }
+        public bool Watched { get; set; } = false;
 
         /**********************************************************************************************************
         * References

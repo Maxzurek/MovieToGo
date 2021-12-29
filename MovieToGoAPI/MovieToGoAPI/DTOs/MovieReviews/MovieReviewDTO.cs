@@ -1,4 +1,6 @@
-﻿namespace MovieToGoAPI.DTOs.MovieReviews
+﻿using MovieToGoAPI.DTOs.Movies;
+
+namespace MovieToGoAPI.DTOs.MovieReviews
 {
     public class MovieReviewDTO
     {
@@ -8,6 +10,7 @@
 
         public MovieDTO Movie { get; set; }
 
-        public UserDTO User { get; set; }
+        // TODO Create UserDTO
+        //public UserDTO User { get; set; }
     }
 }
