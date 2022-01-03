@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieToGoAPI.DTOs.Movies;
+using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.Controllers
 {
@@ -45,16 +46,16 @@ namespace MovieToGoAPI.Controllers
         /// <summary>
         /// Get a movie by his TheMovieDb Id
         /// </summary>
-        /// <param name="TheMovieDbId"></param>
+        /// <param name="theMovieDbId"></param>
         /// <returns></returns>
-        [HttpGet("{TheMovieDbId:int}")]
+        [HttpGet("{theMovieDbId:int}")]
         [ProducesResponseType(typeof(MovieDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MovieDTO>> GetByTheMovieDbId(int TheMovieDbId)
+        public async Task<ActionResult<MovieDTO>> GetByTheMovieDbId(int theMovieDbId)
         {
             logger.LogInformation("Getting movie by his TheMovieDb Id");
 
-            var movie = await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbApiId == TheMovieDbId);
+            var movie = await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbApiId == theMovieDbId);
 
             if (movie == null)
             {
@@ -62,6 +63,73 @@ namespace MovieToGoAPI.Controllers
             }
 
             return mapper.Map<MovieDTO>(movie);
+        }
+
+        /// <summary>
+        /// Create a movie
+        /// </summary>
+        /// <param name="movieCreationDTO"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> Post([FromBody] MovieCreationDTO movieCreationDTO)
+        {
+            logger.LogInformation("Creating movie");
+
+            Movie movie = mapper.Map<Movie>(movieCreationDTO);
+
+            context.Movies.Add(movie);
+            await context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Update a movie by his MovieToGo Id
+        /// </summary>
+        /// <param name="movieToGoId"></param>
+        /// <param name="movieCreationDTO"></param>
+        /// <returns></returns>
+        [HttpPut("{movieToGoId:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Put(int movieToGoId, [FromBody] MovieCreationDTO movieCreationDTO)
+        {
+            var movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == movieToGoId);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            movie = mapper.Map<Movie>(movieCreationDTO);
+            await context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Delete a movie by his MovieToGo Id
+        /// </summary>
+        /// <param name="movieToGoId"></param>
+        /// <returns></returns>
+        [HttpDelete("{movieToGoId:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete(int movieToGoId)
+        {
+            var movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == movieToGoId);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            context.Movies.Remove(movie);
+            await context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
