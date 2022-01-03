@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Container, Menu, MenuItem } from "semantic-ui-react";
+import Authorized from "../auth/Authorized";
 
 export default function MainNavbar() {
 
@@ -25,17 +26,21 @@ export default function MainNavbar() {
                     Home
                 </MenuItem>
 
-                <MenuItem
-                    as={Link}
-                    to='/dev'
-                    name="devtools"
-                    active={activeItem === 'devtools'}
-                    onClick={handleItemClick}
-                    position="right"
-                >
-                    Dev Tools
-                </MenuItem>
-
+                <Authorized
+                    authorized={
+                        <MenuItem
+                            as={Link}
+                            to='/dev'
+                            name="devtools"
+                            active={activeItem === 'devtools'}
+                            onClick={handleItemClick}
+                            position="right"
+                        >
+                            Dev Tools
+                        </MenuItem>
+                    }
+                    role="admin"
+                />
             </Menu>
         </Container>
     )

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Grid, GridRow, GridColumn, Message } from "semantic-ui-react";
 import { movieToGoUrlGenres, theMovieDbGenres } from "../../endpoints";
-import { GenreDTO } from "../../models/genres.model";
+import { GenreDTO } from "../../models/genres.models";
 import GenericDataTable from "../utilities/GenericDataTable";
 
 export default function TableGenres() {
