@@ -1,4 +1,5 @@
-﻿using MovieToGoAPI.DTOs.WatchListItems;
+﻿using MovieToGoAPI.DTOs.Users;
+using MovieToGoAPI.DTOs.WatchListItems;
 
 namespace MovieToGoAPI.DTOs.WatchLists
 {
@@ -19,8 +20,7 @@ namespace MovieToGoAPI.DTOs.WatchLists
 
         public string Name { get; set; }
 
-        //TODO Create UserDTO
-        //public UserDTO UserDTO { get; set; }
+        public UserDTO UserDTO { get; set; }
 
         public ICollection<WatchListItemDTO> WatchListItemDTOs { get; set; }
     }
