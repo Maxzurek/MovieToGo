@@ -13,6 +13,7 @@ namespace MovieToGoAPI.Helpers
         public AutoMapperProfiles()
         {
             // Users
+            CreateMap<UserDTO, User>().ReverseMap();
             CreateMap<UserRegistrationDTO, User>().ReverseMap();
 
             // Genres
