@@ -1,4 +1,5 @@
 ﻿using MovieToGoAPI.DTOs.Movies;
+using MovieToGoAPI.DTOs.Users;
 
 namespace MovieToGoAPI.DTOs.MovieReviews
 {
@@ -8,9 +9,8 @@ namespace MovieToGoAPI.DTOs.MovieReviews
 
         public string Body { get; set; }
 
-        public MovieDTO Movie { get; set; }
+        public MovieDTO MovieDTO { get; set; }
 
-        // TODO Create UserDTO
-        //public UserDTO User { get; set; }
+        public UserDTO UserDTO { get; set; }
     }
 }
