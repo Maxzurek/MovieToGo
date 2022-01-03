@@ -33,7 +33,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting all movies");
 
-            var movies = await context.Movies.ToListAsync();
+            List<Movie> movies = await context.Movies.ToListAsync();
 
             if (movies.Count == 0)
             {
@@ -55,7 +55,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting movie by his TheMovieDb Id");
 
-            var movie = await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbApiId == theMovieDbId);
+            Movie? movie = await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbApiId == theMovieDbId);
 
             if (movie == null)
             {
@@ -96,7 +96,7 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Put(int movieToGoId, [FromBody] MovieCreationDTO movieCreationDTO)
         {
-            var movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == movieToGoId);
+            Movie? movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == movieToGoId);
 
             if (movie == null)
             {
@@ -119,7 +119,7 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(int movieToGoId)
         {
-            var movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == movieToGoId);
+            Movie? movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == movieToGoId);
 
             if (movie == null)
             {
