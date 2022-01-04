@@ -11,6 +11,8 @@ namespace MovieToGoAPI.Entities
         public User() : base()
         {
             this.WatchLists = new HashSet<WatchList>();
+            this.MovieReviews = new HashSet<MovieReview>();
+            this.MovieVotes = new HashSet<MovieVote>();
         }
 
         /**********************************************************************************************************
@@ -27,5 +29,9 @@ namespace MovieToGoAPI.Entities
         * References
         ***********************************************************************************************************/
         public ICollection<WatchList> WatchLists { get; set; }
+
+        public ICollection<MovieReview> MovieReviews { get; set; }
+
+        public ICollection<MovieVote> MovieVotes { get; set; }
     }
 }

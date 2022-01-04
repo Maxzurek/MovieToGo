@@ -14,7 +14,7 @@ namespace MovieToGoAPI.Helpers
         {
             // Users
             CreateMap<UserDTO, User>().ReverseMap();
-            CreateMap<UserRegistrationDTO, User>().ReverseMap();
+            CreateMap<UserCreationDTO, User>().ReverseMap();
 
             // Genres
             CreateMap<GenreDTO, Genre>().ReverseMap();

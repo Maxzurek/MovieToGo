@@ -33,7 +33,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting all users");
 
-            var users = await userManager.Users.ToListAsync();
+            List<User> users = await userManager.Users.ToListAsync();
 
             if (users.Count == 0)
             {
@@ -41,28 +41,6 @@ namespace MovieToGoAPI.Controllers
             }
 
             return mapper.Map<List<UserDTO>>(users);
-        }
-
-        /// <summary>
-        /// Create a user
-        /// </summary>
-        /// <param name="userRegistrationDTO"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("register")]
-        [ProducesResponseType(typeof(IdentityResult), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Post([FromBody]UserRegistrationDTO userRegistrationDTO)
-        {
-            User user = mapper.Map<User>(userRegistrationDTO);
-
-            IdentityResult result = await userManager.CreateAsync(user, userRegistrationDTO.Password);
-
-            if(!result.Succeeded)
-            {
-                return BadRequest(result);
-            }
-
-            return Ok(result);
         }
     }
 }
