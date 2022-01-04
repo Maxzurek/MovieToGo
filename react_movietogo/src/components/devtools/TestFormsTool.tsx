@@ -20,8 +20,8 @@ export default function TestFormsTool() {
         }
         catch (error: any){
             console.log("Status Code: "+error.response.status);
+            console.log(error.response.data);
             setUserCreationError(error.response.data);
-            console.log(userCreationError);
         }
     }
 
