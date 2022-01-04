@@ -1,9 +1,21 @@
+// Base MovieToGo URL => https://localhost:7246/api
 const movieToGoBaseUrl = process.env.REACT_APP_MOVIETOGO_API_URL;
-
-export const movieToGoUrlGenres = `${movieToGoBaseUrl}/genres`;
-
-
+// Base TheMovieDb URL => https://api.themoviedb.org/3
 const theMovieDbBaseUrl = process.env.REACT_APP_THEMOVIEDB_API_URL;
+// TheMovieDb API Key
 const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 
-export const theMovieDbGenres = `${theMovieDbBaseUrl}/genre/movie/list?api_key=${theMovieDbApiKey}`
+
+// MovieToGo endpoints
+
+    // Genres
+    export const movieToGoUrlGenres = `${movieToGoBaseUrl}/genres`;
+
+    // Accounts
+    export const movieToGoUrlAccountsCreate = `${movieToGoBaseUrl}/accounts/create`;
+    export const movieToGoUrlAccountsLogin = `${movieToGoBaseUrl}/accounts/login`;
+
+// TheMovieDb endpoints
+
+    // Genres
+    export const theMovieDbGenres = `${theMovieDbBaseUrl}/genre/movie/list?api_key=${theMovieDbApiKey}`

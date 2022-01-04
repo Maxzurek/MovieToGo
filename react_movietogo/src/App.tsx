@@ -3,8 +3,8 @@ import './App.css';
 import { Container } from 'semantic-ui-react';
 import routes from './routeConfig';
 import { useState } from 'react';
-import { claim } from './models/auth.models';
-import AuthenticationContext from './components/auth/AuthenticationContext';
+import { claim } from './models/authentication.models';
+import AuthenticationContext from './components/authentication/AuthenticationContext';
 
 export default function App() {
 

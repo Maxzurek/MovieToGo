@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Container, Menu, MenuItem } from "semantic-ui-react";
-import Authorized from "../auth/Authorized";
+import Authorized from "../authentication/Authorized";
 
 export default function MainNavbar() {
 

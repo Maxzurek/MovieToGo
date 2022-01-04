@@ -1,4 +1,4 @@
-import Authorized from "../auth/Authorized";
+import Authorized from "../authentication/Authorized";
 import MainNavbar from "./MainNavbar";
 
 export default function LandingPage() {
