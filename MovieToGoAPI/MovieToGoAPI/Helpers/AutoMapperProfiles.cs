@@ -4,6 +4,7 @@ using MovieToGoAPI.DTOs.MovieReviews;
 using MovieToGoAPI.DTOs.Movies;
 using MovieToGoAPI.DTOs.Users;
 using MovieToGoAPI.DTOs.WatchListItems;
+using MovieToGoAPI.DTOs.WatchLists;
 using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.Helpers
@@ -23,6 +24,10 @@ namespace MovieToGoAPI.Helpers
             // Movies
             CreateMap<MovieDTO, Movie>().ReverseMap();
             CreateMap<MovieCreationDTO, Movie>().ReverseMap();
+
+            // Watchlist
+            CreateMap<WatchListDTO, WatchList>().ReverseMap();
+            CreateMap<WatchListCreationDTO, WatchList>().ReverseMap();
 
             // WatchListItem
             CreateMap<WatchListItemDTO, WatchListItem>().ReverseMap();

@@ -13,14 +13,12 @@ namespace MovieToGoAPI.Controllers
     {
         private readonly ILogger logger;
         private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
         private readonly IMapper mapper;
 
-        public UsersController(ILogger logger, UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper)
+        public UsersController(UserManager<User> userManager, IMapper mapper)
         {
             this.logger = logger;
             this.userManager = userManager;
-            this.signInManager = signInManager;
             this.mapper = mapper;
         }
 
@@ -31,8 +29,6 @@ namespace MovieToGoAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> Get()
         {
-            logger.LogInformation("Getting all users");
-
             List<User> users = await userManager.Users.ToListAsync();
 
             if (users.Count == 0)
