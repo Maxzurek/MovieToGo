@@ -12,6 +12,10 @@ namespace MovieToGoAPI.Helpers
     {
         public AutoMapperProfiles()
         {
+            //Genres
+            CreateMap<GenreDTO, Genre>().ReverseMap();
+            CreateMap<GenreCreationDTO, Genre>().ReverseMap();
+
             // Users
             CreateMap<UserDTO, User>().ReverseMap();
             CreateMap<UserCreationDTO, User>().ReverseMap();
@@ -29,6 +33,7 @@ namespace MovieToGoAPI.Helpers
 
             // MovieReview
             CreateMap<MovieReviewDTO, MovieReview>().ReverseMap();
+            CreateMap<MovieReviewCreationDTO, MovieReview>().ReverseMap();
         }
     }
 }
