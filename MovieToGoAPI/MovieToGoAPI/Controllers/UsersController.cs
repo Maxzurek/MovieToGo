@@ -15,7 +15,7 @@ namespace MovieToGoAPI.Controllers
         private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
 
-        public UsersController(UserManager<User> userManager, IMapper mapper)
+        public UsersController(ILogger<UsersController> logger, UserManager<User> userManager, IMapper mapper)
         {
             this.logger = logger;
             this.userManager = userManager;
@@ -29,6 +29,9 @@ namespace MovieToGoAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> Get()
         {
+
+            logger.LogInformation("Getting all users");
+
             List<User> users = await userManager.Users.ToListAsync();
 
             if (users.Count == 0)

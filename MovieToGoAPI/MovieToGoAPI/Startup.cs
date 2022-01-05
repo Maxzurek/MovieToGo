@@ -93,7 +93,6 @@ namespace MovieToGoAPI
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();

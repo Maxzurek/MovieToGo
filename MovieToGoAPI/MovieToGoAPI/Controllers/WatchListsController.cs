@@ -11,11 +11,11 @@ namespace MovieToGoAPI.Controllers
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class WatchListsController : Controller
     {
-        private readonly ILogger<GenresController> logger;
+        private readonly ILogger<WatchListsController> logger;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
 
-        public WatchListsController(ILogger<GenresController> logger, ApplicationDbContext context, IMapper mapper)
+        public WatchListsController(ILogger<WatchListsController> logger, ApplicationDbContext context, IMapper mapper)
         {
             this.logger = logger;
             this.context = context;
