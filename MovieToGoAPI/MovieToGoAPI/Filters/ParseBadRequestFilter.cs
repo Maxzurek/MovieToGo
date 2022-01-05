@@ -28,14 +28,18 @@ namespace MovieToGoAPI.Filters
                     return;
                 }
 
-                IdentityResult identityResult = (IdentityResult)badRequestObjectResult.Value;
-
-                foreach (var error in identityResult.Errors)
+                if(badRequestObjectResult.Value is IdentityResult)
                 {
-                    response.Add(error.Description);
+                    IdentityResult identityResult = (IdentityResult)badRequestObjectResult.Value;
+
+                    foreach (var error in identityResult.Errors)
+                    {
+                        response.Add(error.Description);
+                    }
+
+                    context.Result = new BadRequestObjectResult(response);
                 }
 
-                context.Result = new BadRequestObjectResult(response);
             }
         }
 
