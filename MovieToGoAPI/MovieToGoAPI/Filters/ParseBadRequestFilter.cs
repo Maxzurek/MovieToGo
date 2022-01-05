@@ -18,7 +18,7 @@ namespace MovieToGoAPI.Filters
 
             int? statusCode = result.StatusCode;
 
-            if(statusCode == 400)
+            if(statusCode == StatusCodes.Status400BadRequest)
             {
                 List<string> response = new List<string>();
                 BadRequestObjectResult? badRequestObjectResult = context.Result as BadRequestObjectResult;
