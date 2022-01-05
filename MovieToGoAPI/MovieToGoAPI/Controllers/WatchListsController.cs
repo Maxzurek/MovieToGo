@@ -59,16 +59,7 @@ namespace MovieToGoAPI.Controllers
 
             context.WatchLists.Add(watchList);
 
-            try
-            {
-                await context.SaveChangesAsync();
-
-            }
-            catch (Exception ex)
-            {
-                logger?.LogError(ex.InnerException.Message);
-                return BadRequest(ex.InnerException.Message);
-            }
+            await context.SaveChangesAsync();
 
             return NoContent();
         }
