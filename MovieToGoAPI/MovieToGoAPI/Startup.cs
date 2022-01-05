@@ -57,6 +57,7 @@ namespace MovieToGoAPI
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(ExceptionFilter));
+                options.Filters.Add(typeof(ParseBadRequestFilter));
             });
 
             services.AddEndpointsApiExplorer();

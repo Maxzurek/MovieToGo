@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using MovieToGoAPI.DTOs.Authentication;
 using MovieToGoAPI.DTOs.Users;
 using MovieToGoAPI.Entities;
+using MovieToGoAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -34,7 +35,7 @@ namespace MovieToGoAPI.Controllers
 
         [HttpPost]
         [Route("create")]
-        [ProducesResponseType(typeof(IdentityResult), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(List<ErrorMessage>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<AuthenticationResponse>> Create([FromBody] UserCreationDTO userCreationDTO)
         {
@@ -52,7 +53,7 @@ namespace MovieToGoAPI.Controllers
 
         [HttpPost]
         [Route("login")]
-        [ProducesResponseType(typeof(IdentityResult), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(SignInResult), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] UserLoginDTO userLoginDTO)
         {
