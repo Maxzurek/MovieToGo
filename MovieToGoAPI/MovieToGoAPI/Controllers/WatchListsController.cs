@@ -33,7 +33,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting all watchlists");
 
-            List<WatchList> watchlists = await context.WatchLists.Include(x=> x.User).ToListAsync();
+            List<WatchList> watchlists = await context.WatchLists.Include(x=> x.User ).Include(x => x.WatchListItems).ToListAsync();
 
             if (watchlists.Count == 0)
             {
@@ -56,7 +56,7 @@ namespace MovieToGoAPI.Controllers
             logger.LogInformation("Getting user watchlists");
 
 
-            List<WatchList> watchlists = await context.WatchLists.Include(x => x.User).Where(x => x.UserId == UserId).ToListAsync();
+            List<WatchList> watchlists = await context.WatchLists.Include(x => x.User).Include(x => x.WatchListItems).Where(x => x.UserId == UserId).ToListAsync();
 
 
             if (watchlists.Count == 0)
