@@ -96,22 +96,22 @@ namespace MovieToGoAPI.Controllers
         /// Update vote by VoteId
         /// </summary>
         /// <param name="Id"></param>
-        /// <param name="MovieVoteUpdateDTO"></param>
+        /// <param name="MovieVoteDTO"></param>
         /// <returns></returns>
         [HttpPut("{Id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<ActionResult> Put(int Id, [FromBody] MovieVoteUpdateDTO MovieVoteUpdateDTO)
+        public async Task<ActionResult> Put(int Id, [FromBody] MovieVoteUpdateDTO MovieVoteDTO)
         {
             MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
 
            if(movieVote == null)
-            {
+           {
                 return NotFound();
-            }
+           }
 
-           movieVote = mapper.Map<MovieVote>(MovieVoteUpdateDTO);
+            movieVote = mapper.Map(MovieVoteDTO, movieVote);
             await context.SaveChangesAsync();
 
             return NoContent();

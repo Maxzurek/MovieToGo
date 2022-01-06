@@ -1,4 +1,5 @@
 ﻿using MovieToGoAPI.DTOs.Movies;
+using MovieToGoAPI.DTOs.Users;
 
 namespace MovieToGoAPI.DTOs.MovieVotes
 {
@@ -9,7 +10,7 @@ namespace MovieToGoAPI.DTOs.MovieVotes
         public int Vote { get; set; }
 
 
-        //public UserDTO UserDTO { get; set; }
+        public UserDTO UserDTO { get; set; }
 
         public MovieDTO MovieDTO { get; set; }
     }
