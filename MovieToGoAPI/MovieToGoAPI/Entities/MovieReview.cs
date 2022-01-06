@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MovieToGoAPI.DTOs.Movies;
+using MovieToGoAPI.DTOs.Users;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieToGoAPI.Entities

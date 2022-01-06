@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieToGoAPI.DTOs.MovieReviews;
+using MovieToGoAPI.DTOs.Movies;
+using MovieToGoAPI.DTOs.Users;
 using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.Controllers
@@ -31,26 +33,27 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting all Movie Reviews");
 
-            var movieReviews = await context.MovieReviews.ToListAsync();
+            //var movieReviews = await context.MovieReviews.ToListAsync();
+            
+            List<MovieReview> movieReviews = await context.MovieReviews.Include(x => x.User).Include(y=>y.Movie).ToListAsync();
 
-            if (movieReviews.Count == 0)
-            {
-                return NoContent();
-            }
+                      if (movieReviews.Count == 0)
+                        {
+                            return NoContent();
+                        }
 
-            return mapper.Map<List<MovieReviewDTO>>(movieReviews);
+         return mapper.Map<List<MovieReviewDTO>>(movieReviews);
         }
-
 
 
         [HttpGet("{Id:int}")]
         [ProducesResponseType(typeof(MovieReviewDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MovieReviewDTO>> Get(int Id)
+        public async Task<ActionResult<MovieReviewDTO>> GetReviewById(int Id)
         {
             logger.LogInformation("Getting Movie Review by id");
 
-            var movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == Id);
+            MovieReview? movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == Id);
 
             if (movieReview == null)
             {
@@ -80,16 +83,16 @@ namespace MovieToGoAPI.Controllers
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Put(int id, [FromBody] MovieReviewDTO movieReviewDTO)
+        public async Task<ActionResult> Put(int id, [FromBody] MovieReviewUpdateDTO movieReviewUpdateDTO)
         {
-            var movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == id);
+            MovieReview? movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == id);
 
             if (movieReview == null)
             {
                 return NotFound();
             }
 
-            movieReview = mapper.Map(movieReviewDTO, movieReview);
+            movieReview = mapper.Map(movieReviewUpdateDTO, movieReview);
             await context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +105,7 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(int id)
         {
-            var movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == id);
+            MovieReview? movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == id);
 
             if (movieReview == null)
             {
