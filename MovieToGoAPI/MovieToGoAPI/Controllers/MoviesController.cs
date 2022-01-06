@@ -33,7 +33,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting all movies");
 
-            List<Movie> movies = await context.Movies.ToListAsync();
+            List<Movie> movies = await context.Movies.Include(x => x.MovieReviews).ToListAsync();
 
             if (movies.Count == 0)
             {
@@ -44,18 +44,40 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get a movie by his TheMovieDb Id
+        /// Get a movie by his MovieToGo Id
         /// </summary>
-        /// <param name="theMovieDbId"></param>
+        /// <param name="MovieToGoId"></param>
         /// <returns></returns>
-        [HttpGet("{theMovieDbId:int}")]
+        [HttpGet("{MovieToGoId:int}")]
         [ProducesResponseType(typeof(MovieDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MovieDTO>> GetByTheMovieDbId(int theMovieDbId)
+        public async Task<ActionResult<MovieDTO>> GetByMovieToGoId(int MovieToGoId)
+        {
+            logger.LogInformation("Getting movie by his Id");
+
+            Movie? movie = await context.Movies.Include(x => x.MovieReviews).FirstOrDefaultAsync(x => x.Id == MovieToGoId);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return mapper.Map<MovieDTO>(movie);
+        }
+
+        /// <summary>
+        /// Get a movie by his TheMovieDb Id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet("themoviedb/{Id:int}")]
+        [ProducesResponseType(typeof(MovieDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<MovieDTO>> GetByTheMovieDbId(int Id)
         {
             logger.LogInformation("Getting movie by his TheMovieDb Id");
 
-            Movie? movie = await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbId == theMovieDbId);
+            Movie? movie = await context.Movies.Include(x => x.MovieReviews).FirstOrDefaultAsync(x => x.TheMovieDbId == Id);
 
             if (movie == null)
             {
