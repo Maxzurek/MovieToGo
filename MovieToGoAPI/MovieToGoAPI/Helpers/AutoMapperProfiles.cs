@@ -2,6 +2,7 @@
 using MovieToGoAPI.DTOs.Genres;
 using MovieToGoAPI.DTOs.MovieReviews;
 using MovieToGoAPI.DTOs.Movies;
+using MovieToGoAPI.DTOs.MovieVotes;
 using MovieToGoAPI.DTOs.Users;
 using MovieToGoAPI.DTOs.WatchListItems;
 using MovieToGoAPI.DTOs.WatchLists;
@@ -39,6 +40,12 @@ namespace MovieToGoAPI.Helpers
             // MovieReview
             CreateMap<MovieReviewDTO, MovieReview>().ReverseMap();
             CreateMap<MovieReviewCreationDTO, MovieReview>().ReverseMap();
+
+            // MovieVotes
+            CreateMap<MovieVoteDTO, MovieVote>().ReverseMap();
+            CreateMap<MovieVoteCreationDTO, MovieVote>().ReverseMap();
+            CreateMap<MovieVoteUpdateDTO, MovieVote>().ReverseMap();
+            
         }
     }
 }
