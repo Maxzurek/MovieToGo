@@ -12,8 +12,8 @@ using MovieToGoAPI;
 namespace MovieToGoAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211224201612_IdentityDbContext")]
-    partial class IdentityDbContext
+    [Migration("20220106000858_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -230,20 +230,148 @@ namespace MovieToGoAPI.Migrations
 
             modelBuilder.Entity("MovieToGoAPI.Entities.Genre", b =>
                 {
-                    b.Property<int>("GenreId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GenreId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Designation")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("GenreId");
+                    b.HasKey("Id");
 
                     b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.Movie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("TheMovieDbId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VoteAverage")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VoteCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.MovieReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("MovieReviews");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.MovieVote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Vote")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MovieVotes");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.WatchList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WatchLists");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.WatchListItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WatchListId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Watched")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("WatchListId");
+
+                    b.ToTable("WatchListItems");
                 });
 
             modelBuilder.Entity("MovieToGoAPI.Entities.User", b =>
@@ -312,6 +440,95 @@ namespace MovieToGoAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.MovieReview", b =>
+                {
+                    b.HasOne("MovieToGoAPI.Entities.Movie", "Movie")
+                        .WithMany("MovieReviews")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieToGoAPI.Entities.User", "User")
+                        .WithMany("MovieReviews")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.MovieVote", b =>
+                {
+                    b.HasOne("MovieToGoAPI.Entities.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieToGoAPI.Entities.User", "User")
+                        .WithMany("MovieVotes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.WatchList", b =>
+                {
+                    b.HasOne("MovieToGoAPI.Entities.User", "User")
+                        .WithMany("WatchLists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.WatchListItem", b =>
+                {
+                    b.HasOne("MovieToGoAPI.Entities.Movie", "Movie")
+                        .WithMany("WatchListItems")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieToGoAPI.Entities.WatchList", "WatchList")
+                        .WithMany("WatchListItems")
+                        .HasForeignKey("WatchListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("WatchList");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.Movie", b =>
+                {
+                    b.Navigation("MovieReviews");
+
+                    b.Navigation("WatchListItems");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.WatchList", b =>
+                {
+                    b.Navigation("WatchListItems");
+                });
+
+            modelBuilder.Entity("MovieToGoAPI.Entities.User", b =>
+                {
+                    b.Navigation("MovieReviews");
+
+                    b.Navigation("MovieVotes");
+
+                    b.Navigation("WatchLists");
                 });
 #pragma warning restore 612, 618
         }

@@ -252,7 +252,7 @@ namespace MovieToGoAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("TheMovieDbApiId")
+                    b.Property<int>("TheMovieDbId")
                         .HasColumnType("int");
 
                     b.Property<int?>("VoteAverage")
@@ -307,6 +307,7 @@ namespace MovieToGoAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Vote")
@@ -468,7 +469,9 @@ namespace MovieToGoAPI.Migrations
 
                     b.HasOne("MovieToGoAPI.Entities.User", "User")
                         .WithMany("MovieVotes")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Movie");
 

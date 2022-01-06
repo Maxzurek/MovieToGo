@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieToGoAPI.Entities
 {
@@ -19,7 +20,7 @@ namespace MovieToGoAPI.Entities
         public int Id { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
-        public int TheMovieDbApiId { get; set; }
+        public int TheMovieDbId { get; set; }
 
         public int? VoteAverage { get; set; }
 
@@ -28,8 +29,8 @@ namespace MovieToGoAPI.Entities
         /**********************************************************************************************************
         * References
         ***********************************************************************************************************/
-        public ICollection<WatchListItem> WatchListItems { get; set; }
+        public virtual ICollection<WatchListItem> WatchListItems { get; set; }
 
-        public ICollection<MovieReview> MovieReviews { get; set; }
+        public virtual ICollection<MovieReview> MovieReviews { get; set; }
     }
 }

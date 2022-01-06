@@ -27,9 +27,8 @@ namespace MovieToGoAPI.Entities
         ***********************************************************************************************************/
         [ForeignKey("User")]
         public string UserId { get; set; }
+        public virtual User User { get; set; }
 
-        public User User { get; set; }
-
-        public ICollection<WatchListItem> WatchListItems { get; set; }
+        public virtual ICollection<WatchListItem> WatchListItems { get; set; }
     }
 }

@@ -55,7 +55,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting movie by his TheMovieDb Id");
 
-            Movie? movie = await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbApiId == theMovieDbId);
+            Movie? movie = await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbId == theMovieDbId);
 
             if (movie == null)
             {

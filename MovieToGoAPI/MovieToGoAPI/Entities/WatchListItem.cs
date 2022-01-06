@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieToGoAPI.Entities
 {
@@ -15,9 +16,13 @@ namespace MovieToGoAPI.Entities
         /**********************************************************************************************************
         * References
         ***********************************************************************************************************/
-        public WatchList WatchList { get; set; }
+        [ForeignKey("WatchList")]
+        public int WatchListId { get; set; }
+        public virtual WatchList WatchList { get; set; }
 
-        public Movie Movie { get; set; }
+        [ForeignKey("Movie")]
+        public int MovieId { get; set; }
+        public virtual Movie Movie { get; set; }
     }
 }
     

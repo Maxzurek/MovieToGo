@@ -28,10 +28,10 @@ namespace MovieToGoAPI.Entities
         /**********************************************************************************************************
         * References
         ***********************************************************************************************************/
-        public ICollection<WatchList> WatchLists { get; set; }
+        public virtual ICollection<WatchList> WatchLists { get; set; }
 
-        public ICollection<MovieReview> MovieReviews { get; set; }
+        public virtual ICollection<MovieReview> MovieReviews { get; set; }
 
-        public ICollection<MovieVote> MovieVotes { get; set; }
+        public virtual ICollection<MovieVote> MovieVotes { get; set; }
     }
 }

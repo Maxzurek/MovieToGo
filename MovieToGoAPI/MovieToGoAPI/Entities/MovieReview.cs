@@ -17,14 +17,13 @@ namespace MovieToGoAPI.Entities
         /**********************************************************************************************************
         * References
         ***********************************************************************************************************/
-        [ForeignKey("Movie")]
-        public int MovieId { get; set; }
-
-        public Movie Movie { get; set; }
-
         [ForeignKey("User")]
         public string UserID { get; set; }
+        public virtual User User { get; set; }
 
-        public User User { get; set; }
+        [ForeignKey("Movie")]
+        public int MovieId { get; set; }
+        public virtual Movie Movie { get; set; }
+
     }
 }

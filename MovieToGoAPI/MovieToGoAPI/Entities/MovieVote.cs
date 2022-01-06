@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieToGoAPI.Entities
 {
@@ -16,8 +17,12 @@ namespace MovieToGoAPI.Entities
         /**********************************************************************************************************
         * Refrences
         ***********************************************************************************************************/
-        public User User { get; set; }
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+        public virtual User User { get; set; }
 
-        public Movie Movie { get; set; }
+        [ForeignKey("Movie")]
+        public int MovieId { get; set; }
+        public virtual Movie Movie { get; set; }
     }
 }
