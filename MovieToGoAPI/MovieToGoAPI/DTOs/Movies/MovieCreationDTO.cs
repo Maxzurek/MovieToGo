@@ -6,6 +6,6 @@ namespace MovieToGoAPI.DTOs.Movies
     {
         [Required(ErrorMessage = "The field {0} is required")]
 
-        public int TheMovieDbApiId { get; set; }
+        public int TheMovieDbId { get; set; }
     }
 }
