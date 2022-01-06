@@ -44,6 +44,30 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
+        /// Get user watchlists
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        [HttpGet("{UserId}")]
+        [ProducesResponseType(typeof(List<WatchListDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<List<WatchListDTO>>> Get(string UserId)
+        {
+            logger.LogInformation("Getting user watchlists");
+
+
+            List<WatchList> watchlists = await context.WatchLists.Where(x => x.UserId == UserId).ToListAsync();
+
+
+            if (watchlists.Count == 0)
+            {
+                return NoContent();
+            }
+
+            return mapper.Map<List<WatchListDTO>>(watchlists);
+        }
+
+        /// <summary>
         /// Create a watchlist
         /// </summary>
         /// <param name="watchListCreationDTO"></param>
