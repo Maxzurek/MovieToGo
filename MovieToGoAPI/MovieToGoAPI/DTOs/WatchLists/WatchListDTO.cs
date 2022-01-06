@@ -10,7 +10,7 @@ namespace MovieToGoAPI.DTOs.WatchLists
         ***********************************************************************************************************/
         public WatchListDTO()
         {
-            this.WatchListItemDTOs = new HashSet<WatchListItemDTO>();
+            this.WatchListItems = new HashSet<WatchListItemDTO>();
         }
 
         /**********************************************************************************************************
@@ -20,8 +20,8 @@ namespace MovieToGoAPI.DTOs.WatchLists
 
         public string Name { get; set; }
 
-        public UserDTO UserDTO { get; set; }
+        public UserDTO User { get; set; }
 
-        public ICollection<WatchListItemDTO> WatchListItemDTOs { get; set; }
+        public ICollection<WatchListItemDTO> WatchListItems { get; set; }
     }
 }

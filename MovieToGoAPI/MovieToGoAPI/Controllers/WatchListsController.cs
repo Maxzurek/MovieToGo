@@ -29,7 +29,7 @@ namespace MovieToGoAPI.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(List<WatchListDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<List<WatchListDTO>>> Get()
+        public async Task<ActionResult<List<WatchListDTO>>> GetAll()
         {
             logger.LogInformation("Getting all watchlists");
 
@@ -44,17 +44,41 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get user watchlists
+        /// Get a watchlist by his Id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet("{Id:int}")]
+        [ProducesResponseType(typeof(List<WatchListDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<WatchListDTO>> GetById(int Id)
+        {
+            logger.LogInformation("Getting a watchlist by id");
+
+            WatchList? watchlist = await context.WatchLists
+                .Include(x => x.User)
+                .Include(x => x.WatchListItems)
+                .FirstOrDefaultAsync(x => x.Id == Id);
+
+            if (watchlist == null)
+            {
+                return NoContent();
+            }
+
+            return mapper.Map<WatchListDTO>(watchlist);
+        }
+
+        /// <summary>
+        /// Get a user's watchlists
         /// </summary>
         /// <param name="UserId"></param>
         /// <returns></returns>
         [HttpGet("{UserId}")]
         [ProducesResponseType(typeof(List<WatchListDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<List<WatchListDTO>>> Get(string UserId)
+        public async Task<ActionResult<List<WatchListDTO>>> GetByUserId(string UserId)
         {
-            logger.LogInformation("Getting user watchlists");
-
+            logger.LogInformation("Getting all user's watchlists");
 
             List<WatchList> watchlists = await context.WatchLists.Include(x => x.User).Include(x => x.WatchListItems).Where(x => x.UserId == UserId).ToListAsync();
 
@@ -83,6 +107,54 @@ namespace MovieToGoAPI.Controllers
 
             context.WatchLists.Add(watchList);
 
+            await context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Update a watchlist
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="watchListUpdateDTO"></param>
+        /// <returns></returns>
+        [HttpPut("{Id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public async Task<ActionResult> Put(int Id, [FromBody] WatchListUpdateDTO watchListUpdateDTO)
+        {
+            WatchList? watchList = await context.WatchLists.FirstOrDefaultAsync(x => x.Id == Id);
+
+            if (watchList == null)
+            {
+                return NotFound();
+            }
+
+            watchList = mapper.Map(watchListUpdateDTO, watchList);
+            await context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Delete a watchlist
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete(int Id)
+        {
+            WatchList? watchList = await context.WatchLists.FirstOrDefaultAsync(x => x.Id == Id);
+
+            if (watchList == null)
+            {
+                return NotFound();
+            }
+
+            context.Remove(watchList);
             await context.SaveChangesAsync();
 
             return NoContent();
