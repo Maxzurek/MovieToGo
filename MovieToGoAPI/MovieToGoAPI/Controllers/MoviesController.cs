@@ -89,12 +89,12 @@ namespace MovieToGoAPI.Controllers
         /// Update a movie by his MovieToGo Id
         /// </summary>
         /// <param name="movieToGoId"></param>
-        /// <param name="movieCreationDTO"></param>
+        /// <param name="movieUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{movieToGoId:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Put(int movieToGoId, [FromBody] MovieCreationDTO movieCreationDTO)
+        public async Task<ActionResult> Put(int movieToGoId, [FromBody] MovieUpdateDTO movieUpdateDTO)
         {
             Movie? movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == movieToGoId);
 
@@ -103,7 +103,7 @@ namespace MovieToGoAPI.Controllers
                 return NotFound();
             }
 
-            movie = mapper.Map<Movie>(movieCreationDTO);
+            movie = mapper.Map(movieUpdateDTO, movie);
             await context.SaveChangesAsync();
 
             return NoContent();

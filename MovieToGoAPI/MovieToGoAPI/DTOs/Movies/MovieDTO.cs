@@ -19,7 +19,7 @@ namespace MovieToGoAPI.DTOs.Movies
         ***********************************************************************************************************/
         public int Id { get; set; }
 
-        public int TheMovieDbApiId { get; set; }
+        public int TheMovieDbId { get; set; }
 
         public int? VoteAverage { get; set; }
 
