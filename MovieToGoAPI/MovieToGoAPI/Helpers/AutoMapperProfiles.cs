@@ -39,12 +39,13 @@ namespace MovieToGoAPI.Helpers
 
             // MovieReview
             CreateMap<MovieReviewDTO, MovieReview>().ReverseMap();
+            CreateMap<MovieReviewCreationDTO, MovieReview>().ReverseMap();
 
             // MovieVotes
             CreateMap<MovieVoteDTO, MovieVote>().ReverseMap();
             CreateMap<MovieVoteCreationDTO, MovieVote>().ReverseMap();
             CreateMap<MovieVoteUpdateDTO, MovieVote>().ReverseMap();
-            CreateMap<MovieReviewCreationDTO, MovieReview>().ReverseMap();
+            
         }
     }
 }

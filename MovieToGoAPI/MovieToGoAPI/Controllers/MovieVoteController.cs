@@ -104,7 +104,7 @@ namespace MovieToGoAPI.Controllers
 
         public async Task<ActionResult> Put(int Id, [FromBody] MovieVoteUpdateDTO MovieVoteUpdateDTO)
         {
-            MovieVote movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
+            MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
 
            if(movieVote == null)
             {
