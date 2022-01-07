@@ -1,5 +1,6 @@
 ﻿using MovieToGoAPI.DTOs.Movies;
 using MovieToGoAPI.DTOs.Users;
+using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.DTOs.MovieReviews
 {

@@ -44,7 +44,8 @@ namespace MovieToGoAPI.Helpers
             // MovieReview
             CreateMap<MovieReviewDTO, MovieReview>().ReverseMap();
             CreateMap<MovieReviewCreationDTO, MovieReview>().ReverseMap();
-
+            CreateMap<MovieReviewUpdateDTO, MovieReview>().ReverseMap();
+   
             // MovieVotes
             CreateMap<MovieVoteDTO, MovieVote>().ReverseMap();
             CreateMap<MovieVoteCreationDTO, MovieVote>().ReverseMap();
