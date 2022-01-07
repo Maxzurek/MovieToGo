@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using MovieToGoAPI.Models;
 
 namespace MovieToGoAPI.Filters
 {
@@ -20,7 +21,7 @@ namespace MovieToGoAPI.Filters
 
             if(statusCode == StatusCodes.Status400BadRequest)
             {
-                List<string> response = new List<string>();
+                List<ErrorMessage> response = new();
                 BadRequestObjectResult? badRequestObjectResult = context.Result as BadRequestObjectResult;
 
                 if(badRequestObjectResult == null || badRequestObjectResult.Value == null)
@@ -34,7 +35,7 @@ namespace MovieToGoAPI.Filters
 
                     foreach (var error in identityResult.Errors)
                     {
-                        response.Add(error.Description);
+                        response.Add(new ErrorMessage(error.Description));
                     }
 
                     context.Result = new BadRequestObjectResult(response);
