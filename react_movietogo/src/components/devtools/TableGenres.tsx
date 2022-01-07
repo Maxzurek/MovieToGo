@@ -20,19 +20,18 @@ export default function TableGenres() {
                 const response = await axios.get(movieToGoUrlGenres);
                 setMovieToGoGenresData(response.data);
             } catch (error : any) {
-                setMovieToGoError(JSON.stringify(error));
-                console.log(movieToGoError);
+                setMovieToGoError(error.message);
+                console.log(error);
             }
         }
 
         async function getTheMovieDbGenres() {
             try {
                 const response = await axios.get(theMovieDbGenres);
-
                 setTheMovieDbGenresData(response.data.genres);
             } catch (error : any) {
-                setTheMovieDbError(JSON.stringify(error));
-                console.log(theMovieDbError);
+                setTheMovieDbError(JSON.stringify(error.message));
+                console.log(error);
             }
         }
 
