@@ -9,13 +9,13 @@ namespace MovieToGoAPI.APIBehavior
         {
             options.InvalidModelStateResponseFactory = actionContext =>
             {
-                List<ErrorMessage> errors = new();
+                List<string> errors = new();
 
                 foreach (var modelStateDict in actionContext.ModelState)
                 {
                     foreach (var error in modelStateDict.Value.Errors)
                     {
-                        errors.Add(new ErrorMessage(error.ErrorMessage));
+                        errors.Add(error.ErrorMessage);
                     }
                 }
                 return new BadRequestObjectResult(errors);

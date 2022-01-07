@@ -6,10 +6,11 @@ import { Container } from "semantic-ui-react";
 import { movieToGoUrlAccountsCreate } from "../../endpoints";
 import { UserCreationDTO } from "../../models/authentication.models";
 import RegisterForm from "../forms/RegisterForm";
+import DisplayApiErrors from "../utilities/DisplayApiErrors";
 
 export default function TestFormsTool() {
 
-    const [userCreationError, setUserCreationError] = useState([]);
+    const [userCreationError, setUserCreationError] = useState<string[]>([]);
     const navigate = useNavigate();
     const registerUser = async (values: UserCreationDTO, actions: FormikHelpers<UserCreationDTO>) => {
         console.log(values)
@@ -37,6 +38,7 @@ export default function TestFormsTool() {
         <Container>
             <h1>Test Forms Tool</h1>
             <Container>
+                <DisplayApiErrors errors={userCreationError}/>
                 <RegisterForm model={userCreationDTO} onSubmit={registerUser}/>
             </Container>
         </Container>

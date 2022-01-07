@@ -21,7 +21,7 @@ namespace MovieToGoAPI.Filters
 
             if(statusCode == StatusCodes.Status400BadRequest)
             {
-                List<ErrorMessage> response = new();
+                List<string> response = new();
                 BadRequestObjectResult? badRequestObjectResult = context.Result as BadRequestObjectResult;
 
                 if(badRequestObjectResult == null || badRequestObjectResult.Value == null)
@@ -35,7 +35,7 @@ namespace MovieToGoAPI.Filters
 
                     foreach (var error in identityResult.Errors)
                     {
-                        response.Add(new ErrorMessage(error.Description));
+                        response.Add(error.Description);
                     }
 
                     context.Result = new BadRequestObjectResult(response);

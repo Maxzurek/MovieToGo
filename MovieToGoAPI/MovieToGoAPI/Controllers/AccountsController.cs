@@ -69,7 +69,7 @@ namespace MovieToGoAPI.Controllers
             string userName = user == null ? "" : user.UserName;
 
             SignInResult result = await signInManager.PasswordSignInAsync(
-                userName, userLoginDTO.Password, isPersistent: false, lockoutOnFailure: false);
+                userName, userLoginDTO.Password, isPersistent: false, lockoutOnFailure: true);
 
             if (!result.Succeeded)
             {
