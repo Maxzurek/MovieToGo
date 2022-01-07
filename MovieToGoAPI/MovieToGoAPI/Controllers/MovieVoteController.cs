@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieToGoAPI.DTOs.MovieVotes;
 using MovieToGoAPI.Entities;
 
@@ -10,13 +11,13 @@ namespace MovieToGoAPI.Controllers
     [ApiController]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public class MovieVoteController : Controller
+    public class MovieVotesController : Controller
     {
-        private readonly ILogger<MovieVoteController> logger;
+        private readonly ILogger<MovieVotesController> logger;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
 
-        public MovieVoteController(ILogger<MovieVoteController> logger, ApplicationDbContext context, IMapper mapper)
+        public MovieVotesController(ILogger<MovieVotesController> logger, ApplicationDbContext context, IMapper mapper)
         {
             this.logger = logger;
             this.context = context;
@@ -34,7 +35,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting all movies");
 
-            List<MovieVote> moviesVotes = await context.MovieVotes.Include(x => x.User).Include(x => x.Movie).ToListAsync();
+            List<MovieVote> moviesVotes = await context.MovieVotes.ToListAsync();
 
             if (moviesVotes.Count == 0)
             {
@@ -56,7 +57,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting vote by Id");
 
-            MovieVote? movieVote = await context.MovieVotes.Include(x => x.User).Include(x => x.Movie).FirstOrDefaultAsync(x => x.Id == Id);
+            MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
 
             if (movieVote == null)
             {
@@ -72,20 +73,22 @@ namespace MovieToGoAPI.Controllers
         /// <param name="movieVoteCreationDTO"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(MovieVoteDTO),StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 
-        public async Task<ActionResult> Post([FromBody] MovieVoteCreationDTO movieVoteCreationDTO)
+        public async Task<ActionResult<MovieVoteDTO>> Post([FromBody] MovieVoteCreationDTO movieVoteCreationDTO)
         {
             logger.LogInformation("Creating a Vote");
 
             MovieVote movieVote = mapper.Map<MovieVote>(movieVoteCreationDTO);
 
-            context.MovieVotes.Add(movieVote);
-
+            EntityEntry<MovieVote> entityEntry = context.MovieVotes.Add(movieVote);
             await context.SaveChangesAsync();
 
-            return NoContent();
+            await entityEntry.Reference(x => x.Movie).LoadAsync();
+            await entityEntry.Reference(x => x.User).LoadAsync();
+
+            return Ok(mapper.Map<MovieVoteDTO>(entityEntry.Entity));
         }
 
         /// <summary>
@@ -95,11 +98,13 @@ namespace MovieToGoAPI.Controllers
         /// <param name="MovieVoteDTO"></param>
         /// <returns></returns>
         [HttpPut("{Id:int}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(MovieVoteDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<ActionResult> Put(int Id, [FromBody] MovieVoteUpdateDTO MovieVoteDTO)
+        public async Task<ActionResult<MovieVoteDTO>> Put(int Id, [FromBody] MovieVoteUpdateDTO MovieVoteDTO)
         {
+            logger.LogInformation("Updating a Vote");
+
             MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
 
             if (movieVote == null)
@@ -110,7 +115,7 @@ namespace MovieToGoAPI.Controllers
             movieVote = mapper.Map(MovieVoteDTO, movieVote);
             await context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(mapper.Map<MovieVoteDTO>(movieVote));
         }
 
 
@@ -125,6 +130,8 @@ namespace MovieToGoAPI.Controllers
 
         public async Task<ActionResult> Delete(int Id)
         {
+            logger.LogInformation("Deleting a Vote");
+
             MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
 
             if (movieVote == null)

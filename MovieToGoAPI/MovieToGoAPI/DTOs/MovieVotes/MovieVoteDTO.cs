@@ -12,6 +12,6 @@ namespace MovieToGoAPI.DTOs.MovieVotes
 
         public UserDTO User { get; set; }
 
-        public MovieDTO Movie { get; set; }
+        public int MovieId { get; set; }
     }
 }
