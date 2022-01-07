@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MovieToGoAPI.APIBehavior;
 using MovieToGoAPI.Entities;
 using MovieToGoAPI.Filters;
 using System.Reflection;
@@ -58,7 +59,7 @@ namespace MovieToGoAPI
             {
                 options.Filters.Add(typeof(ExceptionFilter));
                 options.Filters.Add(typeof(ParseBadRequestFilter));
-            });
+            }).ConfigureApiBehaviorOptions(BadRequestBehavior.Parse);
 
             services.AddEndpointsApiExplorer();
 
