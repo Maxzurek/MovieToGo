@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieToGoAPI.DTOs.Movies;
 using MovieToGoAPI.Entities;
 
@@ -93,18 +94,20 @@ namespace MovieToGoAPI.Controllers
         /// <param name="movieCreationDTO"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(MovieDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Post([FromBody] MovieCreationDTO movieCreationDTO)
+        public async Task<ActionResult<Movie>> Post([FromBody] MovieCreationDTO movieCreationDTO)
         {
             logger.LogInformation("Creating movie");
 
             Movie movie = mapper.Map<Movie>(movieCreationDTO);
 
-            context.Movies.Add(movie);
+            EntityEntry<Movie> entityEntry = context.Movies.Add(movie);
             await context.SaveChangesAsync();
 
-            return NoContent();
+            await entityEntry.Collection(x => x.MovieReviews).LoadAsync();
+
+            return Ok(mapper.Map<MovieDTO>(entityEntry.Entity));
         }
 
         /// <summary>
@@ -114,9 +117,9 @@ namespace MovieToGoAPI.Controllers
         /// <param name="movieUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{movieToGoId:int}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(MovieDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Put(int movieToGoId, [FromBody] MovieUpdateDTO movieUpdateDTO)
+        public async Task<ActionResult<Movie>> Put(int movieToGoId, [FromBody] MovieUpdateDTO movieUpdateDTO)
         {
             Movie? movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == movieToGoId);
 
@@ -128,7 +131,7 @@ namespace MovieToGoAPI.Controllers
             movie = mapper.Map(movieUpdateDTO, movie);
             await context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(mapper.Map<MovieDTO>(movie));
         }
 
         /// <summary>
