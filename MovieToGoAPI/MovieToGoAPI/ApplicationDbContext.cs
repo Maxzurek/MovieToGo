@@ -10,7 +10,11 @@ namespace MovieToGoAPI
     {
         public ApplicationDbContext([NotNullAttribute] DbContextOptions options) : base(options)
         {
+        }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
         }
 
         public DbSet<Genre> Genres { get; set; }
