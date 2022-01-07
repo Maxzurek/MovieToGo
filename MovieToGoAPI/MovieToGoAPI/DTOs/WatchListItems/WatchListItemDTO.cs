@@ -9,8 +9,6 @@ namespace MovieToGoAPI.DTOs.WatchListItems
 
         public bool Watched { get; set; }
 
-        public WatchListDTO WatchListDTO { get; set; }
-
-        public MovieDTO MovieDTO { get; set; }
+        public MovieDTO Movie { get; set; }
     }
 }
