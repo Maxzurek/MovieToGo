@@ -38,6 +38,8 @@ namespace MovieToGoAPI.Helpers
 
             // WatchListItem
             CreateMap<WatchListItemDTO, WatchListItem>().ReverseMap();
+            CreateMap<WatchListItemCreationDTO, WatchListItem>().ReverseMap();
+            CreateMap<WatchListItemUpdateDTO, WatchListItem>().ReverseMap();
 
             // MovieReview
             CreateMap<MovieReviewDTO, MovieReview>().ReverseMap();

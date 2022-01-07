@@ -13,8 +13,11 @@ namespace MovieToGoAPI.Filters
 
         public override void OnException(ExceptionContext context)
         {
+            Exception exception = context.Exception;
+            Exception? innerException = exception.InnerException;
+            string innerExceptionMessage = innerException == null ? string.Empty : innerException.Message;
 
-            logger.LogError(context.Exception, context.Exception.Message);
+            logger.LogError($"{exception.Message} : {innerExceptionMessage}");
 
             base.OnException(context);
         }

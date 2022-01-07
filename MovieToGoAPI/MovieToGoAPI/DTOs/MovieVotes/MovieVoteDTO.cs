@@ -10,8 +10,8 @@ namespace MovieToGoAPI.DTOs.MovieVotes
         public int Vote { get; set; }
 
 
-        public UserDTO UserDTO { get; set; }
+        public UserDTO User { get; set; }
 
-        public MovieDTO MovieDTO { get; set; }
+        public MovieDTO Movie { get; set; }
     }
 }
