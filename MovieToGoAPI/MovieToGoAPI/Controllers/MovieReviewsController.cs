@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieToGoAPI.DTOs.MovieReviews;
-using MovieToGoAPI.DTOs.Movies;
-using MovieToGoAPI.DTOs.Users;
 using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.Controllers
@@ -26,7 +24,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get all movie Reviews
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -36,19 +34,22 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting all Movie Reviews");
 
-            //var movieReviews = await context.MovieReviews.ToListAsync();
-            
             List<MovieReview> movieReviews = await context.MovieReviews.Include(x => x.User).Include(x => x.Movie).ToListAsync();
 
-                      if (movieReviews.Count == 0)
-                        {
-                            return NoContent();
-                        }
+            if (movieReviews.Count == 0)
+            {
+                return NoContent();
+            }
 
-         return mapper.Map<List<MovieReviewDTO>>(movieReviews);
+            return mapper.Map<List<MovieReviewDTO>>(movieReviews);
         }
 
 
+        /// <summary>
+        /// Get Movie Review by ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [HttpGet("{Id:int}")]
         [ProducesResponseType(typeof(MovieReviewDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -56,7 +57,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting Movie Review by id");
 
-            MovieReview? movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == Id);
+            MovieReview? movieReview = await context.MovieReviews.Include(x => x.User).Include(x => x.Movie).FirstOrDefaultAsync(x => x.Id == Id);
 
             if (movieReview == null)
             {
@@ -67,6 +68,11 @@ namespace MovieToGoAPI.Controllers
         }
 
 
+        /// <summary>
+        /// Create Movie Review
+        /// </summary>
+        /// <param name="movieReviewCreationDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -83,6 +89,12 @@ namespace MovieToGoAPI.Controllers
         }
 
 
+        /// <summary>
+        /// Update Movie Review by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="movieReviewUpdateDTO"></param>
+        /// <returns></returns>
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -102,7 +114,11 @@ namespace MovieToGoAPI.Controllers
         }
 
 
-
+        /// <summary>
+        /// Delete movie Review by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -120,7 +136,5 @@ namespace MovieToGoAPI.Controllers
 
             return NoContent();
         }
-
-
     }
 }
