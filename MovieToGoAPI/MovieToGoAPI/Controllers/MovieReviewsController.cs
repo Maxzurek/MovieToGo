@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieToGoAPI.DTOs.MovieReviews;
 using MovieToGoAPI.Entities;
 
@@ -99,18 +100,21 @@ namespace MovieToGoAPI.Controllers
         /// <param name="movieReviewCreationDTO"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(MovieReviewDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Post([FromBody] MovieReviewCreationDTO movieReviewCreationDTO)
+        public async Task<ActionResult<MovieReviewDTO>> Post([FromBody] MovieReviewCreationDTO movieReviewCreationDTO)
         {
             logger.LogInformation("Creating Movie Review");
 
-            MovieReview movieReview = mapper.Map<MovieReview>(movieReviewCreationDTO);
+            MovieReview? movieReview = mapper.Map<MovieReview>(movieReviewCreationDTO);
 
-            context.MovieReviews.Add(movieReview);
+            EntityEntry<MovieReview> entityEntry = context.MovieReviews.Add(movieReview);
+
             await context.SaveChangesAsync();
 
-            return NoContent();
+            MovieReview? movieReviewCreated = await context.MovieReviews.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == entityEntry.Entity.Id);
+
+            return Ok(mapper.Map<MovieReviewDTO>(movieReviewCreated));  
         }
 
 
@@ -121,11 +125,11 @@ namespace MovieToGoAPI.Controllers
         /// <param name="movieReviewUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(MovieReviewDTO),StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Put(int id, [FromBody] MovieReviewUpdateDTO movieReviewUpdateDTO)
+        public async Task<ActionResult<MovieReviewDTO>> Put(int id, [FromBody] MovieReviewUpdateDTO movieReviewUpdateDTO)
         {
-            MovieReview? movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == id);
+            MovieReview? movieReview = await context.MovieReviews.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == id);
 
             if (movieReview == null)
             {
@@ -135,7 +139,7 @@ namespace MovieToGoAPI.Controllers
             movieReview = mapper.Map(movieReviewUpdateDTO, movieReview);
             await context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(mapper.Map<MovieReviewDTO>(movieReview));
         }
 
 
