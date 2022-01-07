@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieToGoAPI.DTOs.Genres  ;
 using MovieToGoAPI.Entities;
+using MovieToGoAPI.Models;
 
 namespace MovieToGoAPI.Controllers
 {
@@ -58,7 +59,7 @@ namespace MovieToGoAPI.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(List<ErrorMessage>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Post([FromBody] GenreCreationDTO genreCreationDTO)
         {
             logger.LogInformation("Creating genre");
