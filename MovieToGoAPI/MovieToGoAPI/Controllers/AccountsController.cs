@@ -39,7 +39,7 @@ namespace MovieToGoAPI.Controllers
         /// <param name="userCreationDTO"></param>
         /// <returns></returns>
         [HttpPost("create")]
-        [ProducesResponseType(typeof(List<ErrorMessage>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<AuthenticationResponse>> Create([FromBody] UserCreationDTO userCreationDTO)
         {

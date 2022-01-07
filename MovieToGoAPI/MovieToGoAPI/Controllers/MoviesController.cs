@@ -96,7 +96,7 @@ namespace MovieToGoAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(MovieDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(List<ErrorMessage>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Movie>> Post([FromBody] MovieCreationDTO movieCreationDTO)
         {
             logger.LogInformation("Creating movie");

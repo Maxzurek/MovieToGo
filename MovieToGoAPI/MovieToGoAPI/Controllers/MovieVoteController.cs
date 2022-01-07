@@ -74,7 +74,7 @@ namespace MovieToGoAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(MovieVoteDTO),StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
 
         public async Task<ActionResult<MovieVoteDTO>> Post([FromBody] MovieVoteCreationDTO movieVoteCreationDTO)
         {

@@ -59,7 +59,7 @@ namespace MovieToGoAPI.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(List<ErrorMessage>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Post([FromBody] GenreCreationDTO genreCreationDTO)
         {
             logger.LogInformation("Creating genre");
