@@ -25,7 +25,10 @@ namespace MovieToGoAPI.Controllers
             this.mapper = mapper;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<MovieReviewDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -35,7 +38,7 @@ namespace MovieToGoAPI.Controllers
 
             //var movieReviews = await context.MovieReviews.ToListAsync();
             
-            List<MovieReview> movieReviews = await context.MovieReviews.Include(x => x.User).Include(y=>y.Movie).ToListAsync();
+            List<MovieReview> movieReviews = await context.MovieReviews.Include(x => x.User).Include(x => x.Movie).ToListAsync();
 
                       if (movieReviews.Count == 0)
                         {

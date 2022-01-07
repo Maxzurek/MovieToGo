@@ -10,8 +10,8 @@ namespace MovieToGoAPI.DTOs.MovieReviews
 
         public string Body { get; set; }
 
-        public MovieDTO MovieDTO { get; set; }
+        public MovieDTO Movie { get; set; }
 
-        public UserDTO UserDTO { get; set; }
+        public UserDTO User { get; set; }
     }
 }
