@@ -11,7 +11,7 @@ namespace MovieToGoAPI.DTOs.Movies
         ***********************************************************************************************************/
         public MovieDTO()
         {
-            this.MovieReviewDTOs = new HashSet<MovieReviewDTO>();
+            this.MovieReviews = new HashSet<MovieReviewDTO>();
         }
 
         /**********************************************************************************************************
@@ -25,6 +25,6 @@ namespace MovieToGoAPI.DTOs.Movies
 
         public int? VoteCount { get; set; }
 
-        public ICollection<MovieReviewDTO> MovieReviewDTOs { get; set; }
+        public ICollection<MovieReviewDTO> MovieReviews { get; set; }
     }
 }
