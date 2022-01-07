@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieToGoAPI.DTOs.WatchListItems;
 using MovieToGoAPI.Entities;
 
@@ -100,7 +101,7 @@ namespace MovieToGoAPI.Controllers
         /// <param name="watchListItemCreationDTO"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(WatchListItemDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Post([FromBody] WatchListItemCreationDTO watchListItemCreationDTO)
         {
@@ -108,11 +109,12 @@ namespace MovieToGoAPI.Controllers
 
             WatchListItem watchListItem = mapper.Map<WatchListItem>(watchListItemCreationDTO);
 
-            context.WatchListItems.Add(watchListItem);
+            EntityEntry<WatchListItem> entityEntry = context.WatchListItems.Add(watchListItem);
 
             await context.SaveChangesAsync();
+            await entityEntry.Reference(x => x.Movie).LoadAsync();
 
-            return NoContent();
+            return Ok(mapper.Map<WatchListItemDTO>(entityEntry.Entity));
         }
 
         /// <summary>
@@ -122,7 +124,7 @@ namespace MovieToGoAPI.Controllers
         /// <param name="watchListItemUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{Id:int}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(WatchListItemDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Put(int Id, [FromBody] WatchListItemUpdateDTO watchListItemUpdateDTO)
         {
@@ -136,7 +138,7 @@ namespace MovieToGoAPI.Controllers
             watchListItem = mapper.Map(watchListItemUpdateDTO, watchListItem);
             await context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(mapper.Map<WatchListItemDTO>(watchListItem));
         }
 
         /// <summary>
