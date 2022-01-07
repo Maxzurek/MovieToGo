@@ -35,7 +35,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting all movies");
 
-            List<MovieVote> moviesVotes = await context.MovieVotes.ToListAsync();
+            List<MovieVote> moviesVotes = await context.MovieVotes.Include(x => x.User).Include(x => x.Movie).ToListAsync();
 
             if (moviesVotes.Count == 0)
             {
@@ -57,7 +57,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting vote by Id");
 
-            MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
+            MovieVote? movieVote = await context.MovieVotes.Include(x => x.User).Include(x => x.Movie).FirstOrDefaultAsync(x => x.Id == Id);
             
             if(movieVote == null)
             {
