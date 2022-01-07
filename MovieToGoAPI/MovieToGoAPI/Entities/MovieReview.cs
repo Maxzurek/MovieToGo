@@ -16,6 +16,9 @@ namespace MovieToGoAPI.Entities
         [StringLength(500)]
         public string Body { get; set; }
 
+        [Required(ErrorMessage = "The field {0} is required")]
+        public DateTime DateCreated { get; set; }
+
         /**********************************************************************************************************
         * References
         ***********************************************************************************************************/
@@ -26,6 +29,5 @@ namespace MovieToGoAPI.Entities
         [ForeignKey("Movie")]
         public int MovieId { get; set; }
         public virtual Movie Movie { get; set; }
-
     }
 }

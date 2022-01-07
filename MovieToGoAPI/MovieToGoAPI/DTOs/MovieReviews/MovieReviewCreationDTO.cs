@@ -9,12 +9,12 @@ namespace MovieToGoAPI.DTOs.MovieReviews
         public string Body { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
+        public DateTime DateCreated { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is required")]
         public int MovieId { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         public string UserId { get; set; }
     }
-
-
-
 }
