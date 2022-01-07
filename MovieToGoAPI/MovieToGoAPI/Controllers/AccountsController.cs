@@ -33,8 +33,12 @@ namespace MovieToGoAPI.Controllers
             this.configuration = configuration;
         }
 
-        [HttpPost]
-        [Route("create")]
+        /// <summary>
+        /// Create an account for a user
+        /// </summary>
+        /// <param name="userCreationDTO"></param>
+        /// <returns></returns>
+        [HttpPost("create")]
         [ProducesResponseType(typeof(List<ErrorMessage>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<AuthenticationResponse>> Create([FromBody] UserCreationDTO userCreationDTO)
@@ -51,8 +55,12 @@ namespace MovieToGoAPI.Controllers
             return BuildToken(userCreationDTO);
         }
 
-        [HttpPost]
-        [Route("login")]
+        /// <summary>
+        /// Login with user email
+        /// </summary>
+        /// <param name="userLoginDTO"></param>
+        /// <returns></returns>
+        [HttpPost("login")]
         [ProducesResponseType(typeof(SignInResult), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] UserLoginDTO userLoginDTO)
@@ -69,6 +77,28 @@ namespace MovieToGoAPI.Controllers
             }
 
             return BuildToken(userLoginDTO);
+        }
+
+        [HttpDelete("{UserId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete(string UserId)
+        {
+            User userToDelete = await userManager.FindByIdAsync(UserId);
+
+            if(userToDelete == null)
+            {
+                return NotFound();
+            }
+
+            IdentityResult result = await userManager.DeleteAsync(userToDelete);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result);
+            }
+
+            return NoContent();
         }
 
         /**********************************************************************************************************
