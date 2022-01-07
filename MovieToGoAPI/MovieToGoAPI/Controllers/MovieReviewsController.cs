@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieToGoAPI.DTOs.MovieReviews;
 using MovieToGoAPI.Entities;
+using MovieToGoAPI.Models;
 
 namespace MovieToGoAPI.Controllers
 {
@@ -100,7 +101,7 @@ namespace MovieToGoAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(MovieReviewDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(List<ErrorMessage>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<MovieReviewDTO>> Post([FromBody] MovieReviewCreationDTO movieReviewCreationDTO)
         {
             logger.LogInformation("Creating Movie Review");
