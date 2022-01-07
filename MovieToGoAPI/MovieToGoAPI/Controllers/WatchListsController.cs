@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieToGoAPI.DTOs.WatchLists;
 using MovieToGoAPI.Entities;
+using MovieToGoAPI.Models;
 
 namespace MovieToGoAPI.Controllers
 {
@@ -99,7 +100,7 @@ namespace MovieToGoAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(WatchListDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(List<ErrorMessage>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Post([FromBody] WatchListCreationDTO watchListCreationDTO)
         {
             logger.LogInformation("Creating a watchlist");
