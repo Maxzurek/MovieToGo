@@ -14,6 +14,25 @@ const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
     // Accounts
     export const movieToGoUrlAccountsCreate = `${movieToGoBaseUrl}/accounts/create`;
     export const movieToGoUrlAccountsLogin = `${movieToGoBaseUrl}/accounts/login`;
+    export const movieToGoUrlAccounts = `${movieToGoBaseUrl}/accounts`;
+
+    // Movies
+    export const movieToGoUrlMovies = `${movieToGoBaseUrl}/movies`;
+    export const movieToGoUrlGetMovieByTheMovieDbId = `${movieToGoBaseUrl}/movies/themoviedb`;
+
+    // MovieReviews
+    export const movieToGoUrlMovieReviews = `${movieToGoBaseUrl}/movieReviews`;
+    export const movieToGoUrlGetMovieReviewsByMovieId = `${movieToGoBaseUrl}/movieReviews/movie`;
+
+    // MovieVotes
+    export const movieToGoUrlMovieVotes = `${movieToGoBaseUrl}/movieVotes`;
+
+    // WatchListItems
+    export const movieToGoUrlWatchListItems = `${movieToGoBaseUrl}/watchListItems`;
+    export const movieToGoUrlGetWatchListItemsByWatchListId = `${movieToGoBaseUrl}/watchListItems/watchList`;
+
+    // WatchLists
+    export const movieToGoUrlWatchLists = `${movieToGoBaseUrl}/watchLists`;
 
 // TheMovieDb endpoints
 
