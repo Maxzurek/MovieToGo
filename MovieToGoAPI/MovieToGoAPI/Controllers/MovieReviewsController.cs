@@ -34,7 +34,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting all Movie Reviews");
 
-            List<MovieReview> movieReviews = await context.MovieReviews.Include(x => x.User).Include(x => x.Movie).ToListAsync();
+            List<MovieReview> movieReviews = await context.MovieReviews.Include(x => x.User).ToListAsync();
 
             if (movieReviews.Count == 0)
             {
@@ -57,7 +57,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting Movie Review by id");
 
-            MovieReview? movieReview = await context.MovieReviews.Include(x => x.User).Include(x => x.Movie).FirstOrDefaultAsync(x => x.Id == Id);
+            MovieReview? movieReview = await context.MovieReviews.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == Id);
 
             if (movieReview == null)
             {
@@ -67,6 +67,31 @@ namespace MovieToGoAPI.Controllers
             return mapper.Map<MovieReviewDTO>(movieReview);
         }
 
+
+        /// <summary>
+        /// Get all movie Reviews by movie Id
+        /// </summary>
+        /// <param name="MovieId"></param>
+        /// <returns></returns>
+        [HttpGet("movie/{MovieId:int}")]
+        [ProducesResponseType(typeof(List<MovieReviewDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<List<MovieReviewDTO>>> GetByMovieId(int MovieId)
+        {
+            logger.LogInformation("Getting all movie Reviews by MovieId");
+
+            List<MovieReview>? movieReviews = await context.MovieReviews
+                .Include(x => x.User)
+                .Where(x => x.MovieId == MovieId)
+                .ToListAsync();
+
+            if (movieReviews.Count == 0)
+            {
+                return NoContent();
+            }
+
+            return mapper.Map<List<MovieReviewDTO>>(movieReviews);
+        }
 
         /// <summary>
         /// Create Movie Review
