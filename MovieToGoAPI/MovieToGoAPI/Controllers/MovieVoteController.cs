@@ -6,8 +6,6 @@ using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.Controllers
 {
-
-
     [Route("api/movievotes")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -24,8 +22,9 @@ namespace MovieToGoAPI.Controllers
             this.context = context;
             this.mapper = mapper;
         }
+
         /// <summary>
-        /// get all MovieVotes
+        /// get all movieVotes
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -46,32 +45,29 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get MovieVote by ID
+        /// Get movieVote by ID
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpGet("{Id:int}")]
         [ProducesResponseType(typeof(MovieVoteDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<List<MovieVoteDTO>>> Get(int Id)
+        public async Task<ActionResult<MovieVoteDTO>> Get(int Id)
         {
             logger.LogInformation("Getting vote by Id");
 
             MovieVote? movieVote = await context.MovieVotes.Include(x => x.User).Include(x => x.Movie).FirstOrDefaultAsync(x => x.Id == Id);
-            
-            if(movieVote == null)
+
+            if (movieVote == null)
             {
                 return NotFound();
-
             }
 
-            return mapper.Map<List<MovieVoteDTO>>(movieVote);
-            
-           
+            return mapper.Map<MovieVoteDTO>(movieVote);
         }
 
         /// <summary>
-        /// Create MovieVote
+        /// Create movieVote
         /// </summary>
         /// <param name="movieVoteCreationDTO"></param>
         /// <returns></returns>
@@ -93,7 +89,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Update vote by VoteId
+        /// Update movieVote by ID
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="MovieVoteDTO"></param>
@@ -106,10 +102,10 @@ namespace MovieToGoAPI.Controllers
         {
             MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
 
-           if(movieVote == null)
-           {
+            if (movieVote == null)
+            {
                 return NotFound();
-           }
+            }
 
             movieVote = mapper.Map(MovieVoteDTO, movieVote);
             await context.SaveChangesAsync();
@@ -119,7 +115,7 @@ namespace MovieToGoAPI.Controllers
 
 
         /// <summary>
-        /// Delete Vote by VoteId
+        /// Delete movieVote by ID
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -131,20 +127,15 @@ namespace MovieToGoAPI.Controllers
         {
             MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
 
-            if(movieVote == null)
+            if (movieVote == null)
             {
                 return NotFound();
             }
-            
+
             context.MovieVotes.Remove(movieVote);
             await context.SaveChangesAsync();
 
             return NoContent();
         }
-
-
-
-
-
     }
 }
