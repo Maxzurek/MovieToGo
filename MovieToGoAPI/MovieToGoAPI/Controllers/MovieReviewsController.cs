@@ -35,7 +35,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting all Movie Reviews");
 
-            List<MovieReview> movieReviews = await context.MovieReviews.Include(x => x.User).ToListAsync();
+            List<MovieReview> movieReviews = await context.MovieReviews.ToListAsync();
 
             if (movieReviews.Count == 0)
             {
@@ -58,7 +58,7 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting Movie Review by id");
 
-            MovieReview? movieReview = await context.MovieReviews.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == Id);
+            MovieReview? movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == Id);
 
             if (movieReview == null)
             {
@@ -70,7 +70,7 @@ namespace MovieToGoAPI.Controllers
 
 
         /// <summary>
-        /// Get all movie Reviews by movie Id
+        /// Get all movie Reviews by Moovie Id
         /// </summary>
         /// <param name="MovieId"></param>
         /// <returns></returns>
@@ -82,7 +82,6 @@ namespace MovieToGoAPI.Controllers
             logger.LogInformation("Getting all movie Reviews by MovieId");
 
             List<MovieReview>? movieReviews = await context.MovieReviews
-                .Include(x => x.User)
                 .Where(x => x.MovieId == MovieId)
                 .ToListAsync();
 
@@ -112,9 +111,9 @@ namespace MovieToGoAPI.Controllers
 
             await context.SaveChangesAsync();
 
-            MovieReview? movieReviewCreated = await context.MovieReviews.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == entityEntry.Entity.Id);
+            await entityEntry.Reference(x => x.User).LoadAsync();
 
-            return Ok(mapper.Map<MovieReviewDTO>(movieReviewCreated));  
+            return Ok(mapper.Map<MovieReviewDTO>(entityEntry.Entity));
         }
 
 
@@ -125,11 +124,11 @@ namespace MovieToGoAPI.Controllers
         /// <param name="movieReviewUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{id:int}")]
-        [ProducesResponseType(typeof(MovieReviewDTO),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MovieReviewDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MovieReviewDTO>> Put(int id, [FromBody] MovieReviewUpdateDTO movieReviewUpdateDTO)
         {
-            MovieReview? movieReview = await context.MovieReviews.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == id);
+            MovieReview? movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == id);
 
             if (movieReview == null)
             {
