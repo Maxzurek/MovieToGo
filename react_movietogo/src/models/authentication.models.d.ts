@@ -3,6 +3,11 @@ export interface claim{
     value: string;
 }
 
+export interface AuthenticationResponse{
+    token: string;
+    expiration: Date;
+}
+
 export interface UserLoginDTO{
     emailOrUserName: string;
     password: string;

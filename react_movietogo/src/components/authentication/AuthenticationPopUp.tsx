@@ -3,7 +3,7 @@ import { FormikHelpers } from "formik";
 import React, { useState } from "react";
 import { Modal, Header, Button, Icon, Segment } from "semantic-ui-react";
 import { movieToGoUrlAccountsCreate, movieToGoUrlAccountsLogin } from "../../endpoints";
-import { UserCreationDTO, UserLoginDTO } from "../../models/authentication.models";
+import { AuthenticationResponse, UserCreationDTO, UserLoginDTO } from "../../models/authentication.models";
 import LoginForm from "../forms/LoginForm";
 import RegisterForm from "../forms/RegisterForm";
 import DisplayApiErrors from "../utilities/DisplayApiErrors";
@@ -51,7 +51,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
         setApiErrors({});
 
         try {
-            await axios.post(movieToGoUrlAccountsCreate, values)
+            await axios.post<AuthenticationResponse>(movieToGoUrlAccountsCreate, values)
             props.setOpen(false);
         }
         catch (error: any) {
@@ -64,8 +64,9 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
         setApiErrors({});
 
         try {
-            await axios.post(movieToGoUrlAccountsLogin, values)
+            var response = await axios.post<AuthenticationResponse>(movieToGoUrlAccountsLogin, values)
             props.setOpen(false);
+            console.log(response.data);
         }
         catch (error: any) {
             setApiErrors(error);
