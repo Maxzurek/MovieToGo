@@ -129,7 +129,7 @@ namespace MovieToGoAPI.Controllers
             return new AuthenticationResponse()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                Expiration = expiration
+                TokenExpiration = expiration
             };
         }
 
@@ -150,7 +150,7 @@ namespace MovieToGoAPI.Controllers
             return new AuthenticationResponse()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                Expiration = expiration
+                TokenExpiration = expiration
             };
         }
     }
