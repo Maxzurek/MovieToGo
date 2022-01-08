@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Container, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
+import { Container, Menu, MenuItem, MenuMenu, Modal } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
-import Authentication from "../Register/Authentication";
+import AuthenticationModal from "../authentication/AuthenticationPopUp";
 
 export default function MainNavbar() {
 
     const [activeItem, setActiveItem] = useState('home');
+    const [openAuthentication, setOpenAuthentication] = useState(false)
 
     const handleItemClick = (e: any, { name }: any) => {
         setActiveItem(name);
     }
-
 
     return (
         <Container fluid>
@@ -26,7 +26,11 @@ export default function MainNavbar() {
                     MovieToGo
                 </MenuItem>
                 <MenuMenu position='right'>
-                    <Authentication />
+                    <MenuItem 
+                        onClick={() => setOpenAuthentication(true)}
+                    >
+                        Sign Up
+                    </MenuItem>
                     <Authorized
                         authorized={
                             <MenuItem
@@ -43,6 +47,7 @@ export default function MainNavbar() {
                     />
                 </MenuMenu>
             </Menu>
+            <AuthenticationModal open={openAuthentication} setOpen={setOpenAuthentication} blurred />
         </Container>
     )
 };

@@ -26,37 +26,37 @@ export default function RegisterForm(props: RegisterFormProps) {
         >
             {formikProps => (
                 <Form id={props.formId} onSubmit={formikProps.handleSubmit}>
-                    <FormTextField 
-                        field="email" 
-                        displayName="Email" 
+                    <FormTextField
+                        field="email"
+                        displayName="Email"
                         formikProps={formikProps}
-                        size='large' 
+                        size='large'
                         icon="mail"
                     />
-                    <FormTextField 
-                        field="userName" 
-                        displayName="Username" 
-                        formikProps={formikProps} 
-                        size='large' 
+                    <FormTextField
+                        field="userName"
+                        displayName="Username"
+                        formikProps={formikProps}
+                        size='large'
                         icon="user outline"
                     />
-                    <FormTextField 
-                        field="password" 
-                        displayName="Password" 
-                        type="password" 
-                        formikProps={formikProps} 
-                        size='large' 
-                        icon="lock" 
-                    />
-                    <FormTextField 
-                        field="confirmPassword" 
-                        displayName="Confirm password" 
-                        type="password" 
+                    <FormTextField
+                        field="password"
+                        displayName="Password"
+                        type="password"
                         formikProps={formikProps}
-                         size='large' 
-                         icon="lock" 
+                        size='large'
+                        icon="lock"
                     />
-                    {props.formId ? undefined : <Button disabled={formikProps.isSubmitting} type='submit' positive>Register</Button>} 
+                    <FormTextField
+                        field="confirmPassword"
+                        displayName="Confirm password"
+                        type="password"
+                        formikProps={formikProps}
+                        size='large'
+                        icon="lock"
+                    />
+                    {props.formId ? undefined : <Button disabled={formikProps.isSubmitting} type='submit' positive>Register</Button>}
                 </Form>
 
             )}

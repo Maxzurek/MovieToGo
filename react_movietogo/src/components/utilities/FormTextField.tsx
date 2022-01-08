@@ -45,11 +45,11 @@ export default function FormTextField(props: FormTextFieldProps) {
         var error;
         var errorMessage;
         var touched = Object.keys(props.formikProps.touched).find(key => key === props.field);
-        console.log('Touched: '+touched);
+        console.log('Touched: ' + touched);
 
         for (const [key, value] of Object.entries(props.formikProps.errors)) {
 
-            console.log('Key: '+key+' | Field: '+props.field);
+            console.log('Key: ' + key + ' | Field: ' + props.field);
             console.log(value);
 
             if (key === props.field) {

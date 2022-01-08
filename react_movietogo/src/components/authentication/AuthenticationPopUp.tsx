@@ -1,40 +1,38 @@
 import axios from "axios";
 import { FormikHelpers } from "formik";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Header, Icon, MenuItem, Modal } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Modal, Header, Button, Icon } from "semantic-ui-react";
 import { movieToGoUrlAccountsCreate } from "../../endpoints";
 import { UserCreationDTO } from "../../models/authentication.models";
 import RegisterForm from "../forms/RegisterForm";
 import DisplayApiErrors from "../utilities/DisplayApiErrors";
 
-interface AuthenticationProps {
-    size: string;
+interface AuthenticationModalProps {
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    size?: 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen';
+    blurred: true
 }
 
-Authentication.defaultProps = {
+AuthenticationModal.defaultProps = {
     size: 'tiny'
 }
 
-export default function Authentication(props: AuthenticationProps) {
-
-    const [open, setOpen] = useState(false)
+export default function AuthenticationModal(props: AuthenticationModalProps) {
     const [userCreationError, setUserCreationError] = useState<any>({});
-    const navigate = useNavigate();
 
     const registerUser = async (values: UserCreationDTO, actions: FormikHelpers<UserCreationDTO>) => {
-        
-        try{
+
+        try {
             await axios.post(movieToGoUrlAccountsCreate, values)
-            setOpen(false);
-            //navigate('/');
+            props.setOpen(false);
         }
-        catch (error: any){
+        catch (error: any) {
             setUserCreationError(error);
         }
     }
 
-    const userCreationDTO  = {
+    const userCreationDTO = {
         userName: '',
         password: '',
         confirmPassword: '',
@@ -44,19 +42,18 @@ export default function Authentication(props: AuthenticationProps) {
     }
 
     return (
-        <MenuItem
-            as={Modal}
+        <Modal
             size={props.size}
-            trigger={<MenuItem>Sign Up</MenuItem>}
             closeIcon
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            open= {open}
+            {...(props.blurred ? { dimmer: 'blurring' } : {})}
+            onClose={() => props.setOpen(false)}
+            onOpen={() => props.setOpen(true)}
+            open={props.open}
         >
             <Header icon='user plus' content='Sign Up' />
             <Modal.Content>
-                <RegisterForm model={userCreationDTO} onSubmit={registerUser} formId="registerForm"/>
-                <DisplayApiErrors error={userCreationError}/>
+                <RegisterForm model={userCreationDTO} onSubmit={registerUser} formId="registerForm" />
+                <DisplayApiErrors error={userCreationError} />
             </Modal.Content>
             <Modal.Actions>
                 Already have an account? <a>Sign In</a>
@@ -64,6 +61,6 @@ export default function Authentication(props: AuthenticationProps) {
                     <Icon name='checkmark' /> Register
                 </Button>
             </Modal.Actions>
-        </MenuItem>
+        </Modal>
     )
 };
