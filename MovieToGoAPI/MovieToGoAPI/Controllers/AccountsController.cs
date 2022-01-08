@@ -65,7 +65,13 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] UserLoginDTO userLoginDTO)
         {
-            User user = await userManager.FindByEmailAsync(userLoginDTO.Email);
+            User user = await userManager.FindByEmailAsync(userLoginDTO.EmailOrUserName);
+
+            if(user == null)
+            {
+                user = await userManager.FindByNameAsync(userLoginDTO.EmailOrUserName);
+            }
+
             string userName = user == null ? "" : user.UserName;
 
             SignInResult result = await signInManager.PasswordSignInAsync(
@@ -128,7 +134,7 @@ namespace MovieToGoAPI.Controllers
         {
             List<Claim> claims = new List<Claim>()
             {
-                new Claim("email", userLoginDTO.Email)
+                new Claim("email", userLoginDTO.EmailOrUserName)
             };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Keyjwt"]));
