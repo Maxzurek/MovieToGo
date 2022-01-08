@@ -1,4 +1,4 @@
-export interface claim{
+export interface Claim{
     name: string;
     value: string;
 }

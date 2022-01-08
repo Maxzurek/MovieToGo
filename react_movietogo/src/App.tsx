@@ -3,13 +3,13 @@ import './App.css';
 import { Container } from 'semantic-ui-react';
 import routes from './routeConfig';
 import { useState } from 'react';
-import { claim } from './models/authentication.models';
+import { Claim } from './models/authentication.models';
 import AuthenticationContext from './components/authentication/AuthenticationContext';
 import MainNavbar from './components/navigation/MainNavbar';
 
 export default function App() {
 
-  const [claims, setClaims] = useState<claim[]>([
+  const [claims, setClaims] = useState<Claim[]>([
     { name: 'role', value: 'admin' },
   ]);
 
