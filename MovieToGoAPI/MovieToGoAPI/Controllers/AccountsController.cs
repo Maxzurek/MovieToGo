@@ -70,16 +70,19 @@ namespace MovieToGoAPI.Controllers
             if(user == null)
             {
                 user = await userManager.FindByNameAsync(userLoginDTO.EmailOrUserName);
+
+                if(user == null) // User not found by email or username
+                {
+                    return Unauthorized("Invalid Login Attempt");
+                }
             }
 
-            string userName = user == null ? "" : user.UserName;
-
             SignInResult result = await signInManager.PasswordSignInAsync(
-                userName, userLoginDTO.Password, isPersistent: false, lockoutOnFailure: true);
+                user.UserName, userLoginDTO.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (!result.Succeeded)
             {
-                return Unauthorized(result);
+                return Unauthorized("Invalid Login Attempt");
             }
 
             return BuildToken(userLoginDTO);
