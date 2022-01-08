@@ -21,7 +21,7 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
 
     const getError500MessageComponent = (): ReactElement => {
 
-        const SERVER_ERR_MESSAGE = 'Internal Server Error, please try again later.'
+        const SERVER_ERR_MESSAGE = 'Internal Server Error - Please try again later.'
 
         return (
             <Container textAlign="center">
