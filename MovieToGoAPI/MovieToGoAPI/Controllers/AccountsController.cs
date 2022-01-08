@@ -18,19 +18,20 @@ namespace MovieToGoAPI.Controllers
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class AccountsController : Controller
     {
-
+        private readonly ILogger<AccountsController> logger;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IMapper mapper;
         private readonly IConfiguration configuration;
 
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IConfiguration configuration)
+        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IConfiguration configuration, ILogger<AccountsController> logger)
         {
 
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.mapper = mapper;
             this.configuration = configuration;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -43,6 +44,8 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<AuthenticationResponse>> Create([FromBody] UserCreationDTO userCreationDTO)
         {
+            logger.LogInformation("Creating a user account");
+
             User user = mapper.Map<User>(userCreationDTO);
 
             IdentityResult result = await userManager.CreateAsync(user, userCreationDTO.Password);
@@ -52,7 +55,7 @@ namespace MovieToGoAPI.Controllers
                 return BadRequest(result);
             }
 
-            return BuildToken(userCreationDTO);
+            return BuildToken(user.Email);
         }
 
         /// <summary>
@@ -65,6 +68,8 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] UserLoginDTO userLoginDTO)
         {
+            logger.LogInformation("Login user account");
+
             User user = await userManager.FindByEmailAsync(userLoginDTO.EmailOrUserName);
 
             if(user == null)
@@ -85,7 +90,7 @@ namespace MovieToGoAPI.Controllers
                 return Unauthorized("Invalid Login Attempt");
             }
 
-            return BuildToken(userLoginDTO);
+            return BuildToken(user.Email);
         }
 
         [HttpDelete("{UserId}")]
@@ -113,11 +118,11 @@ namespace MovieToGoAPI.Controllers
         /**********************************************************************************************************
         * Private Methods
         ***********************************************************************************************************/
-        private AuthenticationResponse BuildToken(UserCreationDTO userCreationDTO)
+        private AuthenticationResponse BuildToken(string  email)
         {
             List<Claim> claims = new List<Claim>()
             {
-                new Claim("email", userCreationDTO.Email)
+                new Claim("email", email)
             };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Keyjwt"]));
@@ -125,33 +130,13 @@ namespace MovieToGoAPI.Controllers
             DateTime expiration = DateTime.UtcNow.AddYears(1);
             JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
                 issuer: null, audience: null, claims: claims, expires: expiration, signingCredentials: signingCredentials);
-
-            return new AuthenticationResponse()
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 TokenExpiration = expiration
             };
-        }
 
-        private AuthenticationResponse BuildToken(UserLoginDTO userLoginDTO)
-        {
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim("email", userLoginDTO.EmailOrUserName)
-            };
-
-            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Keyjwt"]));
-            SigningCredentials signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            DateTime expiration = DateTime.UtcNow.AddYears(1);
-
-            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
-                issuer: null, audience: null, claims: claims, expires: expiration, signingCredentials: signingCredentials);
-
-            return new AuthenticationResponse()
-            {
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                TokenExpiration = expiration
-            };
+            return authenticationResponse;
         }
     }
 }
