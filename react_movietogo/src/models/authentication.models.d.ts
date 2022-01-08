@@ -10,7 +10,8 @@ export interface UserLoginDTO{
 
 export interface UserCreationDTO{
     userName: string;
-    password: string
+    password: string;
+    confirmPassword: string;
     email: string;
     firstName: string;
     lastName: string;

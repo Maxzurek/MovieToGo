@@ -5,6 +5,7 @@ import routes from './routeConfig';
 import { useState } from 'react';
 import { claim } from './models/authentication.models';
 import AuthenticationContext from './components/authentication/AuthenticationContext';
+import MainNavbar from './components/navigation/MainNavbar';
 
 export default function App() {
 
@@ -20,14 +21,14 @@ export default function App() {
     return claims.length > 0;
   }
 
-  function getElement(requiredRole:string, componentToRender: JSX.Element) {
-    if(requiredRole.length === 0){
+  function getElement(requiredRole: string, componentToRender: JSX.Element) {
+    if (requiredRole.length === 0) {
       return componentToRender;
     }
-    if(requiredRole === 'admin' && isAdmin()){
+    if (requiredRole === 'admin' && isAdmin()) {
       return componentToRender;
     }
-    if(requiredRole === 'loggedIn' && isLoggedIn()){
+    if (requiredRole === 'loggedIn' && isLoggedIn()) {
       return componentToRender;
     }
 
@@ -37,6 +38,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
+        <MainNavbar />
         <Container fluid>
           <Routes>
             {routes.map(route =>

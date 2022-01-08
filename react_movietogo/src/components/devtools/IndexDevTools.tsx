@@ -29,8 +29,6 @@ export default function IndexAdminTools() {
 
     return (
         <>
-            <DevToolsNavbar />
-
             <Grid padded style={{ height: '100vh' }}>
                 <GridRow >
                     <GridColumn width={4}>

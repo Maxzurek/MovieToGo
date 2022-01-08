@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Container, Menu, MenuItem } from "semantic-ui-react";
+import { Container, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
+import Authentication from "../Register/Authentication";
 
 export default function MainNavbar() {
 
@@ -14,8 +15,7 @@ export default function MainNavbar() {
 
     return (
         <Container fluid>
-            <Menu pointing secondary>
-
+            <Menu pointing secondary size='massive' >
                 <MenuItem
                     as={Link}
                     to='/'
@@ -23,24 +23,25 @@ export default function MainNavbar() {
                     active={activeItem === 'home'}
                     onClick={handleItemClick}
                 >
-                    Home
+                    MovieToGo
                 </MenuItem>
-
-                <Authorized
-                    authorized={
-                        <MenuItem
-                            as={Link}
-                            to='/dev'
-                            name="devtools"
-                            active={activeItem === 'devtools'}
-                            onClick={handleItemClick}
-                            position="right"
-                        >
-                            Dev Tools
-                        </MenuItem>
-                    }
-                    role="admin"
-                />
+                <MenuMenu position='right'>
+                    <Authentication />
+                    <Authorized
+                        authorized={
+                            <MenuItem
+                                as={Link}
+                                to='/dev'
+                                name="devtools"
+                                active={activeItem === 'devtools'}
+                                onClick={handleItemClick}
+                            >
+                                Dev Tools
+                            </MenuItem>
+                        }
+                        role="admin"
+                    />
+                </MenuMenu>
             </Menu>
         </Container>
     )

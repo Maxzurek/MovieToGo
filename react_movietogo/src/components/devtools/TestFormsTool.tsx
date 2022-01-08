@@ -29,6 +29,7 @@ export default function TestFormsTool() {
     const userCreationDTO = {
         userName: '',
         password: '',
+        confirmPassword: '',
         email: '',
         firstName: '',
         lastName: ''

@@ -37,7 +37,6 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
         if(props.error && props.error.response){
 
             const response = props.error.response as AxiosResponse;
-            console.log(response);
 
             switch(response.status){
                 case 400: setMessage(getError400MessageComponent(response));
