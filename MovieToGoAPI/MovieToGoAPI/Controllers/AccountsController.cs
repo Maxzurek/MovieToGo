@@ -61,7 +61,7 @@ namespace MovieToGoAPI.Controllers
         /// <param name="userLoginDTO"></param>
         /// <returns></returns>
         [HttpPost("login")]
-        [ProducesResponseType(typeof(SignInResult), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] UserLoginDTO userLoginDTO)
         {
