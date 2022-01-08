@@ -32,11 +32,9 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     const handleItemClick = (e: any, { name }: any) => {
         switch (name) {
             case 'signIn':
-                console.log(SIGN_IN);
                 setSelection(SIGN_IN);
                 break;
             case 'signUp':
-                console.log(SIGN_UP);
                 setSelection(SIGN_UP);
                 break;
             case 'close':
@@ -50,8 +48,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
     const registerUser = async (values: UserCreationDTO, actions: FormikHelpers<UserCreationDTO>) => {
 
-        console.log('registerUser');
-
         setApiErrors({});
 
         try {
@@ -64,8 +60,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     }
 
     const attemptLogin = async (values: UserLoginDTO, actions: FormikHelpers<UserLoginDTO>) => {
-
-        console.log('loginUser');
 
         setApiErrors({});
 
@@ -106,12 +100,12 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
             <Modal.Content>
                 <Segment color="grey">
                     <Button.Group attached="bottom" size="large" >
-                        <Button name='signIn' onClick={handleItemClick}>Sign In</Button>
+                        <Button name='signIn' onClick={handleItemClick} active={selection === SIGN_IN}>Sign In</Button>
                         <Button.Or text='or' />
-                        <Button name='signUp' onClick={handleItemClick}>Sign Up</Button>
+                        <Button name='signUp' onClick={handleItemClick} active={selection === SIGN_UP}>Sign Up</Button>
                     </Button.Group>
                     {selection === SIGN_IN ?
-                        <LoginForm 
+                        <LoginForm
                             model={userLoginDTO}
                             onSubmit={attemptLogin}
                             className="authentication_popup_form"
