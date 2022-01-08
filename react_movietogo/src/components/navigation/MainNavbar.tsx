@@ -29,7 +29,7 @@ export default function MainNavbar() {
                     <MenuItem 
                         onClick={() => setOpenAuthentication(true)}
                     >
-                        Sign Up
+                        Sign In
                     </MenuItem>
                     <Authorized
                         authorized={
