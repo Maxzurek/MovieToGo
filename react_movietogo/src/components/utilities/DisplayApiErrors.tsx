@@ -19,6 +19,14 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
         )
     }
 
+    const getError401MessageComponent = (response: AxiosResponse): ReactElement => {
+        return (
+            <Container textAlign="center">
+                <Message negative>{response.data}</Message>
+            </Container>
+        )
+    }
+
     const getError500MessageComponent = (): ReactElement => {
 
         const SERVER_ERR_MESSAGE = 'Internal Server Error - Please try again later.'
@@ -40,6 +48,8 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
 
             switch (response.status) {
                 case 400: setMessage(getError400MessageComponent(response));
+                    break;
+                case 401: setMessage(getError401MessageComponent(response));
                     break;
                 default:
                     break;
