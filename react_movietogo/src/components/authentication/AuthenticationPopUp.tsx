@@ -13,12 +13,12 @@ interface AuthenticationModalProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     blurred: true;
     size?: 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen';
-    defaultSelection?: 'signIn' | 'signUp';
+    defaultSelection?: 'login' | 'register';
 }
 
 AuthenticationModal.defaultProps = {
     size: 'tiny',
-    defaultSelection: 'signIn',
+    defaultSelection: 'login',
 }
 
 export default function AuthenticationModal(props: AuthenticationModalProps) {
@@ -26,16 +26,16 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     const [apiErrors, setApiErrors] = useState<any>({});
     const [selection, setSelection] = useState(props.defaultSelection);
 
-    const SIGN_IN = 'signIn';
-    const SIGN_UP = 'signUp';
+    const LOGIN = 'login';
+    const REGISTER = 'register';
 
     const handleItemClick = (e: any, { name }: any) => {
         switch (name) {
-            case 'signIn':
-                setSelection(SIGN_IN);
+            case LOGIN:
+                setSelection(LOGIN);
                 break;
-            case 'signUp':
-                setSelection(SIGN_UP);
+            case REGISTER:
+                setSelection(REGISTER);
                 break;
             case 'close':
                 setApiErrors({});
@@ -101,11 +101,11 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
             <Modal.Content>
                 <Segment color="grey">
                     <Button.Group attached="bottom" size="large" >
-                        <Button name='signIn' onClick={handleItemClick} active={selection === SIGN_IN}>Sign In</Button>
+                        <Button name={LOGIN} onClick={handleItemClick} active={selection === LOGIN}>Login</Button>
                         <Button.Or text='or' />
-                        <Button name='signUp' onClick={handleItemClick} active={selection === SIGN_UP}>Sign Up</Button>
+                        <Button name={REGISTER} onClick={handleItemClick} active={selection === REGISTER}>Register</Button>
                     </Button.Group>
-                    {selection === SIGN_IN ?
+                    {selection === LOGIN ?
                         <LoginForm
                             model={userLoginDTO}
                             onSubmit={attemptLogin}
