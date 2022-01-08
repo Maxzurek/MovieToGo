@@ -4,7 +4,7 @@ export interface claim{
 }
 
 export interface UserLoginDTO{
-    email: string;
+    emailOrUserName: string;
     password: string;
 }
 

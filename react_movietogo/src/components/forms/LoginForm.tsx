@@ -19,18 +19,18 @@ export default function LoginForm(props: LoginFormProps) {
             validationSchema={
                 Yup.object(
                     {
-                        email: Yup.string().required('This field is required'),
+                        emailOrUserName: Yup.string().required('This field is required'),
                         password: Yup.string().required('This field is required'),
                     })}
         >
             {formikProps => (
                 <Form id={props.formId} onSubmit={formikProps.handleSubmit} className={props.className}>
                     <FormTextField
-                        field="email"
-                        displayName="Email"
+                        field="emailOrUserName"
+                        displayName="Email or Username"
                         formikProps={formikProps}
                         size='large'
-                        icon="mail"
+                        icon="user outline"
                     />
                     <FormTextField
                         field="password"

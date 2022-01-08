@@ -88,7 +88,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     }
 
     const userLoginDTO = {
-        email: '',
+        emailOrUserName: '',
         password: ''
     }
 
