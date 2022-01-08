@@ -11,14 +11,13 @@ import DisplayApiErrors from "../utilities/DisplayApiErrors";
 interface AuthenticationModalProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    defaultSelection: 'login' | 'register';
     blurred: true;
     size?: 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen';
-    defaultSelection?: 'login' | 'register';
 }
 
 AuthenticationModal.defaultProps = {
     size: 'tiny',
-    defaultSelection: 'login',
 }
 
 export default function AuthenticationModal(props: AuthenticationModalProps) {
@@ -39,6 +38,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 break;
             case 'close':
                 setApiErrors({});
+                setSelection(props.defaultSelection);
                 props.setOpen(false);
                 break;
             default:

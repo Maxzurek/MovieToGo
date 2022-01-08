@@ -29,7 +29,7 @@ export default function MainNavbar() {
                     <MenuItem 
                         onClick={() => setOpenAuthentication(true)}
                     >
-                        Sign In
+                        Login
                     </MenuItem>
                     <Authorized
                         authorized={
@@ -47,7 +47,7 @@ export default function MainNavbar() {
                     />
                 </MenuMenu>
             </Menu>
-            <AuthenticationModal open={openAuthentication} setOpen={setOpenAuthentication} blurred />
+            <AuthenticationModal open={openAuthentication} setOpen={setOpenAuthentication} blurred defaultSelection="login"/>
         </Container>
     )
 };
