@@ -19,33 +19,41 @@ namespace MovieToGoAPI.Filters
 
             int? statusCode = result.StatusCode;
 
-            if(statusCode == StatusCodes.Status400BadRequest)
+            switch (statusCode)
             {
-                List<string> response = new();
-                BadRequestObjectResult? badRequestObjectResult = context.Result as BadRequestObjectResult;
-
-                if(badRequestObjectResult == null || badRequestObjectResult.Value == null)
-                {
-                    return;
-                }
-
-                if(badRequestObjectResult.Value is IdentityResult)
-                {
-                    IdentityResult identityResult = (IdentityResult)badRequestObjectResult.Value;
-
-                    foreach (var error in identityResult.Errors)
-                    {
-                        response.Add(error.Description);
-                    }
-
-                    context.Result = new BadRequestObjectResult(response);
-                }
-
+                case StatusCodes.Status400BadRequest:
+                    HandleBadRequestStatus(context);
+                    break;
+                default:
+                    break;
             }
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
+        }
+
+        private void HandleBadRequestStatus(ActionExecutedContext context)
+        {
+            List<string> response = new();
+            BadRequestObjectResult? badRequestObjectResult = context.Result as BadRequestObjectResult;
+
+            if (badRequestObjectResult == null || badRequestObjectResult.Value == null)
+            {
+                return;
+            }
+
+            if (badRequestObjectResult.Value is IdentityResult)
+            {
+                IdentityResult identityResult = (IdentityResult)badRequestObjectResult.Value;
+
+                foreach (var error in identityResult.Errors)
+                {
+                    response.Add(error.Description);
+                }
+
+                context.Result = new BadRequestObjectResult(response);
+            }
         }
     }
 }
