@@ -13,11 +13,9 @@ namespace MovieToGoAPI.DTOs.Users
         [Required(ErrorMessage = "The field {0} is required")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required")]
         [StringLength(150)]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required")]
         [StringLength(150)]
         public string LastName { get; set; }
     }
