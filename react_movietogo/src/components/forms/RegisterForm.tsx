@@ -1,13 +1,14 @@
 import { Formik, FormikHelpers } from "formik";
 import { UserCreationDTO } from "../../models/authentication.models";
 import * as Yup from "yup";
-import { Button, Form } from "semantic-ui-react";
+import { Button, Form, Segment } from "semantic-ui-react";
 import FormTextField from "../utilities/FormTextField";
 
 interface RegisterFormProps {
     model: UserCreationDTO;
     onSubmit(values: UserCreationDTO, actions: FormikHelpers<UserCreationDTO>): void;
     formId?: string;
+    className?: string;
 }
 
 export default function RegisterForm(props: RegisterFormProps) {
@@ -25,7 +26,7 @@ export default function RegisterForm(props: RegisterFormProps) {
                     })}
         >
             {formikProps => (
-                <Form id={props.formId} onSubmit={formikProps.handleSubmit}>
+                <Form id={props.formId} onSubmit={formikProps.handleSubmit} className={props.className}>
                     <FormTextField
                         field="email"
                         displayName="Email"
@@ -56,7 +57,16 @@ export default function RegisterForm(props: RegisterFormProps) {
                         size='large'
                         icon="lock"
                     />
-                    {props.formId ? undefined : <Button disabled={formikProps.isSubmitting} type='submit' positive>Register</Button>}
+                    <Segment basic>
+                        <Button
+                            color='green'
+                            inverted type='submit'
+                            icon='checkmark'
+                            content='Register'
+                            fluid
+                            {...(formikProps.isSubmitting ? { loading: true } : undefined)}
+                        />
+                    </Segment>
                 </Form>
 
             )}
