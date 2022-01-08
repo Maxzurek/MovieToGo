@@ -2,8 +2,9 @@ import axios from "axios";
 import { FormikHelpers } from "formik";
 import React, { useState } from "react";
 import { Modal, Header, Button, Icon, Segment } from "semantic-ui-react";
-import { movieToGoUrlAccountsCreate } from "../../endpoints";
-import { UserCreationDTO } from "../../models/authentication.models";
+import { movieToGoUrlAccountsCreate, movieToGoUrlAccountsLogin } from "../../endpoints";
+import { UserCreationDTO, UserLoginDTO } from "../../models/authentication.models";
+import LoginForm from "../forms/LoginForm";
 import RegisterForm from "../forms/RegisterForm";
 import DisplayApiErrors from "../utilities/DisplayApiErrors";
 
@@ -22,9 +23,8 @@ AuthenticationModal.defaultProps = {
 
 export default function AuthenticationModal(props: AuthenticationModalProps) {
 
-    const [userCreationError, setUserCreationError] = useState<any>({});
+    const [apiErrors, setApiErrors] = useState<any>({});
     const [selection, setSelection] = useState(props.defaultSelection);
-    const [isSubmiting, setIsSubmiting] = useState(false);
 
     const SIGN_IN = 'signIn';
     const SIGN_UP = 'signUp';
@@ -40,7 +40,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 setSelection(SIGN_UP);
                 break;
             case 'close':
-                setUserCreationError({});
+                setApiErrors({});
                 props.setOpen(false);
                 break;
             default:
@@ -52,17 +52,29 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
         console.log('registerUser');
 
-        setIsSubmiting(true);
-        setUserCreationError({});
+        setApiErrors({});
 
         try {
             await axios.post(movieToGoUrlAccountsCreate, values)
             props.setOpen(false);
-            setIsSubmiting(false);
         }
         catch (error: any) {
-            setUserCreationError(error);
-            setIsSubmiting(false);
+            setApiErrors(error);
+        }
+    }
+
+    const attemptLogin = async (values: UserLoginDTO, actions: FormikHelpers<UserLoginDTO>) => {
+
+        console.log('loginUser');
+
+        setApiErrors({});
+
+        try {
+            await axios.post(movieToGoUrlAccountsLogin, values)
+            props.setOpen(false);
+        }
+        catch (error: any) {
+            setApiErrors(error);
         }
     }
 
@@ -73,6 +85,11 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
         email: '',
         firstName: '',
         lastName: ''
+    }
+
+    const userLoginDTO = {
+        email: '',
+        password: ''
     }
 
     return (
@@ -94,18 +111,21 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                         <Button name='signUp' onClick={handleItemClick}>Sign Up</Button>
                     </Button.Group>
                     {selection === SIGN_IN ?
-                        undefined
+                        <LoginForm 
+                            model={userLoginDTO}
+                            onSubmit={attemptLogin}
+                            className="authentication_popup_form"
+                        />
                         :
                         <RegisterForm
                             model={userCreationDTO}
                             onSubmit={registerUser}
-                            formId="registerForm"
-                            className="authentication_popup"
+                            className="authentication_popup_form"
                         />
                     }
                     {/* <Divider horizontal>Or</Divider> */}
                 </Segment>
-                <DisplayApiErrors error={userCreationError} />
+                <DisplayApiErrors error={apiErrors} />
             </Modal.Content>
         </Modal>
     )
