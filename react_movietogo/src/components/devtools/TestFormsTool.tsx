@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { FormikHelpers } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,19 +10,19 @@ import DisplayApiErrors from "../utilities/DisplayApiErrors";
 
 export default function TestFormsTool() {
 
-    const [userCreationError, setUserCreationError] = useState<string[]>([]);
+    const [userCreationError, setUserCreationError] = useState<any>({});
     const navigate = useNavigate();
+
     const registerUser = async (values: UserCreationDTO, actions: FormikHelpers<UserCreationDTO>) => {
-        console.log(values)
+        
+        //setUserCreationError([]);
 
         try{
             await axios.post(movieToGoUrlAccountsCreate, values)
             navigate('/dev');
         }
         catch (error: any){
-            console.log("Status Code: "+error.response.status);
-            console.log(error.response.data);
-            setUserCreationError(error.response.data);
+            setUserCreationError(error);
         }
     }
 
@@ -38,7 +38,7 @@ export default function TestFormsTool() {
         <Container>
             <h1>Test Forms Tool</h1>
             <Container>
-                <DisplayApiErrors errors={userCreationError}/>
+                <DisplayApiErrors error={userCreationError}/>
                 <RegisterForm model={userCreationDTO} onSubmit={registerUser}/>
             </Container>
         </Container>
