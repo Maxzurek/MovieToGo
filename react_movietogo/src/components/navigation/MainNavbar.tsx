@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { Container, Icon, Image, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
+import { Container, Dropdown, Icon, Image, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
 import { logout } from "../authentication/handleJWT";
 import AuthenticationContext from "../contexts/AuthenticationContext";
@@ -9,12 +9,17 @@ import AuthenticationModalContext from "../contexts/AuthenticationModalContext";
 export default function MainNavbar() {
 
     const { claims, update } = useContext(AuthenticationContext);
-    const {setAuthModalOpen} = useContext(AuthenticationModalContext);
+    const { setAuthModalOpen } = useContext(AuthenticationModalContext);
 
     const [activeItem, setActiveItem] = useState('home');
 
     const handleItemClick = (e: any, { name }: any) => {
         setActiveItem(name);
+    }
+
+    const handleLogoutClick = () => {
+        logout();
+        update([]);
     }
 
     const getLoggedInUsername = () => {
@@ -31,20 +36,18 @@ export default function MainNavbar() {
                     active={activeItem === 'home'}
                     onClick={handleItemClick}
                 >
-                    <Image src="/images/MovieToGo_Logo.ico" size="tiny"/>
+                    <Image src="/images/MovieToGo_Logo.ico" size="tiny" />
                 </MenuItem>
                 <MenuMenu position='right'>
                     <Authorized
                         authorized={
-                            <>
-                                <MenuItem >
-                                    Welcome {getLoggedInUsername()}
-                                </MenuItem>
-                                <MenuItem onClick={() => { logout(); update([]); }} >
-                                    <Icon name='sign out' />
-                                    Logout
-                                </MenuItem>
-                            </>
+                            <Dropdown item text={getLoggedInUsername()} icon="user outline">
+                                <Dropdown.Menu>
+                                    <Dropdown.Item icon='edit' text='Edit Profile' name="edit" onClick={() => console.log("TODO redirect to edit profile")} />
+                                    <Dropdown.Item icon='list' text='WatchLists' name="watchLists" onClick={() => console.log("TODO redirect to watchlists")} />
+                                    <Dropdown.Item icon='sign out' text='Logout' name="logout" onClick={handleLogoutClick} />
+                                </Dropdown.Menu>
+                            </Dropdown>
                         }
                         notAuthorized={
                             <MenuItem onClick={() => setAuthModalOpen(true)}>
