@@ -3,7 +3,7 @@ import { ReactElement, useEffect, useState } from "react";
 import { Container, Message } from "semantic-ui-react";
 
 interface ApiErrorsProps {
-    error?: AxiosError;
+    error: AxiosError;
 }
 
 export default function DisplayApiErrors(props: ApiErrorsProps) {

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { FormikHelpers } from "formik";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Container, Message, Segment } from "semantic-ui-react";
 import { movieToGoUrlAccountsCreate, movieToGoUrlMovieVotes } from "../../endpoints";
 import { UserCreationDTO } from "../../models/authentication.models";
