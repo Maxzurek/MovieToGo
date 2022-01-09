@@ -2,7 +2,7 @@ import { Formik, FormikHelpers } from "formik";
 import { UserCreationDTO } from "../../models/authentication.models";
 import * as Yup from "yup";
 import { Button, Form, Segment } from "semantic-ui-react";
-import FormTextField from "../utilities/FormTextField";
+import CustomFormField from "../utilities/CustomFormField";
 
 interface RegisterFormProps {
     model: UserCreationDTO;
@@ -27,21 +27,24 @@ export default function RegisterForm(props: RegisterFormProps) {
         >
             {formikProps => (
                 <Form id={props.formId} onSubmit={formikProps.handleSubmit} className={props.className}>
-                    <FormTextField
+                    <CustomFormField
+                        value={formikProps.values.email}
                         field="email"
                         displayName="Email"
                         formikProps={formikProps}
                         size='large'
                         icon="mail"
                     />
-                    <FormTextField
+                    <CustomFormField
+                        value={formikProps.values.userName}
                         field="userName"
                         displayName="Username"
                         formikProps={formikProps}
                         size='large'
                         icon="user outline"
                     />
-                    <FormTextField
+                    <CustomFormField
+                        value={formikProps.values.password}
                         field="password"
                         displayName="Password"
                         type="password"
@@ -49,7 +52,8 @@ export default function RegisterForm(props: RegisterFormProps) {
                         size='large'
                         icon="lock"
                     />
-                    <FormTextField
+                    <CustomFormField
+                        value={formikProps.values.confirmPassword}
                         field="confirmPassword"
                         displayName="Confirm password"
                         type="password"

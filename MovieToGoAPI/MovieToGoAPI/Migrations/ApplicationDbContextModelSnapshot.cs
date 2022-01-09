@@ -241,7 +241,7 @@ namespace MovieToGoAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("MovieToGoAPI.Entities.Movie", b =>
@@ -263,7 +263,7 @@ namespace MovieToGoAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("MovieToGoAPI.Entities.MovieReview", b =>
@@ -295,7 +295,7 @@ namespace MovieToGoAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("MovieReviews");
+                    b.ToTable("MovieReviews", (string)null);
                 });
 
             modelBuilder.Entity("MovieToGoAPI.Entities.MovieVote", b =>
@@ -322,7 +322,7 @@ namespace MovieToGoAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MovieVotes");
+                    b.ToTable("MovieVotes", (string)null);
                 });
 
             modelBuilder.Entity("MovieToGoAPI.Entities.WatchList", b =>
@@ -346,7 +346,7 @@ namespace MovieToGoAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WatchLists");
+                    b.ToTable("WatchLists", (string)null);
                 });
 
             modelBuilder.Entity("MovieToGoAPI.Entities.WatchListItem", b =>
@@ -372,7 +372,7 @@ namespace MovieToGoAPI.Migrations
 
                     b.HasIndex("WatchListId");
 
-                    b.ToTable("WatchListItems");
+                    b.ToTable("WatchListItems", (string)null);
                 });
 
             modelBuilder.Entity("MovieToGoAPI.Entities.User", b =>

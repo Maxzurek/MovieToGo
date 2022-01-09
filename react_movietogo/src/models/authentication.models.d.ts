@@ -18,6 +18,4 @@ export interface UserCreationDTO{
     password: string;
     confirmPassword: string;
     email: string;
-    firstName: string;
-    lastName: string;
 }

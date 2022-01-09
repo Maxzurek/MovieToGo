@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Grid, GridRow, GridColumn, Menu, MenuItem, Segment } from "semantic-ui-react";
-import DevToolsNavbar from "../navigation/DevToolsNavbar";
 import DatabaseTool from "./DatabaseTool";
 import TestFormsTool from "./TestFormsTool";
 

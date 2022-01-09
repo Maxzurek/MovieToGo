@@ -2,7 +2,7 @@ import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Form, Segment, Button } from "semantic-ui-react";
 import { UserLoginDTO } from "../../models/authentication.models";
-import FormTextField from "../utilities/FormTextField";
+import CustomFormField from "../utilities/CustomFormField";
 
 interface LoginFormProps {
     model: UserLoginDTO;
@@ -25,17 +25,19 @@ export default function LoginForm(props: LoginFormProps) {
         >
             {formikProps => (
                 <Form id={props.formId} onSubmit={formikProps.handleSubmit} className={props.className}>
-                    <FormTextField
+                    <CustomFormField
+                        value={formikProps.values.emailOrUserName}
                         field="emailOrUserName"
                         displayName="Email or Username"
                         formikProps={formikProps}
                         size='large'
                         icon="user outline"
                     />
-                    <FormTextField
+                    <CustomFormField
+                        value={formikProps.values.password}
+                        type="password"
                         field="password"
                         displayName="Password"
-                        type="password"
                         formikProps={formikProps}
                         size='large'
                         icon="lock"

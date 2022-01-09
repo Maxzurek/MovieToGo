@@ -2,21 +2,22 @@ import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { FormField, Input } from "semantic-ui-react";
 
-interface FormTextFieldProps {
+interface CustomFormFieldProps {
+    value: any;
     formikProps: FormikProps<any>;
     field: string;
     displayName: string;
-    type: 'text' | 'password';
-    size: 'mini' | 'small' | 'large' | 'big' | 'huge' | 'massive';
+    size?: 'mini' | 'small' | 'large' | 'big' | 'huge' | 'massive';
+    type?: string;
     icon?: string;
 }
 
-FormTextField.defaultProps = {
+FormField.defaultProps = {
     type: 'text',
-    size: 'small'
+    size: 'small',
 }
 
-export default function FormTextField(props: FormTextFieldProps) {
+export default function CustomFormField(props: CustomFormFieldProps) {
 
     const [fieldError, setFieldError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -44,7 +45,7 @@ export default function FormTextField(props: FormTextFieldProps) {
 
         var error;
         var errorMessage;
-        var touched = Object.keys(props.formikProps.touched).find(key => key === props.field);
+        var touched = Object.keys(props.formikProps.touched).find(key => key === props.field)!;
 
         for (const [key, value] of Object.entries(props.formikProps.errors)) {
 
@@ -65,16 +66,17 @@ export default function FormTextField(props: FormTextFieldProps) {
             setInputStyle({});
         }
 
-    }, [props.formikProps])
+    }, [props.formikProps, props.field, props.type])
 
     useEffect(() => {
 
+        setInputType(props.type!);
+
         if (props.type === 'password') {
             setTypePassword(true)
-            setInputType('password');
         }
 
-    }, [])
+    }, [props.type])
 
     return (
         <>
@@ -88,6 +90,7 @@ export default function FormTextField(props: FormTextFieldProps) {
                     name={props.field}
                     id={props.field}
                     type={inputType}
+                    value={props.value}
                     onChange={props.formikProps?.handleChange}
                     action={isTypePassword ? {
                         icon: icon,

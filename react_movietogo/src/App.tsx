@@ -24,7 +24,6 @@ export default function App() {
 
   useEffect(() => {
     if (okMessageModalContent) {
-      console.log("OkMessageContent");
       setOkMessageModalOpen(true);
     }
   }, [okMessageModalContent])
