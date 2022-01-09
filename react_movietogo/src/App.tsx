@@ -7,7 +7,7 @@ import AuthenticationContext from './components/contexts/AuthenticationContext';
 import MainNavbar from './components/navigation/MainNavbar';
 import { useEffect, useState } from 'react';
 import { getClaims } from './components/authentication/handleJWT';
-import AuthenticationModalContext from './components/contexts/AuthenticationModalContext';
+import ModalContext from './components/contexts/ModalContext';
 import AuthenticationModal from './components/authentication/AuthenticationModal';
 
 export default function App() {
@@ -37,7 +37,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
-        <AuthenticationModalContext.Provider value={{ isAuthModalOpen, setAuthModalOpen: setIsAuthModalOpen }}>
+        <ModalContext.Provider 
+          value={{ 
+            isAuthModalOpen, 
+            setAuthModalOpen: setIsAuthModalOpen,
+          }}
+        >
           <MainNavbar />
           <Container fluid>
             <Routes>
@@ -50,7 +55,7 @@ export default function App() {
             </Routes>
           </Container>
           <AuthenticationModal open={isAuthModalOpen} setOpen={setIsAuthModalOpen} blurred defaultSelection="login" />
-        </AuthenticationModalContext.Provider>
+        </ModalContext.Provider>
       </AuthenticationContext.Provider>
     </BrowserRouter>
   )

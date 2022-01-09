@@ -4,12 +4,12 @@ import { Container, Dropdown, Icon, Image, Menu, MenuItem, MenuMenu } from "sema
 import Authorized from "../authentication/Authorized";
 import { logout } from "../authentication/handleJWT";
 import AuthenticationContext from "../contexts/AuthenticationContext";
-import AuthenticationModalContext from "../contexts/AuthenticationModalContext";
+import ModalContext from "../contexts/ModalContext";
 
 export default function MainNavbar() {
 
     const { claims, update } = useContext(AuthenticationContext);
-    const { setAuthModalOpen } = useContext(AuthenticationModalContext);
+    const { setAuthModalOpen } = useContext(ModalContext);
 
     const [activeItem, setActiveItem] = useState('home');
 
@@ -41,7 +41,13 @@ export default function MainNavbar() {
                 <MenuMenu position='right'>
                     <Authorized
                         authorized={
-                            <Dropdown item text={getLoggedInUsername()} icon="user outline">
+                            <Dropdown 
+                                as='a'
+                                item
+                                trigger={<><Icon name='user outline' />{getLoggedInUsername()}</>}
+                                icon={null}
+                                //icon="user outline"
+                            >
                                 <Dropdown.Menu>
                                     <Dropdown.Item icon='edit' text='Edit Profile' name="edit" onClick={() => console.log("TODO redirect to edit profile")} />
                                     <Dropdown.Item icon='list' text='WatchLists' name="watchLists" onClick={() => console.log("TODO redirect to watchlists")} />
