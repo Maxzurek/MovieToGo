@@ -9,10 +9,12 @@ interface AuthorizedProps{
 
 export default function Authorized(props: AuthorizedProps) {
 
-    const [isAuthorized, setIsAuthorized] = useState(false);
     const {claims} = useContext(AuthenticationContext);
 
+    const [isAuthorized, setIsAuthorized] = useState(false);
+
     useEffect(()=>{
+
         if(props.role){
             const index = claims.findIndex(claim => claim.name === 'role' && claim.value === props.role);
 

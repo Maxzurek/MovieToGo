@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Container, Menu, MenuItem, MenuMenu, Modal } from "semantic-ui-react";
+import { Container, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
 import AuthenticationModal from "../authentication/AuthenticationPopUp";
 
 export default function MainNavbar() {
 
     const [activeItem, setActiveItem] = useState('home');
-    const [openAuthentication, setOpenAuthentication] = useState(false)
+    const [openAuthentication, setOpenAuthentication] = useState(false);
 
     const handleItemClick = (e: any, { name }: any) => {
         setActiveItem(name);
@@ -26,28 +26,28 @@ export default function MainNavbar() {
                     MovieToGo
                 </MenuItem>
                 <MenuMenu position='right'>
-                    <MenuItem 
-                        onClick={() => setOpenAuthentication(true)}
-                    >
-                        Login
-                    </MenuItem>
                     <Authorized
                         authorized={
-                            <MenuItem
-                                as={Link}
-                                to='/dev'
-                                name="devtools"
-                                active={activeItem === 'devtools'}
-                                onClick={handleItemClick}
-                            >
-                                Dev Tools
-                            </MenuItem>
+                            <></>
                         }
-                        role="admin"
+                        notAuthorized={
+                        <MenuItem onClick={() => setOpenAuthentication(true)}>
+                            Login
+                        </MenuItem>
+                        }
                     />
+                    <MenuItem
+                        as={Link}
+                        to='/dev'
+                        name="devtools"
+                        active={activeItem === 'devtools'}
+                        onClick={handleItemClick}
+                    >
+                        Dev Tools
+                    </MenuItem>
                 </MenuMenu>
             </Menu>
-            <AuthenticationModal open={openAuthentication} setOpen={setOpenAuthentication} blurred defaultSelection="login"/>
+            <AuthenticationModal open={openAuthentication} setOpen={setOpenAuthentication} blurred defaultSelection="login" />
         </Container>
     )
 };

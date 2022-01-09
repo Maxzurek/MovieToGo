@@ -5,7 +5,7 @@ export interface Claim{
 
 export interface AuthenticationResponse{
     token: string;
-    expiration: Date;
+    tokenExpiration: Date;
 }
 
 export interface UserLoginDTO{

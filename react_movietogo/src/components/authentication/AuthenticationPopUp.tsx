@@ -1,12 +1,14 @@
 import axios from "axios";
 import { FormikHelpers } from "formik";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Modal, Header, Button, Icon, Segment } from "semantic-ui-react";
 import { movieToGoUrlAccountsCreate, movieToGoUrlAccountsLogin } from "../../endpoints";
 import { AuthenticationResponse, UserCreationDTO, UserLoginDTO } from "../../models/authentication.models";
 import LoginForm from "../forms/LoginForm";
 import RegisterForm from "../forms/RegisterForm";
 import DisplayApiErrors from "../utilities/DisplayApiErrors";
+import AuthenticationContext from "./AuthenticationContext";
+import { getClaims, saveToken } from "./handleJWT";
 
 interface AuthenticationModalProps {
     open: boolean;
@@ -21,6 +23,8 @@ AuthenticationModal.defaultProps = {
 }
 
 export default function AuthenticationModal(props: AuthenticationModalProps) {
+
+    const {claims, update} = useContext(AuthenticationContext);
 
     const [apiErrors, setApiErrors] = useState<any>({});
     const [selection, setSelection] = useState(props.defaultSelection);
@@ -51,7 +55,9 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
         setApiErrors({});
 
         try {
-            await axios.post<AuthenticationResponse>(movieToGoUrlAccountsCreate, values)
+            var response = await axios.post<AuthenticationResponse>(movieToGoUrlAccountsCreate, values);
+            saveToken(response.data);
+            update(getClaims());
             props.setOpen(false);
         }
         catch (error: any) {
@@ -62,13 +68,15 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     const attemptLogin = async (values: UserLoginDTO, actions: FormikHelpers<UserLoginDTO>) => {
 
         setApiErrors({});
-
+        
         try {
             var response = await axios.post<AuthenticationResponse>(movieToGoUrlAccountsLogin, values)
+            saveToken(response.data);
+            update(getClaims());
             props.setOpen(false);
-            console.log(response.data);
         }
         catch (error: any) {
+            console.log(error);
             setApiErrors(error);
         }
     }
