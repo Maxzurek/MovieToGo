@@ -29,7 +29,7 @@ export default function DataTable(props: DataTableProps) {
             })
         }
 
-    }, [])
+    }, [props.data])
 
     return (
         <Container style={{ overflow: 'auto', maxHeight: props.maxHeight }}>
