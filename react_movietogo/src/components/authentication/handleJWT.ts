@@ -23,11 +23,8 @@ export const getClaims = (): Claim[] => {
         return []; // expired token
     }
 
-    const tokenHeader = JSON.parse(atob(token.split('.')[0]));
     const tokenData = JSON.parse(atob(token.split('.')[1]));
     const claims: Claim[] = [];
-
-    console.log(`Header: ${tokenHeader}`);
 
     for (const property in tokenData) {
         claims.push({ name: property, value: tokenData[property] });

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Icon, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
+import { Container, Icon, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
 import AuthenticationModal from "../authentication/AuthenticationModal";
 import { logout } from "../authentication/handleJWT";
@@ -17,9 +17,13 @@ export default function MainNavbar() {
         setActiveItem(name);
     }
 
+    const getLoggedInUsername = () => {
+        return claims.filter(x => x.name === 'username')[0]?.value;
+    }
+
     return (
         <Container fluid>
-            <Menu pointing secondary size='massive' icon='labeled'>
+            <Menu pointing secondary size='large' icon='labeled'>
                 <MenuItem
                     as={Link}
                     to='/'
@@ -27,15 +31,20 @@ export default function MainNavbar() {
                     active={activeItem === 'home'}
                     onClick={handleItemClick}
                 >
-                    <img src='/images/MovieToGo_Logo.ico' />
+                    <img src='/images/MovieToGo_Logo.ico' alt="" />
                 </MenuItem>
                 <MenuMenu position='right'>
                     <Authorized
                         authorized={
-                            <MenuItem onClick={() => { logout(); update([]); }} >
-                                <Icon name='sign out' />
-                                Logout
-                            </MenuItem>
+                            <>
+                                <MenuItem >
+                                    Welcome {getLoggedInUsername()}
+                                </MenuItem>
+                                <MenuItem onClick={() => { logout(); update([]); }} >
+                                    <Icon name='sign out' />
+                                    Logout
+                                </MenuItem>
+                            </>
                         }
                         notAuthorized={
                             <MenuItem onClick={() => setOpenAuthentication(true)}>

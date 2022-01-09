@@ -24,7 +24,7 @@ AuthenticationModal.defaultProps = {
 
 export default function AuthenticationModal(props: AuthenticationModalProps) {
 
-    const {claims, update} = useContext(AuthenticationContext);
+    const { update } = useContext(AuthenticationContext);
 
     const [apiErrors, setApiErrors] = useState<any>({});
     const [selection, setSelection] = useState(props.defaultSelection);
@@ -68,7 +68,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     const attemptLogin = async (values: UserLoginDTO, actions: FormikHelpers<UserLoginDTO>) => {
 
         setApiErrors({});
-        
+
         try {
             var response = await axios.post<AuthenticationResponse>(movieToGoUrlAccountsLogin, values)
             saveToken(response.data);
