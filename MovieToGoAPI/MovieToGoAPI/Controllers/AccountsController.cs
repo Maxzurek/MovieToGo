@@ -122,8 +122,9 @@ namespace MovieToGoAPI.Controllers
         {
             List<Claim> claims = new List<Claim>()
             {
+                new Claim("UserId", user.Id),
                 new Claim("username", user.UserName)
-            };
+        };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Keyjwt"]));
             SigningCredentials signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
