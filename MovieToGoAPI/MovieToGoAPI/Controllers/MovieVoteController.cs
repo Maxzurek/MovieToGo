@@ -85,7 +85,6 @@ namespace MovieToGoAPI.Controllers
             EntityEntry<MovieVote> entityEntry = context.MovieVotes.Add(movieVote);
             await context.SaveChangesAsync();
 
-            await entityEntry.Reference(x => x.Movie).LoadAsync();
             await entityEntry.Reference(x => x.User).LoadAsync();
 
             return Ok(mapper.Map<MovieVoteDTO>(entityEntry.Entity));
