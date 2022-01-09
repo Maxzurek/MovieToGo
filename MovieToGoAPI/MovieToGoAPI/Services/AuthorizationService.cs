@@ -18,7 +18,7 @@ namespace MovieToGoAPI.Services
 
             User user = await userManager.FindByNameAsync(username);
 
-            return user?.UserName;
+            return user?.Id;
         }
     }
 }

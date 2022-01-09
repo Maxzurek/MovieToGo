@@ -8,6 +8,11 @@ export const saveToken = (authenticationResponse: AuthenticationResponse) => {
     localStorage.setItem(EXPIRATION_KEY, authenticationResponse.tokenExpiration.toString());
 };
 
+export const getToken = () => {
+    return localStorage.getItem(TOKEN_KEY);
+};
+
+
 export const getClaims = (): Claim[] => {
     const token = localStorage.getItem(TOKEN_KEY);
 

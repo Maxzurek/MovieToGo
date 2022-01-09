@@ -10,6 +10,9 @@ import { getClaims } from './components/authentication/handleJWT';
 import ModalContext from './components/contexts/ModalContext';
 import AuthenticationModal from './components/modals/AuthenticationModal';
 import OkMessageModal from './components/modals/OkMessageModal';
+import configureInterceptor from './components/authentication/httpInterceptor';
+
+configureInterceptor();
 
 export default function App() {
 
