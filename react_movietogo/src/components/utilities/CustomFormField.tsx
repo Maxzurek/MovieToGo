@@ -19,9 +19,7 @@ FormField.defaultProps = {
 
 export default function CustomFormField(props: CustomFormFieldProps) {
 
-    const [fieldError, setFieldError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [inputStyle, setInputStyle] = useState({});
+    const [errorMessage, setErrorMessage] = useState<string>('');
     const [inputType, setInputType] = useState('text');
     const [isTypePassword, setTypePassword] = useState(false);
     const [hidePassword, setHidePassword] = useState(true);
@@ -56,14 +54,11 @@ export default function CustomFormField(props: CustomFormFieldProps) {
         }
 
         if (error && touched) {
-            setFieldError(true);
-            setErrorMessage(errorMessage as string);
-            setInputStyle({ border: '1px solid red' });
+            setErrorMessage(errorMessage?.toString()!);
         }
         else {
-            setFieldError(false);
+
             setErrorMessage('');
-            setInputStyle({});
         }
 
     }, [props.formikProps, props.field, props.type])
@@ -80,26 +75,24 @@ export default function CustomFormField(props: CustomFormFieldProps) {
 
     return (
         <>
-            <FormField>
-                <label>{props.displayName}</label>
-                <Input
-                    style={inputStyle}
-                    {...(props.icon ? { icon: props.icon } : {})}
-                    {...(props.icon ? { iconPosition: "left" } : {})}
-                    size={props.size}
-                    name={props.field}
-                    id={props.field}
-                    type={inputType}
-                    value={props.value}
-                    onChange={props.formikProps?.handleChange}
-                    action={isTypePassword ? {
-                        icon: icon,
-                        onClick: handleOnCLick,
-                        type: "button"
-                    } : undefined}
-                />
-                {fieldError ? <label style={{ color: 'red' }}>{errorMessage}</label> : undefined}
-            </FormField>
+            <FormField
+                control={Input} 
+                label={props.displayName}
+                {...(props.icon ? { icon: props.icon } : {})}
+                {...(props.icon ? { iconPosition: "left" } : {})}
+                size={props.size}
+                name={props.field}
+                id={props.field}
+                type={inputType}
+                value={props.value}
+                onChange={props.formikProps?.handleChange}
+                action={isTypePassword ? {
+                    icon: icon,
+                    onClick: handleOnCLick,
+                    type: "button"
+                } : undefined}
+                error={errorMessage ? {content: errorMessage} : undefined}
+            />
         </>
     )
 };
