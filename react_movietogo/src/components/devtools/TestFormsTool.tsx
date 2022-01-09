@@ -2,7 +2,7 @@ import axios from "axios";
 import { FormikHelpers } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Segment } from "semantic-ui-react";
+import { Container, Message, Segment } from "semantic-ui-react";
 import { movieToGoUrlAccountsCreate, movieToGoUrlMovieVotes } from "../../endpoints";
 import { UserCreationDTO } from "../../models/authentication.models";
 import { MovieVoteCreationDTO } from "../../models/movievotes.models";
@@ -14,15 +14,15 @@ export default function TestFormsTool() {
 
     const [userCreationError, setUserCreationError] = useState<any>({});
     const [movieVoteErrors, setMovieVoteErrors] = useState<any>({});
-    const navigate = useNavigate();
+    const [registrationSuccessMessage, setRegistrationSuccessMessage] = useState('');
+    const [voteSubmissionSuccessMessage, setVoteSubmissionSuccessMessage] = useState('');
 
     const registerUser = async (values: UserCreationDTO, actions: FormikHelpers<UserCreationDTO>) => {
 
-        //setUserCreationError([]);
-
         try {
             await axios.post(movieToGoUrlAccountsCreate, values);
-            navigate('/dev');
+            setUserCreationError({});
+            setRegistrationSuccessMessage('Registration complete!');
         }
         catch (error: any) {
             setUserCreationError(error);
@@ -30,9 +30,11 @@ export default function TestFormsTool() {
     }
 
     const submitVote = async (values: MovieVoteCreationDTO, actions: FormikHelpers<MovieVoteCreationDTO>) => {
-        
+
         try{
             await axios.post(movieToGoUrlMovieVotes, values);
+            setMovieVoteErrors({});
+            setVoteSubmissionSuccessMessage('Vote submitted!');
         }
         catch(error){
             setMovieVoteErrors(error);
@@ -60,11 +62,13 @@ export default function TestFormsTool() {
                 <h3>Registration Form</h3>
                 <RegisterForm model={userCreationDTO} onSubmit={registerUser} />
                 <DisplayApiErrors error={userCreationError} />
+                {registrationSuccessMessage ? <Container textAlign="center"><Message positive>{registrationSuccessMessage}</Message></Container> : undefined}
             </Segment>
             <Segment>
                 <h3>Movie Vote Form</h3>
                 <MovieVoteFormTest model={movieVoteCreationDTO} onSubmit={submitVote}/>
                 <DisplayApiErrors error={movieVoteErrors} />
+                {voteSubmissionSuccessMessage ?<Container textAlign="center"><Message positive>{voteSubmissionSuccessMessage}</Message></Container> : undefined}
             </Segment>
         </Container>
     )

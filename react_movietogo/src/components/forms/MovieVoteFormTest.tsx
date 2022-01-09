@@ -17,7 +17,7 @@ export default function MovieVoteFormTest(props: MovieVoteFormTestProps) {
             validationSchema={
                 Yup.object(
                     {
-                        vote: Yup.number().typeError("Must be a number").min(-1, "Minimum atleast -1").max(1, "Allowed maximum is 1").required('This field is required'),
+                        vote: Yup.number().typeError("Must be a number").required('This field is required'),
                         movieId: Yup.number().typeError("Must be a number").required('This field is required'),
                     })}
         >
