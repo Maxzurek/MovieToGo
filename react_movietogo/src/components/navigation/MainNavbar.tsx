@@ -26,7 +26,6 @@ export default function MainNavbar() {
                     name="home"
                     active={activeItem === 'home'}
                     onClick={handleItemClick}
-                    src='../public.faviocn.ico'
                 >
                     <img src='/images/MovieToGo_Logo.ico' />
                 </MenuItem>
