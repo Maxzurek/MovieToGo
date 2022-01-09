@@ -1,17 +1,17 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { Container, Icon, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
+import { Container, Icon, Image, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
-import AuthenticationModal from "../authentication/AuthenticationModal";
 import { logout } from "../authentication/handleJWT";
-import AuthenticationContext from "../authentication/AuthenticationContext";
+import AuthenticationContext from "../contexts/AuthenticationContext";
+import AuthenticationModalContext from "../contexts/AuthenticationModalContext";
 
 export default function MainNavbar() {
 
     const { claims, update } = useContext(AuthenticationContext);
+    const {setAuthModalOpen} = useContext(AuthenticationModalContext);
 
     const [activeItem, setActiveItem] = useState('home');
-    const [openAuthentication, setOpenAuthentication] = useState(false);
 
     const handleItemClick = (e: any, { name }: any) => {
         setActiveItem(name);
@@ -23,7 +23,7 @@ export default function MainNavbar() {
 
     return (
         <Container fluid>
-            <Menu pointing secondary size='large' icon='labeled'>
+            <Menu pointing secondary size='large' icon='labeled' color="blue">
                 <MenuItem
                     as={Link}
                     to='/'
@@ -31,7 +31,7 @@ export default function MainNavbar() {
                     active={activeItem === 'home'}
                     onClick={handleItemClick}
                 >
-                    <img src='/images/MovieToGo_Logo.ico' alt="" />
+                    <Image src="/images/MovieToGo_Logo.ico" size="tiny"/>
                 </MenuItem>
                 <MenuMenu position='right'>
                     <Authorized
@@ -47,7 +47,7 @@ export default function MainNavbar() {
                             </>
                         }
                         notAuthorized={
-                            <MenuItem onClick={() => setOpenAuthentication(true)}>
+                            <MenuItem onClick={() => setAuthModalOpen(true)}>
                                 <Icon name='sign in' />
                                 Login
                             </MenuItem>
@@ -64,7 +64,6 @@ export default function MainNavbar() {
                     </MenuItem>
                 </MenuMenu>
             </Menu>
-            <AuthenticationModal open={openAuthentication} setOpen={setOpenAuthentication} blurred defaultSelection="login" />
         </Container>
     )
 };

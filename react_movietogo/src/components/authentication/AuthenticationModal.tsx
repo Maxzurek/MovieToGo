@@ -7,7 +7,7 @@ import { AuthenticationResponse, UserCreationDTO, UserLoginDTO } from "../../mod
 import LoginForm from "../forms/LoginForm";
 import RegisterForm from "../forms/RegisterForm";
 import DisplayApiErrors from "../utilities/DisplayApiErrors";
-import AuthenticationContext from "./AuthenticationContext";
+import AuthenticationContext from "../contexts/AuthenticationContext";
 import { getClaims, saveToken } from "./handleJWT";
 
 interface AuthenticationModalProps {

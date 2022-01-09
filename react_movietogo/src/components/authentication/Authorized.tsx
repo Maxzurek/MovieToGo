@@ -1,5 +1,5 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
-import AuthenticationContext from "./AuthenticationContext";
+import AuthenticationContext from "../contexts/AuthenticationContext";
 
 interface AuthorizedProps{
     authorized: ReactElement;

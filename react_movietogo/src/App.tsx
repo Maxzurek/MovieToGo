@@ -3,16 +3,19 @@ import './App.css';
 import { Container } from 'semantic-ui-react';
 import routes from './routeConfig';
 import { Claim } from './models/authentication.models';
-import AuthenticationContext from './components/authentication/AuthenticationContext';
+import AuthenticationContext from './components/contexts/AuthenticationContext';
 import MainNavbar from './components/navigation/MainNavbar';
 import { useEffect, useState } from 'react';
 import { getClaims } from './components/authentication/handleJWT';
+import AuthenticationModalContext from './components/contexts/AuthenticationModalContext';
+import AuthenticationModal from './components/authentication/AuthenticationModal';
 
 export default function App() {
 
   const [claims, setClaims] = useState<Claim[]>([]);
+  const [ isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     setClaims(getClaims);
   }, [])
 
@@ -33,18 +36,21 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AuthenticationContext.Provider value={{claims, update: setClaims }}>
-        <MainNavbar />
-        <Container fluid>
-          <Routes>
-            {routes.map(route =>
-              <Route
-                key={route.path}
-                path={route.path}
-                element={getElement(route.requiredRole, route.component)}>
-              </Route>)}
-          </Routes>
-        </Container>
+      <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
+        <AuthenticationModalContext.Provider value={{ isAuthModalOpen, setAuthModalOpen: setIsAuthModalOpen }}>
+          <MainNavbar />
+          <Container fluid>
+            <Routes>
+              {routes.map(route =>
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={getElement(route.requiredRole, route.component)}>
+                </Route>)}
+            </Routes>
+          </Container>
+          <AuthenticationModal open={isAuthModalOpen} setOpen={setIsAuthModalOpen} blurred defaultSelection="login" />
+        </AuthenticationModalContext.Provider>
       </AuthenticationContext.Provider>
     </BrowserRouter>
   )
