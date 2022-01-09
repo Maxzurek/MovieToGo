@@ -19,10 +19,13 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
         )
     }
 
-    const getError401MessageComponent = (response: AxiosResponse): ReactElement => {
+    const getError401MessageComponent = (): ReactElement => {
+
+        const UNAUTHORIZED_ERR_MESSAGE = 'Error 401 - Unauthorized'
+
         return (
             <Container textAlign="center">
-                <Message negative>{response.data}</Message>
+                <Message negative>{UNAUTHORIZED_ERR_MESSAGE}</Message>
             </Container>
         )
     }
@@ -49,7 +52,7 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
             switch (response.status) {
                 case 400: setMessage(getError400MessageComponent(response));
                     break;
-                case 401: setMessage(getError401MessageComponent(response));
+                case 401: setMessage(getError401MessageComponent());
                     break;
                 default:
                     break;
