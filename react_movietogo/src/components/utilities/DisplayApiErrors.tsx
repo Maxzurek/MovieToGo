@@ -50,9 +50,14 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
             const response = props.error.response as AxiosResponse;
 
             switch (response.status) {
-                case 400: setMessage(getError400MessageComponent(response));
+                case 400: 
+                    setMessage(getError400MessageComponent(response));
                     break;
-                case 401: setMessage(getError401MessageComponent());
+                case 401: 
+                    setMessage(getError401MessageComponent());
+                    break;
+                case 500:
+                    setMessage(getError500MessageComponent());
                     break;
                 default:
                     break;
