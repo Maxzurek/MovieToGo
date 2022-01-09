@@ -128,8 +128,14 @@ namespace MovieToGoAPI.Controllers
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Keyjwt"]));
             SigningCredentials signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             DateTime expiration = DateTime.UtcNow.AddYears(1);
+
             JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
-                issuer: null, audience: null, claims: claims, expires: expiration, signingCredentials: signingCredentials);
+                issuer: null, 
+                audience: null, 
+                claims: claims, 
+                expires: expiration, 
+                signingCredentials: signingCredentials);
+
             AuthenticationResponse authenticationResponse = new AuthenticationResponse()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),

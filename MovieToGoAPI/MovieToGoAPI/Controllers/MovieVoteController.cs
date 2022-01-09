@@ -20,7 +20,7 @@ namespace MovieToGoAPI.Controllers
         private readonly ILogger<MovieVotesController> logger;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<User> userManager;
         private readonly AuthorizationService authorizationService;
 
         public MovieVotesController(
@@ -28,7 +28,7 @@ namespace MovieToGoAPI.Controllers
             ApplicationDbContext context,
             IMapper mapper,
             AuthorizationService authorizationService, 
-            UserManager<IdentityUser> userManager)
+            UserManager<User> userManager)
         {
             this.logger = logger;
             this.context = context;

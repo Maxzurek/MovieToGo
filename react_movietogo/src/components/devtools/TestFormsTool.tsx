@@ -3,7 +3,7 @@ import { FormikHelpers } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Segment } from "semantic-ui-react";
-import { movieToGoUrlAccountsCreate } from "../../endpoints";
+import { movieToGoUrlAccountsCreate, movieToGoUrlMovieVotes } from "../../endpoints";
 import { UserCreationDTO } from "../../models/authentication.models";
 import { MovieVoteCreationDTO } from "../../models/movievotes.models";
 import MovieVoteFormTest from "../forms/MovieVoteFormTest";
@@ -21,7 +21,7 @@ export default function TestFormsTool() {
         //setUserCreationError([]);
 
         try {
-            await axios.post(movieToGoUrlAccountsCreate, values)
+            await axios.post(movieToGoUrlAccountsCreate, values);
             navigate('/dev');
         }
         catch (error: any) {
@@ -29,12 +29,13 @@ export default function TestFormsTool() {
         }
     }
 
-    const submitVote = async () => {
+    const submitVote = async (values: MovieVoteCreationDTO, actions: FormikHelpers<MovieVoteCreationDTO>) => {
+        
         try{
-
+            await axios.post(movieToGoUrlMovieVotes, values);
         }
         catch(error){
-
+            setMovieVoteErrors(error);
         }
     }
 

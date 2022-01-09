@@ -17,6 +17,11 @@ namespace MovieToGoAPI
             optionsBuilder.UseLazyLoadingProxies();
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
+
         public DbSet<Genre> Genres { get; set; }
 
         public DbSet<User> Users { get; set; }

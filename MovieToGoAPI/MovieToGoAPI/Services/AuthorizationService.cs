@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MovieToGoAPI.Entities;
 
 namespace MovieToGoAPI.Services
 {
@@ -11,11 +12,11 @@ namespace MovieToGoAPI.Services
         /// <param name="controller"></param>
         /// <param name="userManager"></param>
         /// <returns>The user Id if the user claim is valid else null</returns>
-        public async Task<string?> validateUserClaim(Controller controller, UserManager<IdentityUser> userManager)
+        public async Task<string?> validateUserClaim(Controller controller, UserManager<User> userManager)
         {
             string? username = controller.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "username")?.Value;
 
-            IdentityUser user = await userManager.FindByNameAsync(username);
+            User user = await userManager.FindByNameAsync(username);
 
             return user?.UserName;
         }
