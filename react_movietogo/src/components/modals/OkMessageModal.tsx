@@ -10,7 +10,7 @@ interface OkMessageModalProps {
 
 OkMessageModal.defaultProps = {
     blurred: true,
-    size: 'tiny',
+    size: 'mini',
 }
 
 export default function OkMessageModal(props: OkMessageModalProps) {

@@ -9,11 +9,14 @@ import { useEffect, useState } from 'react';
 import { getClaims } from './components/authentication/handleJWT';
 import ModalContext from './components/contexts/ModalContext';
 import AuthenticationModal from './components/modals/AuthenticationModal';
+import OkMessageModal from './components/modals/OkMessageModal';
 
 export default function App() {
 
   const [claims, setClaims] = useState<Claim[]>([]);
-  const [ isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+  const [isOkMessageModalOpen, setOkMessageModalOpen] = useState(false);
+  const [okMessageModalContent, setOkMessageModalContent] = useState('');
 
   useEffect(() => {
     setClaims(getClaims);
@@ -37,10 +40,14 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
-        <ModalContext.Provider 
-          value={{ 
-            isAuthModalOpen, 
-            setAuthModalOpen: setIsAuthModalOpen,
+        <ModalContext.Provider
+          value={{
+            isAuthModalOpen,
+            setAuthModalOpen: setAuthModalOpen,
+            isOkMessageModalOpen,
+            setOkMessageModalOpen: setOkMessageModalOpen,
+            okMessageModalContent,
+            setOkMessageModalContent: setOkMessageModalContent,
           }}
         >
           <MainNavbar />
@@ -54,7 +61,8 @@ export default function App() {
                 </Route>)}
             </Routes>
           </Container>
-          <AuthenticationModal open={isAuthModalOpen} setOpen={setIsAuthModalOpen} blurred defaultSelection="login" />
+          <AuthenticationModal open={isAuthModalOpen} setOpen={setAuthModalOpen} defaultSelection="login" />
+          <OkMessageModal message={okMessageModalContent} open={isOkMessageModalOpen} setOpen={setOkMessageModalOpen} />
         </ModalContext.Provider>
       </AuthenticationContext.Provider>
     </BrowserRouter>
