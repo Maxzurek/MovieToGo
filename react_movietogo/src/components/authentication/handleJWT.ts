@@ -23,14 +23,17 @@ export const getClaims = (): Claim[] => {
         return []; // expired token
     }
 
-    const dataToken = JSON.parse(atob(token.split('.')[1]));
-    const response: Claim[] = [];
+    const tokenHeader = JSON.parse(atob(token.split('.')[0]));
+    const tokenData = JSON.parse(atob(token.split('.')[1]));
+    const claims: Claim[] = [];
 
-    for (const property in dataToken) {
-        response.push({ name: property, value: dataToken[property] });
+    console.log(`Header: ${tokenHeader}`);
+
+    for (const property in tokenData) {
+        claims.push({ name: property, value: tokenData[property] });
     }
 
-    return response
+    return claims
 };
 
 export const logout = () => {

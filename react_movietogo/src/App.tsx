@@ -16,12 +16,6 @@ export default function App() {
     setClaims(getClaims);
   }, [])
 
-  const setClaimsTest = async (data: Claim[]) => {
-    console.log("Setting claims");
-    console.log(data);
-    setClaims(data);
-  }
-
   const isAdmin = () => {
     return claims.findIndex(claim => claim.name === 'role' && claim.value === 'admin') > -1;
   }
@@ -39,7 +33,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AuthenticationContext.Provider value={{claims, update: setClaimsTest }}>
+      <AuthenticationContext.Provider value={{claims, update: setClaims }}>
         <MainNavbar />
         <Container fluid>
           <Routes>
