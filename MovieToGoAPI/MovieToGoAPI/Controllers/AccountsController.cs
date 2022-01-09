@@ -122,7 +122,6 @@ namespace MovieToGoAPI.Controllers
         {
             List<Claim> claims = new List<Claim>()
             {
-                new Claim("UserId", user.Id),
                 new Claim("username", user.UserName)
         };
 
