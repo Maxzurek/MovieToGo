@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieToGoAPI.DTOs.MovieVotes;
 using MovieToGoAPI.Entities;
+using MovieToGoAPI.Services;
 
 namespace MovieToGoAPI.Controllers
 {
@@ -16,12 +20,21 @@ namespace MovieToGoAPI.Controllers
         private readonly ILogger<MovieVotesController> logger;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly AuthorizationService authorizationService;
 
-        public MovieVotesController(ILogger<MovieVotesController> logger, ApplicationDbContext context, IMapper mapper)
+        public MovieVotesController(
+            ILogger<MovieVotesController> logger,
+            ApplicationDbContext context,
+            IMapper mapper,
+            AuthorizationService authorizationService, 
+            UserManager<IdentityUser> userManager)
         {
             this.logger = logger;
             this.context = context;
             this.mapper = mapper;
+            this.authorizationService = authorizationService;
+            this.userManager = userManager;
         }
 
         /// <summary>
@@ -73,14 +86,22 @@ namespace MovieToGoAPI.Controllers
         /// <param name="movieVoteCreationDTO"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(MovieVoteDTO),StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-
         public async Task<ActionResult<MovieVoteDTO>> Post([FromBody] MovieVoteCreationDTO movieVoteCreationDTO)
         {
             logger.LogInformation("Creating a Vote");
 
+            string? userId = await authorizationService.validateUserClaim(this, userManager);
+
+            if(userId == null)
+            {
+                return Unauthorized("Unauthorized. You must be logged in in order to post a vote");
+            }
+
             MovieVote movieVote = mapper.Map<MovieVote>(movieVoteCreationDTO);
+            movieVote.UserId = userId;
 
             EntityEntry<MovieVote> entityEntry = context.MovieVotes.Add(movieVote);
             await context.SaveChangesAsync();

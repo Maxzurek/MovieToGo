@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using MovieToGoAPI.APIBehavior;
 using MovieToGoAPI.Entities;
 using MovieToGoAPI.Filters;
+using MovieToGoAPI.Services;
 using System.Reflection;
 using System.Text;
 
@@ -26,6 +27,8 @@ namespace MovieToGoAPI
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSingleton<AuthorizationService>();
+
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -41,6 +44,7 @@ namespace MovieToGoAPI
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
 
             services.Configure<IdentityOptions>(options =>
             {
