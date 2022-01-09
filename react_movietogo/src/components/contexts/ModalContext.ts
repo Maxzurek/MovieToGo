@@ -7,6 +7,8 @@ const ModalContext = React.createContext<{
     setOkMessageModalOpen(isOkMessageModalOpen: boolean): void;
     okMessageModalContent: string;
     setOkMessageModalContent(okMessageModalContent: string): void;
+    displayAuthenticationModal(isOpen: boolean): void;
+    displayOkMessage(content: string): void;
 }>({
     isAuthModalOpen: false,
     setAuthModalOpen: () => { },
@@ -14,6 +16,8 @@ const ModalContext = React.createContext<{
     setOkMessageModalOpen: () => { },
     okMessageModalContent: 'PLACEHOLDER',
     setOkMessageModalContent: () => { },
+    displayAuthenticationModal: () => { },
+    displayOkMessage: () => { },
 });
 
 export default ModalContext;

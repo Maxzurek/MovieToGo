@@ -2,6 +2,7 @@ import { Button, Modal } from "semantic-ui-react"
 
 interface OkMessageModalProps {
     message: string;
+    setMessage: React.Dispatch<React.SetStateAction<string>>;
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     blurred?: boolean;
@@ -30,7 +31,7 @@ export default function OkMessageModal(props: OkMessageModalProps) {
                     icon='checkmark'
                     content='Ok'
                     inverted
-                    onClick={() => { props.setOpen(false) }}
+                    onClick={() => { props.setOpen(false); props.setMessage('') }}
                 />
             </Modal.Actions>
         </Modal>

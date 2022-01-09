@@ -22,6 +22,13 @@ export default function App() {
     setClaims(getClaims);
   }, [])
 
+  useEffect(() => {
+    if (okMessageModalContent) {
+      console.log("OkMessageContent");
+      setOkMessageModalOpen(true);
+    }
+  }, [okMessageModalContent])
+
   const isAdmin = () => {
     return claims.findIndex(claim => claim.name === 'role' && claim.value === 'admin') > -1;
   }
@@ -48,6 +55,8 @@ export default function App() {
             setOkMessageModalOpen: setOkMessageModalOpen,
             okMessageModalContent,
             setOkMessageModalContent: setOkMessageModalContent,
+            displayAuthenticationModal: setAuthModalOpen,
+            displayOkMessage: setOkMessageModalContent,
           }}
         >
           <MainNavbar />
@@ -62,7 +71,7 @@ export default function App() {
             </Routes>
           </Container>
           <AuthenticationModal open={isAuthModalOpen} setOpen={setAuthModalOpen} defaultSelection="login" />
-          <OkMessageModal message={okMessageModalContent} open={isOkMessageModalOpen} setOpen={setOkMessageModalOpen} />
+          <OkMessageModal message={okMessageModalContent} setMessage={setOkMessageModalContent} open={isOkMessageModalOpen} setOpen={setOkMessageModalOpen} />
         </ModalContext.Provider>
       </AuthenticationContext.Provider>
     </BrowserRouter>

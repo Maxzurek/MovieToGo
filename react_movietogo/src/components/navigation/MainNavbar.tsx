@@ -9,7 +9,7 @@ import ModalContext from "../contexts/ModalContext";
 export default function MainNavbar() {
 
     const { claims, update } = useContext(AuthenticationContext);
-    const { setAuthModalOpen } = useContext(ModalContext);
+    const { displayAuthenticationModal } = useContext(ModalContext);
 
     const [activeItem, setActiveItem] = useState('home');
 
@@ -56,7 +56,7 @@ export default function MainNavbar() {
                             </Dropdown>
                         }
                         notAuthorized={
-                            <MenuItem onClick={() => setAuthModalOpen(true)}>
+                            <MenuItem onClick={() => displayAuthenticationModal(true)}>
                                 <Icon name='sign in' />
                                 Login
                             </MenuItem>
