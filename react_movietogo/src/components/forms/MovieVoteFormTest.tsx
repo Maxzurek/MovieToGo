@@ -35,7 +35,7 @@ export default function MovieVoteFormTest(props: MovieVoteFormTestProps) {
                         field="movieId"
                         displayName="Movie Id"
                         type="number"
-                        value={formikProps.values.vote}
+                        value={formikProps.values.movieId}
                         formikProps={formikProps}
                         size='large'
                     />
