@@ -8,7 +8,7 @@ import LoginForm from "../forms/LoginForm";
 import RegisterForm from "../forms/RegisterForm";
 import DisplayApiErrors from "../utilities/DisplayApiErrors";
 import AuthenticationContext from "../contexts/AuthenticationContext";
-import { getClaims, saveToken } from "./handleJWT";
+import { getClaims, saveToken } from "../authentication/handleJWT";
 
 interface AuthenticationModalProps {
     open: boolean;

@@ -8,7 +8,7 @@ import MainNavbar from './components/navigation/MainNavbar';
 import { useEffect, useState } from 'react';
 import { getClaims } from './components/authentication/handleJWT';
 import ModalContext from './components/contexts/ModalContext';
-import AuthenticationModal from './components/authentication/AuthenticationModal';
+import AuthenticationModal from './components/modals/AuthenticationModal';
 
 export default function App() {
 
