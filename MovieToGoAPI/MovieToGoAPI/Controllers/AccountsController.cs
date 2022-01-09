@@ -55,7 +55,7 @@ namespace MovieToGoAPI.Controllers
                 return BadRequest(result);
             }
 
-            return BuildToken(user.Email);
+            return BuildToken(user);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace MovieToGoAPI.Controllers
                 return Unauthorized("Invalid Login Attempt");
             }
 
-            return BuildToken(user.Email);
+            return BuildToken(user);
         }
 
         [HttpDelete("{UserId}")]
@@ -118,11 +118,11 @@ namespace MovieToGoAPI.Controllers
         /**********************************************************************************************************
         * Private Methods
         ***********************************************************************************************************/
-        private AuthenticationResponse BuildToken(string  email)
+        private AuthenticationResponse BuildToken(User user)
         {
             List<Claim> claims = new List<Claim>()
             {
-                new Claim("email", email)
+                new Claim("username", user.UserName)
             };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Keyjwt"]));
