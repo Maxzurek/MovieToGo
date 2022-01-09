@@ -14,11 +14,12 @@ interface AuthenticationModalProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     defaultSelection: 'login' | 'register';
-    blurred: true;
+    blurred?: boolean;
     size?: 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen';
 }
 
 AuthenticationModal.defaultProps = {
+    blurred: true,
     size: 'tiny',
 }
 
