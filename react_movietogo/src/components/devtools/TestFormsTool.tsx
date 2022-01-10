@@ -32,7 +32,8 @@ export default function TestFormsTool() {
 
         try{
             await axios.post(movieToGoUrlMovieVotes, values);
-            setMovieVoteErrors({});
+            setMovieVoteErrors({})
+            setVoteSubmissionSuccessMessage('');
             setVoteSubmissionSuccessMessage('Vote submitted!');
         }
         catch(error){

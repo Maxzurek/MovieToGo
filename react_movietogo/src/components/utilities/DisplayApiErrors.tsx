@@ -22,7 +22,7 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
 
     const getError401MessageComponent = (): ReactElement => {
 
-        const UNAUTHORIZED_ERR_MESSAGE = 'Error 401 - Unauthorized'
+        const UNAUTHORIZED_ERR_MESSAGE = 'Error - You must be logged in'
 
         return (
             <Container textAlign="center">

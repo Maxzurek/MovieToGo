@@ -36,5 +36,8 @@ const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 
 // TheMovieDb endpoints
 
+    // Movies search
+    export const theMovieDbMoviesSearch = `${theMovieDbBaseUrl}/search/movie/?api_key=${theMovieDbApiKey}&language=en-US&query=`
+
     // Genres
     export const theMovieDbGenres = `${theMovieDbBaseUrl}/genre/movie/list?api_key=${theMovieDbApiKey}`

@@ -1,7 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import { Container, Label, Loader, Message, Segment, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
+import { Container, Loader, Message, Segment, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
 import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
+import { object } from "yup/lib/locale";
 import DisplayApiErrors from "./DisplayApiErrors";
 
 interface DataTableProps {
@@ -22,6 +23,7 @@ export default function GenericDataTable(props: DataTableProps) {
 
     const [response, setResponse] = useState<AxiosResponse<any>>();
     const [error, setError] = useState<AxiosError>();
+    const [data, setData] = useState([]);
     const [keys, setKeys] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [labelColor, setLabelColor] = useState<SemanticCOLORS>('yellow');
@@ -31,24 +33,25 @@ export default function GenericDataTable(props: DataTableProps) {
     const ERROR_COLOR = 'red';
     const NO_DATA_COLOR = 'orange';
 
-    async function getRequest() {
-        try {
-            const response = await axios.get(props.url);
-            setResponse(response);
-        } catch (error) {
-            let axiosError = error as AxiosError;
-            setResponse(undefined);
-            setError(axiosError);
+    useEffect(() => { // On component created and refresh or url changed
+        const getRequest = async () => {
+            try {
+                const response = await axios.get(props.url);
+                setResponse(response);
+
+                if(Array.isArray(response.data)){
+                    setData(response.data as []);
+                }
+                else{
+                    setData(response.data.results);
+                }
+
+            } catch (error) {
+                let axiosError = error as AxiosError;
+                setResponse(undefined);
+                setError(axiosError);
+            }
         }
-    }
-
-    useEffect(() => { // Fetch data
-
-        getRequest();
-
-    }, [])
-
-    useEffect(() => { // On refresh
 
         if (props.refresh) {
             props.setRefresh(false);
@@ -56,8 +59,11 @@ export default function GenericDataTable(props: DataTableProps) {
             setLoading(true);
             getRequest();
         }
+        else{
+            getRequest();
+        }
 
-    }, [props.refresh])
+    }, [props.refresh, props.url])
 
     useEffect(() => { // Controls the loading state
 
@@ -78,16 +84,16 @@ export default function GenericDataTable(props: DataTableProps) {
         }
         else // We have a response
         {
-            if (response.data.length > 0) // We have data!
+            if (data?.length > 0) // We have data!
             {
                 setLoading(false);
                 setLabelColor(LOADED_COLOR);
 
-                const dataSample = response.data[0];
+                const dataSample = data[0];
 
-                Object.entries(dataSample).map(([key, value]) => {
-                    setKeys(prevArray => [...prevArray, key]);
-                })
+                Object.entries(dataSample).forEach(([key, value])=> {
+                    setKeys(prevArray => [...prevArray, key]);         
+                });
             }
             else if (!error?.isAxiosError)// No data found
             {
@@ -95,12 +101,12 @@ export default function GenericDataTable(props: DataTableProps) {
                 setLabelColor(NO_DATA_COLOR);
             }
         }
-    }, [response, error])
+    }, [response, error, data])
 
     const renderTableRows = () => {
 
         return (
-            response?.data.map((dataObject: any, index: number) => {
+            data?.map((dataObject: any, index: number) => {
                 return (
                     <TableRow key={index}>
                         {Object.entries(dataObject).map(([key, value]) => {
@@ -110,18 +116,19 @@ export default function GenericDataTable(props: DataTableProps) {
                             if (value === null) {
                                 stringValue = "NULL";
                             }
-                            else if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
-                                stringValue = value as string;
+                            else if(typeof value === 'string'){
+                                stringValue = value;
+                            }
+                            else if (typeof value === "number" || typeof value === "boolean") {
+                                stringValue = value.toString();
                             }
                             else if (Array.isArray(value)) {
-                                stringValue = `[${value.length}]`;
+                                stringValue = "[";
+                                stringValue += (value.length === 0 ? "empty" : value.toString());
+                                stringValue += "]";
                             }
                             else if (typeof value === 'object') {
-                                stringValue = '{';
-                                Object.entries(value as object).map(([key, value]) => {
-                                    stringValue = stringValue.concat(`${key}: ${value}`);
-                                });
-                                stringValue = stringValue.concat('}');            
+                                stringValue = JSON.stringify(value);         
                             }
 
                             return (
@@ -152,12 +159,12 @@ export default function GenericDataTable(props: DataTableProps) {
 
     return (
         <Segment>
-            <Container style={{ overflow: 'auto', maxHeight: props.maxHeight }}>
+            <Container style={{ overflow: 'auto', maxHeight:'10%' }}>
                 <Loader active={loading} />
                 <Segment inverted color={labelColor} textAlign="center" size="large">
                     {props.tableName}
                 </Segment>
-                {response?.data.length > 0 ? renderTable() : undefined}
+                {data?.length > 0 ? renderTable() : undefined}
                 <DisplayApiErrors error={error!} />
                 {response?.status === 204 ? <Message warning>Empty table</Message> : undefined}
             </Container>
