@@ -1,6 +1,6 @@
 import axios from "axios";
 import { FormikHelpers } from "formik";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Modal, Header, Button, Icon, Segment } from "semantic-ui-react";
 import { movieToGoUrlAccountsCreate, movieToGoUrlAccountsLogin } from "../../endpoints";
 import { AuthenticationResponse, UserCreationDTO, UserLoginDTO } from "../../models/authentication.models";
@@ -27,31 +27,13 @@ AuthenticationModal.defaultProps = {
 export default function AuthenticationModal(props: AuthenticationModalProps) {
 
     const { update } = useContext(AuthenticationContext);
-    const {displayOkMessage} = useContext(ModalContext);
+    const { displayOkMessage } = useContext(ModalContext);
 
     const [apiErrors, setApiErrors] = useState<any>({});
     const [selection, setSelection] = useState(props.defaultSelection);
 
     const LOGIN = 'login';
     const REGISTER = 'register';
-
-    const handleItemClick = (e: any, { name }: any) => {
-        switch (name) {
-            case LOGIN:
-                setSelection(LOGIN);
-                break;
-            case REGISTER:
-                setSelection(REGISTER);
-                break;
-            case 'close':
-                setApiErrors({});
-                setSelection(props.defaultSelection);
-                props.setOpen(false);
-                break;
-            default:
-                break;
-        }
-    }
 
     const registerUser = async (values: UserCreationDTO, actions: FormikHelpers<UserCreationDTO>) => {
 
@@ -98,6 +80,28 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
         emailOrUserName: '',
         password: ''
     }
+
+    const handleItemClick = (e: any, { name }: any) => {
+        switch (name) {
+            case LOGIN:
+                setSelection(LOGIN);
+                break;
+            case REGISTER:
+                setSelection(REGISTER);
+                break;
+            case 'close':
+                setApiErrors({});
+                setSelection(props.defaultSelection);
+                props.setOpen(false);
+                break;
+            default:
+                break;
+        }
+    }
+
+    useEffect(() => {
+        setApiErrors({});
+    }, [props.open, selection])
 
     return (
         <Modal
