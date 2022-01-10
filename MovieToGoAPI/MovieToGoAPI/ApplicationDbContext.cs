@@ -22,8 +22,6 @@ namespace MovieToGoAPI
             base.OnModelCreating(builder);
         }
 
-        public DbSet<Genre> Genres { get; set; }
-
         public DbSet<User> Users { get; set; }
 
         public DbSet<WatchList> WatchLists { get; set; }

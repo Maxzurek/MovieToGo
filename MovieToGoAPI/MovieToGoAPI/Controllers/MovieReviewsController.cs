@@ -14,11 +14,11 @@ namespace MovieToGoAPI.Controllers
 
     public class MovieReviewsController : Controller
     {
-        private readonly ILogger<GenresController> logger;
+        private readonly ILogger<MovieReviewsController> logger;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
 
-        public MovieReviewsController(ILogger<GenresController> logger, ApplicationDbContext context, IMapper mapper)
+        public MovieReviewsController(ILogger<MovieReviewsController> logger, ApplicationDbContext context, IMapper mapper)
         {
             this.logger = logger;
             this.context = context;
