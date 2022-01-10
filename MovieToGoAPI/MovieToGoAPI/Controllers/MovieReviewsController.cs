@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieToGoAPI.DTOs.MovieReviews;
 using MovieToGoAPI.Entities;
 using MovieToGoAPI.Models;
+using MovieToGoAPI.Services;
 
 namespace MovieToGoAPI.Controllers
 {
@@ -17,12 +21,21 @@ namespace MovieToGoAPI.Controllers
         private readonly ILogger<MovieReviewsController> logger;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly UserManager<User> userManager;
+        private readonly AuthorizationService authorizationService;
 
-        public MovieReviewsController(ILogger<MovieReviewsController> logger, ApplicationDbContext context, IMapper mapper)
+        public MovieReviewsController(
+            ILogger<MovieReviewsController> logger,
+            ApplicationDbContext context,
+            IMapper mapper,
+            AuthorizationService authorizationService,
+            UserManager<User> userManager)
         {
             this.logger = logger;
             this.context = context;
             this.mapper = mapper;
+            this.authorizationService = authorizationService;
+            this.userManager = userManager;
         }
 
         /// <summary>
@@ -100,13 +113,22 @@ namespace MovieToGoAPI.Controllers
         /// <param name="movieReviewCreationDTO"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(MovieReviewDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(List<ErrorMessage>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<MovieReviewDTO>> Post([FromBody] MovieReviewCreationDTO movieReviewCreationDTO)
         {
             logger.LogInformation("Creating Movie Review");
 
+            string? userId = await authorizationService.validateUserClaim(this, userManager);
+
+            if (userId == null)
+            {
+                return Unauthorized("Unauthorized. You must be logged in in order to post a movie review");
+            }
+
             MovieReview? movieReview = mapper.Map<MovieReview>(movieReviewCreationDTO);
+            movieReview.UserID = userId;
 
             EntityEntry<MovieReview> entityEntry = context.MovieReviews.Add(movieReview);
 

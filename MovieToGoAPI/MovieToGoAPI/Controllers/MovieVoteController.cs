@@ -97,7 +97,7 @@ namespace MovieToGoAPI.Controllers
 
             if(userId == null)
             {
-                return Unauthorized("Unauthorized. You must be logged in in order to post a vote");
+                return Unauthorized("Unauthorized. You must be logged in in order to post a movie vote");
             }
 
             MovieVote movieVote = mapper.Map<MovieVote>(movieVoteCreationDTO);

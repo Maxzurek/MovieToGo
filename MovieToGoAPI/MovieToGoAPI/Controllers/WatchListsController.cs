@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieToGoAPI.DTOs.WatchLists;
 using MovieToGoAPI.Entities;
 using MovieToGoAPI.Models;
+using MovieToGoAPI.Services;
 
 namespace MovieToGoAPI.Controllers
 {
@@ -16,12 +20,21 @@ namespace MovieToGoAPI.Controllers
         private readonly ILogger<WatchListsController> logger;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly UserManager<User> userManager;
+        private readonly AuthorizationService authorizationService;
 
-        public WatchListsController(ILogger<WatchListsController> logger, ApplicationDbContext context, IMapper mapper)
+        public WatchListsController(
+            ILogger<WatchListsController> logger, 
+            ApplicationDbContext context, 
+            IMapper mapper,
+            UserManager<User> userManager,
+            AuthorizationService authorizationService)
         {
             this.logger = logger;
             this.context = context;
             this.mapper = mapper;
+            this.userManager = userManager;
+            this.authorizationService = authorizationService;
         }
 
         /// <summary>
@@ -99,13 +112,22 @@ namespace MovieToGoAPI.Controllers
         /// <param name="watchListCreationDTO"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(WatchListDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Post([FromBody] WatchListCreationDTO watchListCreationDTO)
         {
             logger.LogInformation("Creating a watchlist");
 
+            string? userId = await authorizationService.validateUserClaim(this, userManager);
+
+            if (userId == null)
+            {
+                return Unauthorized("Unauthorized. You must be logged in in order to post a watchlist");
+            }
+
             WatchList watchList = mapper.Map<WatchList>(watchListCreationDTO);
+            watchList.UserId = userId;
 
             EntityEntry<WatchList> entityEntry = context.WatchLists.Add(watchList);
 

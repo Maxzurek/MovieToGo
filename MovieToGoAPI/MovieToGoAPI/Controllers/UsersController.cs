@@ -12,18 +12,18 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace MovieToGoAPI.Controllers
 {
-    [Route("api/accounts")]
+    [Route("api/users")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class AccountsController : Controller
+    public class UsersController : Controller
     {
-        private readonly ILogger<AccountsController> logger;
+        private readonly ILogger<UsersController> logger;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IMapper mapper;
         private readonly IConfiguration configuration;
 
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IConfiguration configuration, ILogger<AccountsController> logger)
+        public UsersController(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IConfiguration configuration, ILogger<UsersController> logger)
         {
 
             this.userManager = userManager;
