@@ -25,9 +25,7 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
         const UNAUTHORIZED_ERR_MESSAGE = 'Error - You must be logged in'
 
         return (
-            <Container textAlign="center">
-                <Message negative>{UNAUTHORIZED_ERR_MESSAGE}</Message>
-            </Container>
+            <Message negative>{UNAUTHORIZED_ERR_MESSAGE}</Message>
         )
     }
 
@@ -36,9 +34,7 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
         const SERVER_ERR_MESSAGE = 'Internal Server Error - Please try again later.'
 
         return (
-            <Container textAlign="center">
-                <Message negative>{SERVER_ERR_MESSAGE}</Message>
-            </Container>
+            <Message negative>{SERVER_ERR_MESSAGE}</Message>
         )
     }
 
@@ -51,10 +47,10 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
             const response = props.error.response as AxiosResponse;
 
             switch (response.status) {
-                case 400: 
+                case 400:
                     setMessage(getError400MessageComponent(response));
                     break;
-                case 401: 
+                case 401:
                     setMessage(getError401MessageComponent());
                     break;
                 case 500:
