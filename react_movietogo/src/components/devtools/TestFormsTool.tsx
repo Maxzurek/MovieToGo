@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Container, Message, Segment } from "semantic-ui-react";
 import { movieToGoUrlAccountsCreate, movieToGoUrlMovieVotes } from "../../endpoints";
 import { UserCreationDTO } from "../../models/authentication.models";
-import { MovieVoteCreationDTO } from "../../models/movievotes.models";
+import { MovieVoteCreationDTO } from "../../models/movie.models";
 import MovieVoteFormTest from "../forms/MovieVoteFormTest";
 import RegisterForm from "../forms/RegisterForm";
 import DisplayApiErrors from "../utilities/DisplayApiErrors";

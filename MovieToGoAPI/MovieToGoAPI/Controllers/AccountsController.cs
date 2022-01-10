@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using MovieToGoAPI.DTOs.Authentication;
 using MovieToGoAPI.DTOs.Users;
 using MovieToGoAPI.Entities;
 using MovieToGoAPI.Models;

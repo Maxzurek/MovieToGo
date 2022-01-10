@@ -19,3 +19,7 @@ export interface UserCreationDTO{
     confirmPassword: string;
     email: string;
 }
+
+export interface UserDTO{
+    userName: string;
+}

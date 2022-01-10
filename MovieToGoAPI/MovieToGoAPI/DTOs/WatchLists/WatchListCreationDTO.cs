@@ -7,8 +7,5 @@ namespace MovieToGoAPI.DTOs.WatchLists
         [Required(ErrorMessage = "The field {0} is required")]
         [StringLength(100)]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "The field {0} is required")]
-        public string UserId { get; set; }
     }
 }

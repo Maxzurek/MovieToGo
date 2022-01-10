@@ -12,9 +12,9 @@ interface CustomFormFieldProps {
     icon?: string;
 }
 
-FormField.defaultProps = {
-    type: 'text',
+CustomFormField.defaultProps = {
     size: 'small',
+    type: 'text',
 }
 
 export default function CustomFormField(props: CustomFormFieldProps) {

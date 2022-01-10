@@ -1,4 +1,4 @@
-﻿namespace MovieToGoAPI.DTOs.Authentication
+﻿namespace MovieToGoAPI.Models
 {
     public class AuthenticationResponse
     {

@@ -2,7 +2,7 @@ import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Segment, Button, Form } from "semantic-ui-react";
 import CustomFormField from "../utilities/CustomFormField";
-import { MovieVoteCreationDTO } from "../../models/movievotes.models";
+import { MovieVoteCreationDTO } from "../../models/movie.models";
 
 interface MovieVoteFormTestProps{
     model: MovieVoteCreationDTO;
