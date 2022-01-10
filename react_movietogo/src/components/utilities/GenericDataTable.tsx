@@ -37,6 +37,7 @@ export default function GenericDataTable(props: DataTableProps) {
             setResponse(response);
         } catch (error) {
             let axiosError = error as AxiosError;
+            setResponse(undefined);
             setError(axiosError);
         }
     }
@@ -50,7 +51,6 @@ export default function GenericDataTable(props: DataTableProps) {
     useEffect(() => { // On refresh
 
         if (props.refresh) {
-            console.log("refresh");
             props.setRefresh(false);
             setError(undefined);
             setLoading(true);
@@ -107,21 +107,21 @@ export default function GenericDataTable(props: DataTableProps) {
 
                             var stringValue = '';
 
-                            if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+                            if (value === null) {
+                                stringValue = "NULL";
+                            }
+                            else if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
                                 stringValue = value as string;
                             }
                             else if (Array.isArray(value)) {
-                                stringValue = "[...]";
-                            }
-                            else if (value === null) {
-                                stringValue = "NULL";
+                                stringValue = `[${value.length}]`;
                             }
                             else if (typeof value === 'object') {
-                                let values = Object.values(value);
-
-                                if (values.length > 0) {
-                                    stringValue = `{${values[0]}}`;
-                                }
+                                stringValue = '{';
+                                Object.entries(value as object).map(([key, value]) => {
+                                    stringValue = stringValue.concat(`${key}: ${value}`);
+                                });
+                                stringValue = stringValue.concat('}');            
                             }
 
                             return (
