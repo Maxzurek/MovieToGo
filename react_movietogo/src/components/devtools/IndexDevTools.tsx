@@ -59,7 +59,7 @@ export default function IndexAdminTools() {
 
                         </Menu>
                     </GridColumn>
-                    <GridColumn width={12} style={{ overflow: 'auto', maxHeight: '100%' }}>
+                    <GridColumn width={12}>
                         <Segment>
                             {activeItem ? renderSegmentFunc : undefined}
                         </Segment>

@@ -1,8 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import { Container, Loader, Message, Segment, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
+import { Container, Header, Loader, Message, Segment, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
 import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
-import { object } from "yup/lib/locale";
 import DisplayApiErrors from "./DisplayApiErrors";
 
 interface DataTableProps {
@@ -39,10 +38,10 @@ export default function GenericDataTable(props: DataTableProps) {
                 const response = await axios.get(props.url);
                 setResponse(response);
 
-                if(Array.isArray(response.data)){
+                if (Array.isArray(response.data)) {
                     setData(response.data as []);
                 }
-                else{
+                else {
                     setData(response.data.results);
                 }
 
@@ -59,7 +58,7 @@ export default function GenericDataTable(props: DataTableProps) {
             setLoading(true);
             getRequest();
         }
-        else{
+        else {
             getRequest();
         }
 
@@ -91,8 +90,8 @@ export default function GenericDataTable(props: DataTableProps) {
 
                 const dataSample = data[0];
 
-                Object.entries(dataSample).forEach(([key, value])=> {
-                    setKeys(prevArray => [...prevArray, key]);         
+                Object.entries(dataSample).forEach(([key, value]) => {
+                    setKeys(prevArray => [...prevArray, key]);
                 });
             }
             else if (!error?.isAxiosError)// No data found
@@ -116,7 +115,7 @@ export default function GenericDataTable(props: DataTableProps) {
                             if (value === null) {
                                 stringValue = "NULL";
                             }
-                            else if(typeof value === 'string'){
+                            else if (typeof value === 'string') {
                                 stringValue = value;
                             }
                             else if (typeof value === "number" || typeof value === "boolean") {
@@ -128,11 +127,11 @@ export default function GenericDataTable(props: DataTableProps) {
                                 stringValue += "]";
                             }
                             else if (typeof value === 'object') {
-                                stringValue = JSON.stringify(value);         
+                                stringValue = JSON.stringify(value);
                             }
 
                             return (
-                                <TableCell key={key}>{stringValue}</TableCell>
+                                <TableCell key={key} singleLine>{stringValue}</TableCell>
                             )
                         })}
                     </TableRow>
@@ -143,7 +142,7 @@ export default function GenericDataTable(props: DataTableProps) {
 
     const renderTable = () => {
         return (
-            <Table>
+            <Table celled>
                 <TableHeader>
                     <TableRow>
                         {keys.map((header, index) => <TableHeaderCell key={index} >{header}</TableHeaderCell>)}
@@ -158,16 +157,13 @@ export default function GenericDataTable(props: DataTableProps) {
     }
 
     return (
-        <Segment>
-            <Container style={{ overflow: 'auto', maxHeight:'10%' }}>
-                <Loader active={loading} />
-                <Segment inverted color={labelColor} textAlign="center" size="large">
-                    {props.tableName}
+        <Segment style={{ overflow: 'auto' }} loading={loading}>
+                <Segment inverted color={labelColor} textAlign="center" >
+                    <Header>{props.tableName}</Header>
                 </Segment>
                 {data?.length > 0 ? renderTable() : undefined}
                 <DisplayApiErrors error={error!} />
                 {response?.status === 204 ? <Message warning>Empty table</Message> : undefined}
-            </Container>
         </Segment>
     )
 };
