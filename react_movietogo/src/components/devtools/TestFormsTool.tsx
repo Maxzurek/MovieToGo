@@ -1,7 +1,7 @@
 import axios from "axios";
 import { FormikHelpers } from "formik";
 import { useState } from "react";
-import { Container, Message, Segment } from "semantic-ui-react";
+import { Button, Container, Header, Message, Segment } from "semantic-ui-react";
 import { movieToGoUrlAccountsCreate, movieToGoUrlMovieVotes } from "../../endpoints";
 import { UserCreationDTO } from "../../models/authentication.models";
 import { MovieVoteCreationDTO } from "../../models/movie.models";
@@ -49,15 +49,17 @@ export default function TestFormsTool() {
     }
 
     const movieVoteCreationDTO: MovieVoteCreationDTO = {
-        vote: 0,
+        vote: 1,
         movieId: 0,
     }
 
     return (
-        <Container>
-            <Container textAlign="center">
-                <h1>Test Forms Tool</h1>
-            </Container>
+        <Container fluid>
+            <Segment color="blue" inverted>
+                <Header textAlign="center" size="huge">
+                    Test Forms Tool 
+                </Header>
+            </Segment>
             <Segment>
                 <h3>Registration Form</h3>
                 <RegisterForm model={userCreationDTO} onSubmit={registerUser} />

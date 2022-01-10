@@ -5,7 +5,7 @@ import TestFormsTool from "./TestFormsTool";
 
 export default function IndexAdminTools() {
 
-    const [activeItem, setActiveItem] = useState('database');
+    const [activeItem, setActiveItem] = useState('');
 
     const handleItemClick = (e: any, { name }: any) => {
         setActiveItem(name);
@@ -30,7 +30,7 @@ export default function IndexAdminTools() {
         <>
             <Grid padded style={{ height: '100vh' }}>
                 <GridRow >
-                    <GridColumn width={4}>
+                    <GridColumn width={2}>
                         <Menu fluid vertical tabular>
 
                             <MenuItem
@@ -59,7 +59,7 @@ export default function IndexAdminTools() {
 
                         </Menu>
                     </GridColumn>
-                    <GridColumn width={12}>
+                    <GridColumn width={14}>
                         <Segment>
                             {activeItem ? renderSegmentFunc : undefined}
                         </Segment>

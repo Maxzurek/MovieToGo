@@ -11,10 +11,10 @@ const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
     // Genres
     export const movieToGoUrlGenres = `${movieToGoBaseUrl}/genres`;
 
-    // Accounts
-    export const movieToGoUrlAccountsCreate = `${movieToGoBaseUrl}/accounts/create`;
-    export const movieToGoUrlAccountsLogin = `${movieToGoBaseUrl}/accounts/login`;
-    export const movieToGoUrlAccounts = `${movieToGoBaseUrl}/accounts`;
+    // Users
+    export const movieToGoUrlAccounts = `${movieToGoBaseUrl}/users`;
+    export const movieToGoUrlAccountsCreate = `${movieToGoBaseUrl}/users/create`;
+    export const movieToGoUrlAccountsLogin = `${movieToGoBaseUrl}/users/login`;
 
     // Movies
     export const movieToGoUrlMovies = `${movieToGoBaseUrl}/movies`;
