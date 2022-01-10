@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Grid, GridRow, GridColumn, Menu, MenuItem, Segment } from "semantic-ui-react";
+import { Grid, GridRow, GridColumn, Menu, MenuItem, Segment, Header } from "semantic-ui-react";
 import DatabaseTool from "./DatabaseTool";
 import TestFormsTool from "./TestFormsTool";
 
@@ -7,16 +7,18 @@ export default function IndexAdminTools() {
 
     const [activeItem, setActiveItem] = useState('');
 
+    const menuItemsStyle = {padding: "13px 10px"}
+
     const handleItemClick = (e: any, { name }: any) => {
         setActiveItem(name);
     }
 
     const renderSegment = () => {
-        switch(activeItem){
+        switch (activeItem) {
             case 'database':
-                return(<DatabaseTool />)
+                return (<DatabaseTool />)
             case 'testform':
-                return(<TestFormsTool />)
+                return (<TestFormsTool />)
             case 'usermanagement':
                 console.log("TODO: Render user management tool")
                 break;
@@ -28,15 +30,16 @@ export default function IndexAdminTools() {
 
     return (
         <>
-            <Grid padded style={{ height: '100vh' }}>
+            <Grid padded >
                 <GridRow >
-                    <GridColumn width={2}>
+                    <GridColumn width={3}>
                         <Menu fluid vertical tabular>
 
                             <MenuItem
                                 name='database'
                                 active={activeItem === 'database'}
                                 onClick={handleItemClick}
+                                style={menuItemsStyle}
                             >
                                 Database
                             </MenuItem>
@@ -45,6 +48,7 @@ export default function IndexAdminTools() {
                                 name='testform'
                                 active={activeItem === 'testform'}
                                 onClick={handleItemClick}
+                                style={menuItemsStyle}
                             >
                                 Test Forms
                             </MenuItem>
@@ -53,15 +57,25 @@ export default function IndexAdminTools() {
                                 name='usermanagement'
                                 active={activeItem === 'usermanagement'}
                                 onClick={handleItemClick}
+                                style={menuItemsStyle}
                             >
                                 User Management
                             </MenuItem>
 
                         </Menu>
                     </GridColumn>
-                    <GridColumn width={14}>
+                    <GridColumn width={13}>
                         <Segment>
-                            {activeItem ? renderSegmentFunc : undefined}
+                            {activeItem ?
+                                renderSegmentFunc
+                                :
+                                <Segment color="blue" inverted>
+                                    <Header textAlign="center" size="huge">
+                                        Dev Tools
+                                    </Header>
+                                    <Header size="tiny">Select and option</Header>
+                                </Segment>
+                            }
                         </Segment>
                     </GridColumn>
                 </GridRow>
