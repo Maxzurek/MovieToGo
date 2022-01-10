@@ -4,6 +4,7 @@ import { Container, Message } from "semantic-ui-react";
 
 interface ApiErrorsProps {
     error: AxiosError;
+    id?: number;
 }
 
 export default function DisplayApiErrors(props: ApiErrorsProps) {

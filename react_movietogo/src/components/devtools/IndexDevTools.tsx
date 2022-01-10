@@ -5,7 +5,7 @@ import TestFormsTool from "./TestFormsTool";
 
 export default function IndexAdminTools() {
 
-    const [activeItem, setActiveItem] = useState('');
+    const [activeItem, setActiveItem] = useState('database');
 
     const handleItemClick = (e: any, { name }: any) => {
         setActiveItem(name);

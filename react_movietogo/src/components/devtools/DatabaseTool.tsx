@@ -1,39 +1,30 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { Container } from "semantic-ui-react";
-import { movieToGoUrlMovies } from "../../endpoints";
-import { MovieDTO, MovieReviewDTO } from "../../models/movie.models";
+import { useState } from "react";
+import { Button, Container, Label } from "semantic-ui-react";
+import { movieToGoUrlMovieReviews, movieToGoUrlMovies, movieToGoUrlMovieVotes, movieToGoUrlWatchListItems, movieToGoUrlWatchLists } from "../../endpoints";
 import GenericDataTable from "../utilities/GenericDataTable";
 
 export default function DatabaseTool() {
 
-    const [moviesData, setMoviesData] = useState<MovieDTO[]>([]);
-    const [moviesErrors, setMoviesErrors] = useState<any>({});
+    const [refresh, setRefresh] = useState(false);
 
-    const [movieReviewsData, setMovieReviewsData] = useState<MovieReviewDTO[]>([]);
-    const [movieReviewErrors, setMovieReviewErrors] = useState<any>({});
+    const getURLS = [
+        { url: movieToGoUrlMovies, tableName: "Movies" },
+        { url: movieToGoUrlMovieReviews, tableName: "MovieReviews" },
+        { url: movieToGoUrlMovieVotes, tableName: "MovieVotes" },
+        { url: movieToGoUrlWatchLists, tableName: "WatchLists" },
+        { url: movieToGoUrlWatchListItems, tableName: "WatchListItems" },
+    ]
 
-    useEffect(() => {
-
-        async function getMoviesData() {
-            try {
-                const response = await axios.get(movieToGoUrlMovies);
-                setMoviesData(response.data);
-            } catch (error: any) {
-                setMoviesErrors(error);
-            }
-        }
-
-        getMoviesData();
-
-    }, [])
-    
     return (
         <Container>
             <Container textAlign="center">
-                <h1>Database Tool</h1>
+                <Label size="massive">Database Tool<Button icon='refresh' onClick={() => setRefresh(true)}></Button> </Label>
             </Container>
-            <GenericDataTable tableName="Movies" color="purple" data={moviesData} apiErrors={moviesErrors}/>
+            {getURLS.map((value, index) => {
+                return (
+                    <GenericDataTable key={index} url={value.url} tableName={value.tableName} refresh={refresh} setRefresh={setRefresh} />
+                )
+            })}
         </Container>
     )
 };
