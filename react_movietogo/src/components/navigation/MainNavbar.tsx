@@ -41,7 +41,7 @@ export default function MainNavbar() {
                 <MenuItem
                     as={Link}
                     to='/jeremy'
-                    name="jemery"
+                    name="jeremy"
                     active={activeItem === 'jeremy'}
                     onClick={handleItemClick}
                 ></MenuItem>
