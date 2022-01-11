@@ -38,6 +38,20 @@ export default function MainNavbar() {
                 >
                     <Image src="/images/MovieToGo_Logo.ico" size="tiny" />
                 </MenuItem>
+                <MenuItem
+                    as={Link}
+                    to='/jeremy'
+                    name="jemery"
+                    active={activeItem === 'jeremy'}
+                    onClick={handleItemClick}
+                ></MenuItem>
+                    <MenuItem
+                    as={Link}
+                    to='/fatima'
+                    name="fatima"
+                    active={activeItem === 'fatima'}
+                    onClick={handleItemClick}
+                ></MenuItem>
                 <MenuMenu position='right'>
                     <Authorized
                         authorized={
