@@ -37,7 +37,19 @@ const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 // TheMovieDb endpoints
 
     // Movies search
-    export const theMovieDbMoviesSearch = `${theMovieDbBaseUrl}/search/movie/?api_key=${theMovieDbApiKey}&language=en-US&query=`
+    export const theMovieDbSearchByKeyword = `${theMovieDbBaseUrl}/search/movie/?api_key=${theMovieDbApiKey}&language=en-US&query=`;
+
+    // Movies Trending
+        // Daily
+    export const theMovieDbTrendingDaily = `${theMovieDbBaseUrl}/trending/movie/day?api_key=${theMovieDbApiKey}`;
+        // Weekly
+    export const theMovieDbTrendingWeekly = `${theMovieDbBaseUrl}/trending/movie/week?api_key=${theMovieDbApiKey}`;
+
+    // Movies Popular
+    export const theMovieDbPopulars = `${theMovieDbBaseUrl}/discover/movie?api_key=${theMovieDbApiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1&with_watch_monetization_types=flatrate`;
+
+    // Movies In theater
+    export const theMovieDbInTheater = `${theMovieDbBaseUrl}/movie/now_playing?api_key=${theMovieDbApiKey}&language=en-US&page=1&region=us`;
 
     // Genres
-    export const theMovieDbGenres = `${theMovieDbBaseUrl}/genre/movie/list?api_key=${theMovieDbApiKey}`
+    export const theMovieDbGenres = `${theMovieDbBaseUrl}/genre/movie/list?api_key=${theMovieDbApiKey}`;
