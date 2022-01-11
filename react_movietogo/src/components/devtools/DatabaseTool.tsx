@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Container, Header, Label, Segment } from "semantic-ui-react";
-import { movieToGoUrlMovieReviews, movieToGoUrlMovies, movieToGoUrlMovieVotes, movieToGoUrlWatchListItems, movieToGoUrlWatchLists, theMovieDbSearchByKeyword } from "../../endpoints";
+import { movieToGoUrlMovieReviews, movieToGoUrlMovies, movieToGoUrlMovieVotes, movieToGoUrlWatchListItems, movieToGoUrlWatchLists, theMovieDbSearchByKeyword, theMovieDbTrendingDaily } from "../../endpoints";
 import GenericDataTable from "../utilities/GenericDataTable";
 
 export default function DatabaseTool() {
@@ -14,6 +14,7 @@ export default function DatabaseTool() {
         { url: movieToGoUrlWatchLists, tableName: "WatchLists" },
         { url: movieToGoUrlWatchListItems, tableName: "WatchListItems" },
         { url: `${theMovieDbSearchByKeyword}avengers`, tableName: "TheMovieDb Search result" },
+        { url: `${theMovieDbTrendingDaily}avengers`, tableName: "TheMovieDb Daily Trending Movies" },
     ]
 
     return (

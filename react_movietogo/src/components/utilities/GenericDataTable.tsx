@@ -163,7 +163,7 @@ export default function GenericDataTable(props: DataTableProps) {
                 </Segment>
                 {data?.length > 0 ? renderTable() : undefined}
                 <DisplayApiErrors error={error!} />
-                {response?.status === 204 ? <Message warning>Empty table</Message> : undefined}
+                {response?.status === 204 ? <Container textAlign="center"><Message warning>Empty table</Message></Container> : undefined}
         </Segment>
     )
 };
