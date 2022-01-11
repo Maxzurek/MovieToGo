@@ -6,9 +6,9 @@ import DisplayApiErrors from "./DisplayApiErrors";
 
 interface DataTableProps {
     url: string;
-    refresh: boolean;
-    setRefresh?: React.Dispatch<React.SetStateAction<boolean>> ;
     tableName: string;
+    refresh?: boolean;
+    setRefresh?: React.Dispatch<React.SetStateAction<boolean>> ;
     maxHeight?: string;
     color?: SemanticCOLORS;
 }
