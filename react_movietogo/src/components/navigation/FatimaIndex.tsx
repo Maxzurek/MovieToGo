@@ -1,9 +1,11 @@
-interface FatimaIndexProps{
+interface FatimaIndexProps {
 
 }
 
 export default function FatimaIndex(props: FatimaIndexProps) {
-    return(
-        <h3>Page fatima</h3>
+    return (
+        <>
+            <h3>Page fatima</h3>
+        </>
     )
 };
