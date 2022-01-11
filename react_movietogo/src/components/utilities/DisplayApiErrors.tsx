@@ -22,10 +22,10 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
 
     const getError401MessageComponent = (): ReactElement => {
 
-        const UNAUTHORIZED_ERR_MESSAGE = 'Error 401 - Unauthorized'
+        const UNAUTHORIZED_ERR_MESSAGE = 'Error 401 - Unauthorized';
 
         return (
-            <Container textAlign="center">
+            <Container textAlign="center" fluid>
                 <Message negative>{UNAUTHORIZED_ERR_MESSAGE}</Message>
             </Container>
         )
@@ -36,9 +36,10 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
         const SERVER_ERR_MESSAGE = 'Internal Server Error - Please try again later.'
 
         return (
-            <Container textAlign="center">
+            <Container textAlign="center" fluid>
                 <Message negative>{SERVER_ERR_MESSAGE}</Message>
-            </Container >
+
+            </Container>
         )
     }
 

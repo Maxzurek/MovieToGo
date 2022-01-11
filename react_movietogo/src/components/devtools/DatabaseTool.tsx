@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button, Container, Header, Label, Segment } from "semantic-ui-react";
-import { movieToGoUrlMovieReviews, movieToGoUrlMovies, movieToGoUrlMovieVotes, movieToGoUrlWatchListItems, movieToGoUrlWatchLists, theMovieDbSearchByKeyword, theMovieDbTrendingDaily } from "../../endpoints";
+import { Button, Container, Header, Segment } from "semantic-ui-react";
+import { movieToGoUrlMovieReviews, movieToGoUrlMovies, movieToGoUrlMovieVotes, movieToGoUrlWatchListItems, movieToGoUrlWatchLists, theMovieDbInTheater, theMovieDbPopulars, theMovieDbSearchByKeyword, theMovieDbTrendingDaily } from "../../endpoints";
 import GenericDataTable from "../utilities/GenericDataTable";
 
 export default function DatabaseTool() {
@@ -14,7 +14,10 @@ export default function DatabaseTool() {
         { url: movieToGoUrlWatchLists, tableName: "WatchLists" },
         { url: movieToGoUrlWatchListItems, tableName: "WatchListItems" },
         { url: `${theMovieDbSearchByKeyword}avengers`, tableName: "TheMovieDb Search result" },
-        { url: `${theMovieDbTrendingDaily}avengers`, tableName: "TheMovieDb Daily Trending Movies" },
+        { url: `${theMovieDbInTheater}`, tableName: "TheMovieDb In Theater Movies" },
+        { url: `${theMovieDbPopulars}`, tableName: "TheMovieDb Popular Movies" },
+        { url: `${theMovieDbTrendingDaily}`, tableName: "TheMovieDb Daily Trending Movies" },
+        { url: `${theMovieDbTrendingDaily}`, tableName: "TheMovieDb Weekly Trending Movies" },
     ]
 
     return (

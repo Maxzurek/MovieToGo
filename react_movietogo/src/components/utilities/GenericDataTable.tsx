@@ -1,13 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import { Container, Header, Loader, Message, Segment, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
+import { Container, Header, Message, Segment, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
 import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 import DisplayApiErrors from "./DisplayApiErrors";
 
 interface DataTableProps {
     url: string;
     refresh: boolean;
-    setRefresh(isRefresh: boolean): void;
+    setRefresh?: React.Dispatch<React.SetStateAction<boolean>> ;
     tableName: string;
     maxHeight?: string;
     color?: SemanticCOLORS;
@@ -52,8 +52,10 @@ export default function GenericDataTable(props: DataTableProps) {
             }
         }
 
-        if (props.refresh) {
-            props.setRefresh(false);
+        if (props.refresh || props.setRefresh) {
+            if(props.setRefresh !== undefined){
+                props.setRefresh(false);
+            }
             setError(undefined);
             setLoading(true);
             getRequest();
