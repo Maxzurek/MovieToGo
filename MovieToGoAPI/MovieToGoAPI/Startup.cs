@@ -28,6 +28,7 @@ namespace MovieToGoAPI
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddSingleton<AuthorizationService>();
+            services.AddSingleton<MovieService>();
 
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 

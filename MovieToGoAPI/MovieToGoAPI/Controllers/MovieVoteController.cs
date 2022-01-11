@@ -22,19 +22,22 @@ namespace MovieToGoAPI.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
         private readonly AuthorizationService authorizationService;
+        private readonly MovieService movieService;
 
         public MovieVotesController(
             ILogger<MovieVotesController> logger,
             ApplicationDbContext context,
             IMapper mapper,
-            AuthorizationService authorizationService, 
-            UserManager<User> userManager)
+            AuthorizationService authorizationService,
+            UserManager<User> userManager, 
+            MovieService movieService)
         {
             this.logger = logger;
             this.context = context;
             this.mapper = mapper;
             this.authorizationService = authorizationService;
             this.userManager = userManager;
+            this.movieService = movieService;
         }
 
         /// <summary>
@@ -103,12 +106,9 @@ namespace MovieToGoAPI.Controllers
             MovieVote movieVote = mapper.Map<MovieVote>(movieVoteCreationDTO);
             movieVote.UserId = userId;
 
-            EntityEntry<MovieVote> entityEntry = context.MovieVotes.Add(movieVote);
-            await context.SaveChangesAsync();
+            MovieVote addedMovieVote = await movieService.RegisterMovieVote(context, movieVote);
 
-            await entityEntry.Reference(x => x.User).LoadAsync();
-
-            return Ok(mapper.Map<MovieVoteDTO>(entityEntry.Entity));
+            return Ok(mapper.Map<MovieVoteDTO>(addedMovieVote));
         }
 
         /// <summary>
