@@ -4,7 +4,7 @@
     {
         public int TheMovieDbId { get; set; }
 
-        public int? VoteAverage { get; set; }
+        public double? VoteAverage { get; set; }
 
         public int? VoteCount { get; set; }
     }

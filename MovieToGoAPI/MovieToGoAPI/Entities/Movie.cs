@@ -22,7 +22,7 @@ namespace MovieToGoAPI.Entities
         [Required(ErrorMessage = "The field {0} is required")]
         public int TheMovieDbId { get; set; }
 
-        public int? VoteAverage { get; set; }
+        public double? VoteAverage { get; set; }
 
         public int? VoteCount { get; set; }
 
