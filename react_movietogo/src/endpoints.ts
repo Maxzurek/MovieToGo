@@ -53,3 +53,6 @@ const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 
     // Genres
     export const theMovieDbGenres = `${theMovieDbBaseUrl}/genre/movie/list?api_key=${theMovieDbApiKey}`;
+
+    // Images
+    export const theMovieDbImages = `https://image.tmdb.org/t/p/original`;
