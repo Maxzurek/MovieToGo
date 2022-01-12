@@ -1,8 +1,4 @@
-import axios, { AxiosError } from "axios";
-import { Key, useEffect, useState } from "react";
-import { theMovieDbPopulars, theMovieDbTrendingDaily } from "../../endpoints";
 import {Grid } from "semantic-ui-react";
-
 import IndividualMovie from "./IndividualMovie";
 import { movieCardDTO } from "../../models/movie.models";
 

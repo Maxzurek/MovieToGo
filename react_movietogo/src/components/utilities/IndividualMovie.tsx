@@ -4,7 +4,6 @@ import { Image, Card } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
 import { movieCardDTO } from "../../models/movie.models";
 
-
 export default function IndividualMovie(props: IndividualMovieProps) {
     
     const buildLink = () => `/movie/${props.movie.id}`
