@@ -1,13 +1,13 @@
 import { Button, Container, Label, Popup, Rating } from "semantic-ui-react";
 import { theMovieDbImages } from "../../endpoints";
-import { Image, Card, Icon } from "semantic-ui-react";
+import { Image, Card } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
-import { useState } from "react";
+import { movieCardDTO } from "../../models/movie.models";
 
-export default function IndividualMovie(props: movieDTO) {
+
+export default function IndividualMovie(props: IndividualMovieProps) {
     
     const buildLink = () => `/movie/${props.movie.id}`
-
     console.log(props);
 
     return (
@@ -27,13 +27,11 @@ export default function IndividualMovie(props: movieDTO) {
                                notAuthorized={<></>}/>
                 </Card.Content>
             </Card>
-
-
         </Container>
     )
 }
 
-export interface movieDTO {
-    movie: any;
+export interface IndividualMovieProps {
+    movie: movieCardDTO;
 
 }
