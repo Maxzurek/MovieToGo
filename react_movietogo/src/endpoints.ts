@@ -26,6 +26,7 @@ const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 
     // MovieVotes
     export const movieToGoUrlMovieVotes = `${movieToGoBaseUrl}/movieVotes`;
+    export const movieToGoUrlMovieVotesByMovieId = `${movieToGoBaseUrl}/movieVotes/movie`;
 
     // WatchListItems
     export const movieToGoUrlWatchListItems = `${movieToGoBaseUrl}/watchListItems`;
