@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Grid, Search, SearchProps, Label, SearchResultProps, SearchResultData } from "semantic-ui-react";
+import { Grid, Search, SearchProps, Label, SearchResultProps, SearchResultData, Input } from "semantic-ui-react";
 import { movieToGoUrlMovies, theMovieDbImages, theMovieDbSearchByKeyword } from "../../endpoints";
 import axios, { AxiosError } from 'axios';
 import React from "react";
@@ -89,12 +89,15 @@ export default function JeremyIndex(props: JeremyIndexProps) {
 
     return (
       <Grid>
-        <Grid.Column width={6}>
+        <Grid.Column width={5}>
 
           <Search
+            fluid
             onSearchChange={onChange}
             //resultRenderer={renderResult}
             results={results}
+            size = "huge"
+            input = {<Input fluid/>}
             //onResultSelect=
 
 
