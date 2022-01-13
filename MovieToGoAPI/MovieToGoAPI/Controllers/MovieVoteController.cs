@@ -89,6 +89,7 @@ namespace MovieToGoAPI.Controllers
         /// <param name="MovieId"></param>
         /// <returns></returns>
         [HttpGet("movie/{MovieId:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(MovieVoteDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
