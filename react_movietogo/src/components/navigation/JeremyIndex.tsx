@@ -1,54 +1,83 @@
-import axios from "axios"
-import { useState } from "react"
-import { Button, FormInput, Icon, Image, Input, InputOnChangeData, Segment } from "semantic-ui-react";
-import { theMovieDbImages, theMovieDbSearchByKeyword } from "../../endpoints"
+import { Component, useEffect, useState } from "react";
+import { Grid, Search, Segment, Header, InputOnChangeData, GridColumn, SearchProps } from "semantic-ui-react";
+import { movieToGoUrlAccounts, theMovieDbSearchByKeyword } from "../../endpoints";
 import GenericDataTable from "../utilities/GenericDataTable";
+import axios, { AxiosError } from 'axios';
+import { url } from "inspector";
+import { render } from "@testing-library/react";
+import React from "react";
+
+
 
 interface JeremyIndexProps {
-}
 
-interface TheMovieDbDTO {
-    title: string;
-    release_date: string;
-    poster_path: string;
+}
+interface theMovieDbDTO {
+  title: string;
+  release_date: string;
+  poster: string;
 }
 
 export default function JeremyIndex(props: JeremyIndexProps) {
 
-    const [keyword, setKeyword] = useState('');
-    const [results, setResults] = useState<TheMovieDbDTO[]>([]);
 
-    const appelAPI = async () => {
-        let response = await axios.get(theMovieDbSearchByKeyword + keyword)
-        setResults(response.data.results);
+  const [error, setError] = useState<AxiosError>();
+  const [keyword, setKeyword] = useState<string | undefined>();
+  const [results, setResults] = useState<theMovieDbDTO[]>([]);
+
+  const getMovieData = async () => {
+    try {
+      let response = await axios.get(theMovieDbSearchByKeyword + keyword);
+      var results = response.data.results;
+      var theMovieDTO: theMovieDbDTO = {
+        title: "",
+        release_date: "",
+        poster: ""
+      }
+      results.map(x: any => {
+
+      })
+      setResults(response.data.results);
+
+      
     }
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
-        setKeyword(data.value);
-        appelAPI();
+    catch (error) {
+      let axiosError = error as AxiosError;
+      setError(axiosError);
+      
     }
 
-    return (
-        <>
-            <h3>Page jeremy</h3>
-            <Input onChange={onChange}></Input>
-            <Segment>
-                <ul>
-                    {results?.map((movie, index) => {
-                        console.log(movie);
-                        return (
-                            <>
-                                <Image size="tiny" src={theMovieDbImages + movie.poster_path} />
-                                <li key={index}>{movie.title} : {movie.release_date}</li>
-                            </>
-                        )
-                    })}
-                </ul>
-            </Segment>
-            <br />
-            <br />
-            <br />
-            <GenericDataTable url={theMovieDbSearchByKeyword + keyword} tableName="example" />
-        </>
-    )
-};
+  }
+  const onChange = (event: React.MouseEvent<HTMLElement>, data: SearchProps) => {
+    console.log(data.value);
+    setKeyword(data.value);
+    
+    getMovieData();
+  }
+
+
+
+  return (
+     <Grid>
+       <Grid.Column width={6}>
+        
+         <Search 
+          onSearchChange= {onChange} 
+          results = {results}
+          
+          
+
+          
+          
+          
+          />
+       </Grid.Column>
+       
+
+     </Grid>
+
+
+
+
+
