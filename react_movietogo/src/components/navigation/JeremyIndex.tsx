@@ -1,11 +1,10 @@
-import { Component, useEffect, useState } from "react";
-import { Grid, Search, Segment, Header, InputOnChangeData, GridColumn, SearchProps, Label, SearchResultProps } from "semantic-ui-react";
-import { movieToGoUrlAccounts, theMovieDbSearchByKeyword } from "../../endpoints";
-import GenericDataTable from "../utilities/GenericDataTable";
+import { useState } from "react";
+import { Grid, Search, SearchProps, Label, SearchResultProps, SearchResultData } from "semantic-ui-react";
+import { movieToGoUrlMovies, theMovieDbImages, theMovieDbSearchByKeyword } from "../../endpoints";
 import axios, { AxiosError } from 'axios';
-import { url } from "inspector";
-import { render } from "@testing-library/react";
 import React from "react";
+import { number } from "yup/lib/locale";
+import { MovieCreationDTO } from "../../models/movie.models";
 
 
 
@@ -13,6 +12,7 @@ interface JeremyIndexProps {
 
 }
 interface theMovieDbDTO {
+  id: string;
   title: string;
   description: string;
   image: string;
@@ -25,21 +25,26 @@ export default function JeremyIndex(props: JeremyIndexProps) {
   const [keyword, setKeyword] = useState<string | undefined>();
   const [results, setResults] = useState<theMovieDbDTO[]>([]);
 
-  const getMovieData = async () => {
+  const getTheMovieDbData = async () => {
     try {
       let response = await axios.get(theMovieDbSearchByKeyword + keyword);
       setError(undefined);
       setResults([]);
       var results = response.data.results;
-      var theMovieDTO: theMovieDbDTO = {
-        title: "",
-        description: "",
-        image: ""
-      }
+      console.log(results);
+
       results.map((result: any) => {
+        let theMovieDTO: theMovieDbDTO = {
+          id: "",
+          title: "",
+          description: "",
+          image: ""
+        }
+        createMovieToGoMovie(result.id);
+        theMovieDTO.id = result.id;
         theMovieDTO.title = result.title;
         theMovieDTO.description = result.release_date;
-        theMovieDTO.image = result.poster;
+        theMovieDTO.image = theMovieDbImages + result.poster_path;
         setResults((oldResult) => [...oldResult, theMovieDTO])
       })
 
@@ -58,36 +63,53 @@ export default function JeremyIndex(props: JeremyIndexProps) {
     console.log(data.value);
     setKeyword(data.value);
 
-    getMovieData();
+    getTheMovieDbData();
+  }
+  const createMovieToGoMovie = async (id : number) => {
+    let movieCreationDTO: MovieCreationDTO = {TheMovieDbId: id}
+    try {
+      let response = await axios.post(movieToGoUrlMovies,movieCreationDTO);
+      
+    } 
+    catch (error) {
+      let axiosError = error as AxiosError;
+      setError(axiosError);
+    }
+
   }
 
-  const renderResult = (props: SearchResultProps) => { return (<Label>{props.title}</Label>) }
+
+    const onResultSelect = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, data: SearchResultData) => {
 
 
-  return (
-    <Grid>
-      <Grid.Column width={6}>
+    }
 
-        <Search
-          onSearchChange={onChange}
-          resultRenderer={renderResult}
-          results={results}
+    const renderResult = (props: SearchResultProps) => { return (<Label>{props.title}</Label>) }
 
 
+    return (
+      <Grid>
+        <Grid.Column width={6}>
 
-
-
-
-
-        />
-      </Grid.Column>
-
-
-    </Grid>
+          <Search
+            onSearchChange={onChange}
+            //resultRenderer={renderResult}
+            results={results}
+            //onResultSelect=
 
 
 
 
-  );
-}
 
+
+          />
+        </Grid.Column>
+
+
+      </Grid>
+
+
+
+
+    );
+  }
