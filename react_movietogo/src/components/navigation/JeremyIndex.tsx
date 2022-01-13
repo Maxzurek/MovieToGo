@@ -11,8 +11,9 @@ import { MovieCreationDTO } from "../../models/movie.models";
 interface JeremyIndexProps {
 
 }
-interface theMovieDbDTO {
-  id: string;
+interface MovieResult {
+  movieToGoId: string;
+  theMovieDbId: string;
   title: string;
   description: string;
   image: string;
@@ -23,7 +24,7 @@ export default function JeremyIndex(props: JeremyIndexProps) {
 
   const [error, setError] = useState<AxiosError>();
   const [keyword, setKeyword] = useState<string | undefined>();
-  const [results, setResults] = useState<theMovieDbDTO[]>([]);
+  const [results, setResults] = useState<MovieResult[]>([]);
 
   const getTheMovieDbData = async () => {
     try {
@@ -31,21 +32,27 @@ export default function JeremyIndex(props: JeremyIndexProps) {
       setError(undefined);
       setResults([]);
       var results = response.data.results;
-      console.log(results);
+      //console.log(results);
 
-      results.map((result: any) => {
-        let theMovieDTO: theMovieDbDTO = {
-          id: "",
+      results.map(async (result: any) => {
+
+        let movieResult: MovieResult = {
+          movieToGoId:"",
+          theMovieDbId:"",
           title: "",
           description: "",
           image: ""
         }
-        createMovieToGoMovie(result.id);
-        theMovieDTO.id = result.id;
-        theMovieDTO.title = result.title;
-        theMovieDTO.description = result.release_date;
-        theMovieDTO.image = theMovieDbImages + result.poster_path;
-        setResults((oldResult) => [...oldResult, theMovieDTO])
+
+        let movieToGoDTO = await createMovieToGoMovie(result.id) ;
+
+        movieResult.movieToGoId = movieToGoDTO.id;
+        movieResult.theMovieDbId = result.id;
+        movieResult.title = result.title;
+        movieResult.description = result.release_date;
+        movieResult.image = theMovieDbImages + result.poster_path;
+        setResults((oldResult) => [...oldResult, movieResult])
+       // console.log(movieResult);
       })
 
 
@@ -60,7 +67,7 @@ export default function JeremyIndex(props: JeremyIndexProps) {
 
   }
   const onChange = (event: React.MouseEvent<HTMLElement>, data: SearchProps) => {
-    console.log(data.value);
+   // console.log(data.value);
     setKeyword(data.value);
 
     getTheMovieDbData();
@@ -69,7 +76,7 @@ export default function JeremyIndex(props: JeremyIndexProps) {
     let movieCreationDTO: MovieCreationDTO = {TheMovieDbId: id}
     try {
       let response = await axios.post(movieToGoUrlMovies,movieCreationDTO);
-      
+      return response.data;
     } 
     catch (error) {
       let axiosError = error as AxiosError;
@@ -80,11 +87,10 @@ export default function JeremyIndex(props: JeremyIndexProps) {
 
 
     const onResultSelect = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, data: SearchResultData) => {
-
+        console.log(data.result)
 
     }
 
-    const renderResult = (props: SearchResultProps) => { return (<Label>{props.title}</Label>) }
 
 
     return (
@@ -94,11 +100,10 @@ export default function JeremyIndex(props: JeremyIndexProps) {
           <Search
             fluid
             onSearchChange={onChange}
-            //resultRenderer={renderResult}
             results={results}
             size = "huge"
             input = {<Input fluid/>}
-            //onResultSelect=
+            onResultSelect={onResultSelect}
 
 
 
