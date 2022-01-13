@@ -101,6 +101,13 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Creating movie");
 
+            Movie? existingMovie =  await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbId == movieCreationDTO.TheMovieDbId);
+
+            if(existingMovie != null) // We already have a reference to TheMovieDb movie Id in our database, no need to add it again
+            {
+                return Ok(mapper.Map<MovieDTO>(existingMovie));
+            }
+
             Movie movie = mapper.Map<Movie>(movieCreationDTO);
 
             EntityEntry<Movie> entityEntry = context.Movies.Add(movie);
