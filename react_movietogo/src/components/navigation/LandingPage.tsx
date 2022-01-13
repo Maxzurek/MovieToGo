@@ -5,7 +5,6 @@ import { theMovieDbInTheater, theMovieDbPopulars, theMovieDbTrendingDaily } from
 import { movieCardDTO } from "../../models/movie.models";
 import MovieCards from "../utilities/MovieCards";
 
-
 export default function LandingPage() {
 
     const [tredingMovies, setTredingMovies] = useState<movieCardDTO[]>([]);
