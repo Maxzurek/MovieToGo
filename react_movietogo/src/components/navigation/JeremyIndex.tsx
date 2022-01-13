@@ -1,5 +1,5 @@
 import { Component, useEffect, useState } from "react";
-import { Grid, Search, Segment, Header, InputOnChangeData, GridColumn, SearchProps } from "semantic-ui-react";
+import { Grid, Search, Segment, Header, InputOnChangeData, GridColumn, SearchProps, Label, SearchResultProps } from "semantic-ui-react";
 import { movieToGoUrlAccounts, theMovieDbSearchByKeyword } from "../../endpoints";
 import GenericDataTable from "../utilities/GenericDataTable";
 import axios, { AxiosError } from 'axios';
@@ -14,8 +14,8 @@ interface JeremyIndexProps {
 }
 interface theMovieDbDTO {
   title: string;
-  release_date: string;
-  poster: string;
+  description: string;
+  image: string;
 }
 
 export default function JeremyIndex(props: JeremyIndexProps) {
@@ -28,56 +28,66 @@ export default function JeremyIndex(props: JeremyIndexProps) {
   const getMovieData = async () => {
     try {
       let response = await axios.get(theMovieDbSearchByKeyword + keyword);
+      setError(undefined);
+      setResults([]);
       var results = response.data.results;
       var theMovieDTO: theMovieDbDTO = {
         title: "",
-        release_date: "",
-        poster: ""
+        description: "",
+        image: ""
       }
-      results.map(x: any => {
-
+      results.map((result: any) => {
+        theMovieDTO.title = result.title;
+        theMovieDTO.description = result.release_date;
+        theMovieDTO.image = result.poster;
+        setResults((oldResult) => [...oldResult, theMovieDTO])
       })
-      setResults(response.data.results);
 
-      
+
+
     }
 
     catch (error) {
       let axiosError = error as AxiosError;
       setError(axiosError);
-      
+
     }
 
   }
   const onChange = (event: React.MouseEvent<HTMLElement>, data: SearchProps) => {
     console.log(data.value);
     setKeyword(data.value);
-    
+
     getMovieData();
   }
 
+  const renderResult = (props: SearchResultProps) => { return (<Label>{props.title}</Label>) }
 
 
   return (
-     <Grid>
-       <Grid.Column width={6}>
-        
-         <Search 
-          onSearchChange= {onChange} 
-          results = {results}
-          
-          
+    <Grid>
+      <Grid.Column width={6}>
 
-          
-          
-          
-          />
-       </Grid.Column>
-       
-
-     </Grid>
+        <Search
+          onSearchChange={onChange}
+          resultRenderer={renderResult}
+          results={results}
 
 
 
 
+
+
+
+        />
+      </Grid.Column>
+
+
+    </Grid>
+
+
+
+
+  );
+}
 
