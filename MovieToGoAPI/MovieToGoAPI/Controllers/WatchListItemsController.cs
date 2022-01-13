@@ -118,6 +118,7 @@ namespace MovieToGoAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(WatchListItemDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Post([FromBody] WatchListItemCreationDTO watchListItemCreationDTO)
         {
             logger.LogInformation("Creating a watchlist item");

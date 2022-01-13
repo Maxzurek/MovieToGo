@@ -41,7 +41,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// get all movieVotes
+        /// get all MovieVotes
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -62,7 +62,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get movieVote by ID
+        /// Get MovieVote by ID
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -84,7 +84,37 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Create movieVote
+        /// Get a MovieVote by it's MovieId foreign key. User must be logged in (JWT bearer).
+        /// </summary>
+        /// <param name="MovieId"></param>
+        /// <returns></returns>
+        [HttpGet("movie/{MovieId:int}")]
+        [ProducesResponseType(typeof(MovieVoteDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<MovieVoteDTO>> GetByMovieId(int MovieId)
+        {
+            logger.LogInformation("Getting vote by Id");
+
+            string? userId = await authorizationService.validateUserClaim(this, userManager);
+
+            if (userId == null)
+            {
+                return Unauthorized("Unauthorized. You must be logged in in order to post a movie vote");
+            }
+
+            MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.MovieId == MovieId && x.UserId == userId);
+
+            if (movieVote == null)
+            {
+                return NotFound();
+            }
+
+            return mapper.Map<MovieVoteDTO>(movieVote);
+        }
+
+        /// <summary>
+        /// Create MovieVote
         /// </summary>
         /// <param name="movieVoteCreationDTO"></param>
         /// <returns></returns>
@@ -92,6 +122,7 @@ namespace MovieToGoAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(MovieVoteDTO),StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<MovieVoteDTO>> Post([FromBody] MovieVoteCreationDTO movieVoteCreationDTO)
         {
             logger.LogInformation("Creating a Vote");
@@ -112,7 +143,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Update movieVote by ID
+        /// Update MovieVote by ID
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="MovieVoteDTO"></param>
@@ -140,7 +171,7 @@ namespace MovieToGoAPI.Controllers
 
 
         /// <summary>
-        /// Delete movieVote by ID
+        /// Delete MovieVote by ID
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
