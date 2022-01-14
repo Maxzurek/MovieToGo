@@ -37,7 +37,6 @@ export default function LandingPage() {
             setMovieToGo([])
             var results = response.data.results;
             setMovieDb(results);
-            console.log(results);
 
             results.map(async (result: any) => {
                 let movieToGoDTO = await createMovieToGoMovie(result.id);

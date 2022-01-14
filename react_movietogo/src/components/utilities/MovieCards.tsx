@@ -1,16 +1,27 @@
-import {Grid } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import IndividualMovie from "./IndividualMovie";
 import { movieCardDTO, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 
-export default function MovieCards(props:moviesCardsProps) {
+export default function MovieCards(props: moviesCardsProps) {
+    console.log(props.theMovieDbDTO);
+    console.log(props.movieToGoDTO);
     return (
         <>
-            <Grid  columns={4} container doubling stackable>
-                {props.theMovieDbDTO.map((movieCrd,index) =>
-                    <Grid.Column>
-                        <IndividualMovie theMovieDbDTO={movieCrd} key={index}
-                                         movieToGoDTO ={props.movieToGoDTO[index]}/>
-                    </Grid.Column>
+            <Grid columns={4} container doubling stackable>
+                {props.theMovieDbDTO.map((movieCrd, index) => {
+
+                    console.log(props.movieToGoDTO[index]);
+
+                    return (
+                        <Grid.Column key={index}>
+                            <IndividualMovie
+                                key={index}
+                                theMovieDbDTO={movieCrd}
+                                movieToGoDTO={props.movieToGoDTO[index]}
+                            />
+                        </Grid.Column>
+                    )
+                }
                 )}
             </Grid>
         </>
@@ -19,6 +30,6 @@ export default function MovieCards(props:moviesCardsProps) {
 
 interface moviesCardsProps {
     theMovieDbDTO: TheMovieDbDTO[];
-    movieToGoDTO : MovieToGoDTO[];
+    movieToGoDTO: MovieToGoDTO[];
 }
 
