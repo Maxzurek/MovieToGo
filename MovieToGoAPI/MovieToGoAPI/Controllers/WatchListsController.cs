@@ -84,18 +84,26 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get a user's watchlists
+        /// Get a user watchlist. JWT bearer required
         /// </summary>
         /// <param name="UserId"></param>
         /// <returns></returns>
-        [HttpGet("{UserId}")]
+        [HttpGet("user")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(List<WatchListDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<List<WatchListDTO>>> GetByUserId(string UserId)
+        public async Task<ActionResult<List<WatchListDTO>>> GetByUserId()
         {
-            logger.LogInformation("Getting all user's watchlists");
+            logger.LogInformation("Getting a user's watchlists");
 
-            List<WatchList> watchlists = await context.WatchLists.Include(x => x.User).Include(x => x.WatchListItems).Where(x => x.UserId == UserId).ToListAsync();
+            string? userId = await authorizationService.validateUserClaim(this, userManager);
+
+            if (userId == null)
+            {
+                return Unauthorized("Unauthorized. You must be logged in in order to get a user watchlist");
+            }
+
+            List<WatchList> watchlists = await context.WatchLists.Include(x => x.User).Include(x => x.WatchListItems).Where(x => x.UserId == userId).ToListAsync();
 
 
             if (watchlists.Count == 0)
@@ -107,7 +115,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Create a watchlist
+        /// Create a watchlist. JWT bearer required
         /// </summary>
         /// <param name="watchListCreationDTO"></param>
         /// <returns></returns>
