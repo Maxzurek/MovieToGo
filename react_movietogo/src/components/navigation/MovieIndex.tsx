@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Container, Header } from "semantic-ui-react";
 import { MovieDetailsData } from "../../models/movie.models";
 
@@ -18,7 +18,8 @@ export default function MovieIndex(props: MovieIndexProps) {
     return (
         <Container fluid textAlign="center">
             <Header as='h1'>Movie Details</Header>
-            <Header as='h1'>Title: {state.movieDetailsData.theMovieDbData.title}</Header>
+            <Header as='h1'>Title: {state.movieDetailsData.theMovieDbData?.title}</Header>
+            <Link to='/movie' state={state.movieDetailsData.movieToGoData}></Link>
         </Container>
     )
 };

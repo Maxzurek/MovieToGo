@@ -3,7 +3,7 @@ import { useState, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchProps, SearchResultData, Search, Input } from "semantic-ui-react"
 import { movieToGoUrlMovies, theMovieDbImages, theMovieDbSearchByKeyword } from "../../endpoints";
-import { MovieCreationDTO, MovieDetailsData, MovieToGoDTO } from "../../models/movie.models"
+import { MovieCreationDTO, MovieDetailsData, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models"
 
 interface MovieResult {
     id: number;
@@ -16,13 +16,13 @@ type State = {
     loading: boolean
     results: MovieResult[]
     value: string | undefined
-    theMovieDbData: any[]
+    theMovieDbData: TheMovieDbDTO[]
     movieToGoData: MovieToGoDTO[] | undefined
 }
 
 type Action =
     | { type: 'START_SEARCH', query: string | undefined }
-    | { type: 'FINISH_SEARCH', results: MovieResult[], theMovieDbData: any, movieToGoData: MovieToGoDTO[] | undefined }
+    | { type: 'FINISH_SEARCH', results: MovieResult[], theMovieDbData: TheMovieDbDTO[], movieToGoData: MovieToGoDTO[] | undefined }
     | { type: 'UPDATE_SELECTION', selection: string }
     | { type: 'CLEAN_QUERY' }
 
