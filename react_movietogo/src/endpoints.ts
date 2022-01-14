@@ -34,6 +34,7 @@ const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 
     // WatchLists
     export const movieToGoUrlWatchLists = `${movieToGoBaseUrl}/watchLists`;
+    export const movieToGoUrlWatchListsUser = `${movieToGoBaseUrl}/watchLists/user`;
 
 // TheMovieDb endpoints
 
