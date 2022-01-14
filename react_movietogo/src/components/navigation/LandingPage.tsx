@@ -61,6 +61,7 @@ export default function LandingPage() {
     }
 
 
+    
     const createMovieToGoMovie = async (id: number): Promise<MovieToGoDTO> => {
 
         let movieCreationDTO: MovieCreationDTO = { theMovieDbId: id }
@@ -70,7 +71,8 @@ export default function LandingPage() {
             theMovieDbId: 0,
             voteAverage: 0,
             voteCount: 0,
-            movieReviews: undefined
+            movieReviews: undefined,
+            movieVote:undefined
         }
 
         await axios.post(movieToGoUrlMovies, movieCreationDTO)

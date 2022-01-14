@@ -9,8 +9,6 @@ export default function IndividualMovie(props: IndividualMovieProps) {
 
     const navigate = useNavigate();
     const [rating, setRating] = useState<any>(1);
-    // const buildLink = () => `movie/${props.movie.movieToGoId}`
-    //console.log(props);
 
     const handleChangeOnRate = (e: React.MouseEvent<HTMLDivElement>, data: RatingProps) => {
         e.preventDefault();
@@ -25,8 +23,10 @@ export default function IndividualMovie(props: IndividualMovieProps) {
             theMovieDbData: props.theMovieDbDTO
         }
         
+        console.log(movieDetailsData);
         navigate('/movie', { state: {movieDetailsData} })
     }
+
 
     return (
         <Container >
@@ -60,3 +60,5 @@ export interface IndividualMovieProps {
     movieToGoDTO: MovieToGoDTO;
 
 }
+
+

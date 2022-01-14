@@ -1,6 +1,6 @@
 import { Grid } from "semantic-ui-react";
 import IndividualMovie from "./IndividualMovie";
-import { movieCardDTO, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
+import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 
 export default function MovieCards(props: moviesCardsProps) {
 
@@ -17,6 +17,8 @@ export default function MovieCards(props: moviesCardsProps) {
             )
         )
     }
+
+    
 
     return (
         <>
