@@ -1,14 +1,13 @@
-import { Button, Container, Label, Popup, Rating, RatingProps } from "semantic-ui-react";
+import { Button, Container, Label, Popup, Rating, RatingProps, Image, Card } from "semantic-ui-react";
 import { theMovieDbImages } from "../../endpoints";
-import { Image, Card } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
 import { useEffect, useState } from "react";
 import { MovieDetailsData, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function IndividualMovie(props: IndividualMovieProps) {
 
-    const [linkState, setLinkState] = useState<MovieDetailsData>();
+    const navigate = useNavigate();
     const [rating, setRating] = useState<any>(1);
     // const buildLink = () => `movie/${props.movie.movieToGoId}`
     //console.log(props);
@@ -18,26 +17,31 @@ export default function IndividualMovie(props: IndividualMovieProps) {
         setRating(data.rating);
     }
 
-    useEffect(() => {
-        setLinkState({
-            theMovieDbData: props.theMovieDbDTO,
-            movieToGoData: props.movieToGoDTO
-        })
-    }, [])
+
+    const handleOnClick = () => {
+
+        const movieDetailsData : MovieDetailsData = {
+            movieToGoData: props.movieToGoDTO,
+            theMovieDbData: props.theMovieDbDTO
+        }
+        
+        navigate('/movie', { state: {movieDetailsData} })
+    }
 
     return (
         <Container >
             <Card>
                 <Card.Content>
-                    <Link
-                        to={"/movie"}
-                        state={linkState}
+                    <Container
+                        as={'a'}
+                        fluid
+                        onClick={handleOnClick}
                     >
                         <Image src={theMovieDbImages + props.theMovieDbDTO.poster_path} floated='right' size='medium' />
                         <Card.Header><h3>{props.theMovieDbDTO.title}</h3></Card.Header>
                         <Card.Meta>{props.theMovieDbDTO.release_date}</Card.Meta>
                         <Label attached="top" size="huge" color="yellow" >Rating : {props.theMovieDbDTO.vote_average}/10 </Label>
-                    </Link>
+                    </Container>
 
                     <Authorized authorized={<Rating onRate={handleChangeOnRate} icon="star" maxRating={5} size="huge" rating={rating}></Rating>}
                         notAuthorized={<></>}

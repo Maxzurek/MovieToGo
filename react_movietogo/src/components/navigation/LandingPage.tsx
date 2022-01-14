@@ -1,9 +1,10 @@
 import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Container, Header, Segment } from "semantic-ui-react";
+import { useStateIfMounted } from "use-state-if-mounted";
 
-import { movieToGoUrlMovies, theMovieDbImages, theMovieDbInTheater, theMovieDbPopulars, theMovieDbTrendingDaily } from "../../endpoints";
-import {  MovieCreationDTO, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
+import { movieToGoUrlMovies, theMovieDbInTheater, theMovieDbPopulars, theMovieDbTrendingDaily } from "../../endpoints";
+import { MovieCreationDTO, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import MovieCards from "../utilities/MovieCards";
 
 
@@ -11,58 +12,80 @@ import MovieCards from "../utilities/MovieCards";
 
 export default function LandingPage() {
 
-    const [tredingMovies, setTredingMovies] = useState<TheMovieDbDTO[]>([]);
-    const [tredingmovieToGoDTO, setTredingmovieToGoDTO] = useState<MovieToGoDTO[]>([]);
-    const [popularMovies, setPopularMovies] = useState<TheMovieDbDTO[]>([]);
-    const [popularmovieToGoDTO, setPopularmovieToGoDTO] = useState<MovieToGoDTO[]>([]);
-    const [theaterMovies, setTheaterMovies] = useState<TheMovieDbDTO[]>([]);
-    const [theatermovieToGoDTO, setTheatermovieToGoDTO] = useState<MovieToGoDTO[]>([]);
+    const [tredingMovies, setTredingMovies] = useStateIfMounted<TheMovieDbDTO[]>([]);
+    const [tredingmovieToGoDTO, setTredingmovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
+    const [popularMovies, setPopularMovies] = useStateIfMounted<TheMovieDbDTO[]>([]);
+    const [popularmovieToGoDTO, setPopularmovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
+    const [theaterMovies, setTheaterMovies] = useStateIfMounted<TheMovieDbDTO[]>([]);
+    const [theatermovieToGoDTO, setTheatermovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
     const [error, setError] = useState<AxiosError>();
 
     useEffect(() => {
-        getMoviesDbApi(theMovieDbTrendingDaily,setTredingmovieToGoDTO,setTredingMovies);
-        getMoviesDbApi(theMovieDbPopulars,setPopularmovieToGoDTO,setPopularMovies);
-        getMoviesDbApi(theMovieDbInTheater,setTheatermovieToGoDTO,setTheaterMovies);
+
+        getMoviesDbApi(theMovieDbTrendingDaily, setTredingmovieToGoDTO, setTredingMovies);
+        getMoviesDbApi(theMovieDbPopulars, setPopularmovieToGoDTO, setPopularMovies);
+        getMoviesDbApi(theMovieDbInTheater, setTheatermovieToGoDTO, setTheaterMovies);
+    }, [])
+
+    useEffect(() => {
 
     }, [])
 
-    const getMoviesDbApi = async (urlMovieDb : string,
-          setMovieToGo :  React.Dispatch<React.SetStateAction<MovieToGoDTO[]>>, 
-          setMovieDb: React.Dispatch<React.SetStateAction<TheMovieDbDTO[]>> ) => {
-              
-        try {
-            const response = await axios.get(urlMovieDb);
-            setError(undefined);
-            setMovieDb([]);
-            setMovieToGo([])
-            var results = response.data.results;
-            setMovieDb(results);
+    const getMoviesDbApi = async (urlMovieDb: string,
+        setMovieToGo: React.Dispatch<React.SetStateAction<MovieToGoDTO[]>>,
+        setMovieDb: React.Dispatch<React.SetStateAction<TheMovieDbDTO[]>>) => {
 
-            results.map(async (result: any) => {
-                let movieToGoDTO = await createMovieToGoMovie(result.id);
-                setMovieToGo((oldResult) => [...oldResult, movieToGoDTO])})
+        await axios.get(urlMovieDb)
+            .then(response => {
 
-        } catch (error) {
-            let axiosError = error as AxiosError;
-            setError(axiosError);
-            console.log(axiosError)
-        }
+                var results = response.data.results;
+                setError(undefined);
+                setMovieDb([]);
+                setMovieToGo([])
+                setMovieDb(results);
+
+
+                results.map(async (result: any) => {
+
+                    await createMovieToGoMovie(result.id)
+                        .then(response => {
+                            setMovieToGo((oldResult) => [...oldResult, response])
+                        })
+                })
+            })
+            .catch(error => {
+                let axiosError = error as AxiosError;
+                setError(axiosError);
+                console.log(axiosError)
+            });
     }
 
- 
-    const createMovieToGoMovie = async (id: number) => {
+
+    const createMovieToGoMovie = async (id: number): Promise<MovieToGoDTO> => {
 
         let movieCreationDTO: MovieCreationDTO = { theMovieDbId: id }
 
-        try {
-            let response = await axios.post(movieToGoUrlMovies, movieCreationDTO);
-            return response.data;
+        let movieToGoDTO: MovieToGoDTO = {
+            id: 0,
+            theMovieDbId: 0,
+            voteAverage: 0,
+            voteCount: 0,
+            movieReviews: undefined
         }
-        catch (error) {
-            let axiosError = error as AxiosError;
-            setError(axiosError);
-        }
+
+        await axios.post(movieToGoUrlMovies, movieCreationDTO)
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => {
+                let axiosError = error as AxiosError;
+                setError(axiosError);
+                throw new Error();
+            });
+
+        return movieToGoDTO;
     }
+
     return (
 
         <Container fluid textAlign="left">
@@ -71,8 +94,8 @@ export default function LandingPage() {
                     Movies Trending
                 </Header>
             </Segment>
-            <MovieCards theMovieDbDTO={tredingMovies} 
-                        movieToGoDTO = {tredingmovieToGoDTO}/>
+            <MovieCards theMovieDbDTO={tredingMovies}
+                movieToGoDTO={tredingmovieToGoDTO} />
 
             <Segment color="grey" inverted>
                 <Header textAlign="center" size="huge">
@@ -81,7 +104,7 @@ export default function LandingPage() {
             </Segment>
 
             <MovieCards theMovieDbDTO={popularMovies}
-                        movieToGoDTO = {popularmovieToGoDTO} />
+                movieToGoDTO={popularmovieToGoDTO} />
 
             <Segment color="brown" inverted>
                 <Header textAlign="center" size="huge">
@@ -89,10 +112,9 @@ export default function LandingPage() {
                 </Header>
             </Segment>
 
-            <MovieCards theMovieDbDTO={theaterMovies} 
-                     movieToGoDTO = {theatermovieToGoDTO}/>
+            <MovieCards theMovieDbDTO={theaterMovies}
+                movieToGoDTO={theatermovieToGoDTO} />
         </Container>
     )
 };
-
 
