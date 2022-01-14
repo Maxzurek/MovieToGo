@@ -69,15 +69,6 @@ export interface MovieReviewCreationDTO{
     body: string;
 }
 
-//Movie Cards
-export interface movieCardDTO{
-    id : number;
-    title : string;
-    release_date : Date
-    vote_average:number
-    poster_path:string
-}
-
 // Data transfert between pages
 export interface MovieDetailsData {
     theMovieDbData: TheMovieDbDTO | undefined;
