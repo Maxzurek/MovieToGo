@@ -10,6 +10,7 @@ import DisplayApiErrors from "../utilities/DisplayApiErrors";
 import AuthenticationContext from "../contexts/AuthenticationContext";
 import { getClaims, saveToken } from "../authentication/handleJWT";
 import ModalContext from "../contexts/ModalContext";
+import { useNavigate } from "react-router-dom";
 
 interface AuthenticationModalProps {
     open: boolean;
@@ -28,9 +29,9 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
     const { update } = useContext(AuthenticationContext);
     const { displayOkMessage } = useContext(ModalContext);
-
     const [apiErrors, setApiErrors] = useState<any>({});
     const [selection, setSelection] = useState(props.defaultSelection);
+    const navigate = useNavigate();
 
     const LOGIN = 'login';
     const REGISTER = 'register';
@@ -60,6 +61,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
             saveToken(response.data);
             update(getClaims());
             props.setOpen(false);
+            navigate('/');
         }
         catch (error: any) {
             console.log(error);
