@@ -3,7 +3,7 @@ import FatimaIndex from "./components/navigation/FatimaIndex";
 import JeremyIndex from "./components/navigation/JeremyIndex";
 import LandingPage from "./components/navigation/LandingPage";
 import MovieIndex from "./components/navigation/MovieIndex";
-import { WatchListIndex } from "./components/navigation/WatchListIndex";
+import WatchListIndex from "./components/navigation/WatchListIndex";
 
 const routes = [
 
