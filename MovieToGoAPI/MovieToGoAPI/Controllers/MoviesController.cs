@@ -99,16 +99,19 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Movie>> Post([FromBody] MovieCreationDTO movieCreationDTO)
         {
-            logger.LogInformation("Creating movie");
+            logger.LogInformation("Movies post");
 
             Movie? existingMovie =  await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbId == movieCreationDTO.TheMovieDbId);
 
             if(existingMovie != null) // We already have a reference to TheMovieDb movie Id in our database, no need to add it again
             {
+                logger.LogInformation("Movie already in database");
                 return Ok(mapper.Map<MovieDTO>(existingMovie));
             }
 
             Movie movie = mapper.Map<Movie>(movieCreationDTO);
+
+            logger.LogInformation("Creating a movie");
 
             EntityEntry<Movie> entityEntry = context.Movies.Add(movie);
             await context.SaveChangesAsync();
