@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Button, Container, Dropdown, Grid, GridColumn, GridRow, Header, Icon, Image, Item, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
@@ -14,6 +14,7 @@ export default function MainNavbar() {
     const { displayAuthenticationModal } = useContext(ModalContext);
 
     const [activeItem, setActiveItem] = useState('home');
+    const navigate = useNavigate();
 
     const handleItemClick = (e: any, { name }: any) => {
         setActiveItem(name);
@@ -61,7 +62,7 @@ export default function MainNavbar() {
                                 >
                                     <Dropdown.Menu>
                                         <Dropdown.Item icon='edit' text='Edit Profile' name="edit" onClick={() => console.log("TODO redirect to edit profile")} />
-                                        <Dropdown.Item icon='list' text='WatchLists' name="watchLists" onClick={() => console.log("TODO redirect to watchlists")} />
+                                        <Dropdown.Item icon='list' text='WatchLists' name="watchLists" onClick={() =>navigate('/watchlist')} />
                                         <Dropdown.Item icon='sign out' text='Logout' name="logout" onClick={handleLogoutClick} />
                                     </Dropdown.Menu>
                                 </Dropdown>
