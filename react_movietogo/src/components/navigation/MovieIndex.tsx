@@ -1,0 +1,24 @@
+import { useLocation } from "react-router-dom";
+import { Container, Header } from "semantic-ui-react";
+import { MovieDetailsData } from "../../models/movie.models";
+
+interface StateType {
+    movieDetailsData: MovieDetailsData 
+}
+
+interface MovieIndexProps {
+    
+}
+
+export default function MovieIndex(props: MovieIndexProps) {
+
+    const location = useLocation();
+    const state = location.state as StateType;
+
+    return (
+        <Container fluid textAlign="center">
+            <Header as='h1'>Movie Details</Header>
+            <Header as='h1'>Title: {state.movieDetailsData.theMovieDbData.title}</Header>
+        </Container>
+    )
+};
