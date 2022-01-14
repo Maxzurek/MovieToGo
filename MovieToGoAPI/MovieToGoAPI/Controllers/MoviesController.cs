@@ -116,8 +116,6 @@ namespace MovieToGoAPI.Controllers
             EntityEntry<Movie> entityEntry = context.Movies.Add(movie);
             await context.SaveChangesAsync();
 
-            await entityEntry.Collection(x => x.MovieReviews).LoadAsync();
-
             return Ok(mapper.Map<MovieDTO>(entityEntry.Entity));
         }
 
