@@ -29,9 +29,12 @@ export default function DatabaseTool() {
             </Segment>
             {getURLS.map((value, index) => {
                 return (
-                    <GenericDataTable key={index} url={value.url} tableName={value.tableName} refresh={refresh} setRefresh={setRefresh} />
+                    <Container fluid style={{ overflow: 'auto', maxHeight: '550px' }}>
+                        <GenericDataTable key={index} url={value.url} tableName={value.tableName} refresh={refresh} setRefresh={setRefresh} />
+                    </Container>
                 )
             })}
+
         </Container>
     )
 };
