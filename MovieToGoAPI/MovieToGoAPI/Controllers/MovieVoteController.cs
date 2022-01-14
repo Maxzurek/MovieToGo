@@ -91,7 +91,7 @@ namespace MovieToGoAPI.Controllers
         [HttpGet("movie/{MovieId:int}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(MovieVoteDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<MovieVoteDTO>> GetByMovieId(int MovieId)
         {
