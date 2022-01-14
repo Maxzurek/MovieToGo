@@ -75,7 +75,7 @@ export default function LandingPage() {
 
         await axios.post(movieToGoUrlMovies, movieCreationDTO)
             .then(response => {
-                return response.data;
+                movieToGoDTO =  response.data;
             })
             .catch(error => {
                 let axiosError = error as AxiosError;
