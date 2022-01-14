@@ -55,7 +55,11 @@ const reducer = (state: State, action: Action): State => {
 }
 
 interface TheMovieDbSearchBarProps {
+    size?: "huge" | "mini" | "tiny" | "small" | "large" | "big" | "massive" | undefined
+}
 
+TheMovieDbSearchBar.defaultProps = {
+    size: "huge"
 }
 
 export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
@@ -168,11 +172,12 @@ export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
     return (
         <Search
             fluid
+            input={{fluid:true}}
+            placeholder='Search movies'
             results={results}
             value={value}
             loading={loading}
-            size="huge"
-            input={<Input fluid />}
+            size={props.size}
             onSearchChange={handleSearchChange}
             onResultSelect={handleResultSelect}
         />
