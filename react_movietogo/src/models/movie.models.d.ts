@@ -79,7 +79,7 @@ export interface movieCardDTO{
 
 // Data transfert between pages
 export interface MovieDetailsData {
-    theMovieDbData: any;
+    theMovieDbData: TheMovieDbDTO | undefined;
     movieToGoData: MovieToGoDTO | undefined
 }
 //
