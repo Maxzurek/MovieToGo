@@ -16,10 +16,6 @@ export default function MainNavbar() {
     const [activeItem, setActiveItem] = useState('home');
     const navigate = useNavigate();
 
-    const handleItemClick = (e: any, { name }: any) => {
-        setActiveItem(name);
-    }
-
     const handleLogoutClick = () => {
         logout();
         update([]);
@@ -55,7 +51,6 @@ export default function MainNavbar() {
                         <Authorized
                             authorized={
                                 <Dropdown
-                                    as='a'
                                     item
                                     trigger={<><Icon name='user outline' />{getLoggedInUsername()}</>}
                                     icon={null}
