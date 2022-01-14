@@ -1,28 +1,47 @@
 import { UserDTO } from "./authentication.models";
 
-// Movies 
-export interface MovieDTO{
-    Id: number;
-    TheMovieDbId: number;
-    VoteAverage: number;
-    VoteCount: number;
-    MovieReviews: MovieReviewDTO;
+// TheMovieDb Movie
+export interface TheMovieDbDTO{
+    adult: string;
+    backdrop_path: string;
+    genre_ids: string;
+    original_language: string;
+    original_title: string;
+    poster_path: string;
+    vote_count: number;
+    video: boolean;
+    vote_average: number;
+    title: string;
+    overview: string;
+    id: number;
+    release_date: string;
+    popularity: number;
+    media_type: string;
+}
+
+// MovieToGo Movies 
+export interface MovieToGoDTO{
+    id: number;
+    theMovieDbId: number;
+    voteAverage: number;
+    voteCount: number;
+    movieReviews: MovieReviewDTO;
 }
 export interface MovieCreationDTO{
-    TheMovieDbId: number;
+    theMovieDbId: number;
 }
 export interface MovieUpdateDTO{
-    TheMovieDbId: number;
-    VoteAverage: number;
-    VoteCount: number;
+    theMovieDbId: number;
+    voteAverage: number;
+    voteCount: number;
 }
 
 // MovieVotes
 export interface MovieVoteDTO{
-    Id: number;
-    Vote: number;
-    User: UserDTO;
-    MovieId: number;
+    id: number;
+    vote: number;
+    user: UserDTO;
+    movieId: number;
 }
 export interface MovieVoteCreationDTO{
     vote: number;
@@ -34,16 +53,16 @@ export interface MovieVoteUpdateDTO{
 
 // MovieReviews
 export interface MovieReviewDTO{
-    Id: number;
+    id: number;
     body: string;
-    DateCreated: Date;
-    MovieId: number;
+    dateCreated: Date;
+    movieId: number;
     user: UserDTO;
 }
 export interface MovieReviewCreationDTO{
     body: string;
-    DateCreated: Date;
-    MovieId: number;
+    dateCreated: Date;
+    movieId: number;
 }
 export interface MovieReviewCreationDTO{
     body: string;
@@ -56,4 +75,10 @@ export interface movieCardDTO{
     release_date : Date
     vote_average:number
     poster_path:string
+}
+
+// Data transfert between pages
+export interface MovieDetailsData {
+    theMovieDbData: any;
+    movieToGoData: MovieToGoDTO | undefined
 }
