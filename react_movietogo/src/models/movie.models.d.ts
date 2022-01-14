@@ -26,6 +26,7 @@ export interface MovieToGoDTO{
     voteAverage: number;
     voteCount: number;
     movieReviews: MovieReviewDTO | undefined;
+    movieVote: MovieVoteDTO | undefined;
 }
 export interface MovieCreationDTO{
     theMovieDbId: number;
