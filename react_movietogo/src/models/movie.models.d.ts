@@ -50,7 +50,7 @@ export interface MovieUpdateDTO{
 export interface MovieVoteDTO{
     id: number;
     vote: number;
-    user: UserDTO;
+    user: UserDTO | undefined;
     movieId: number;
 }
 export interface MovieVoteCreationDTO{
