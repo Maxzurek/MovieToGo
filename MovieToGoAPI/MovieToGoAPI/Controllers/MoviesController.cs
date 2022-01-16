@@ -134,7 +134,7 @@ namespace MovieToGoAPI.Controllers
 
             if (movie == null)
             {
-                return NotFound();
+                return Ok();
             }
 
             movie = mapper.Map(movieUpdateDTO, movie);
