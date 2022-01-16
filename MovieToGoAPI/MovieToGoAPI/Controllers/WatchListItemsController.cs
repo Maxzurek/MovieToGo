@@ -130,6 +130,18 @@ namespace MovieToGoAPI.Controllers
                 return Unauthorized("Unauthorized. You must be logged in in order to post a watchlist item");
             }
 
+            WatchListItem? existingWatchListItem = await context.WatchListItems.FirstOrDefaultAsync(
+                    x => x.WatchListId == watchListItemCreationDTO.WatchListId && x.MovieId == watchListItemCreationDTO.MovieId);
+
+            if(existingWatchListItem != null)
+            {
+                return BadRequest(
+                    new List<string>
+                    {
+                        $"Movie with id: {watchListItemCreationDTO.MovieId} is already in watchlist with id: {watchListItemCreationDTO.WatchListId}" 
+                    });
+            }
+
             WatchListItem watchListItem = mapper.Map<WatchListItem>(watchListItemCreationDTO);
 
             EntityEntry<WatchListItem> entityEntry = context.WatchListItems.Add(watchListItem);
