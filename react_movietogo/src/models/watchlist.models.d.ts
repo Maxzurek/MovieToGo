@@ -4,8 +4,8 @@ import { UserDTO } from "./authentication.models";
 export interface WatchListDTO{
     id: int;
     name: string;
-    user: UserDTO;
-    watchListItems: WatchListItemDTO[];
+    user: UserDTO | undefined;
+    watchListItems: WatchListItemDTO[] | undefined;
 }
 export interface WatchListCreationDTO{
     name: string;

@@ -19,6 +19,8 @@ export default function MovieIndex(props: MovieIndexProps) {
         <Container fluid textAlign="center">
             <Header as='h1'>Movie Details</Header>
             <Header as='h1'>Title: {state.movieDetailsData.theMovieDbData?.title}</Header>
+            <Header as='h1'>IDdb: {state.movieDetailsData.theMovieDbData?.id}</Header>
+            <Header as='h1'>ID: {state.movieDetailsData.movieToGoData?.id}</Header>
             <Link to='/movie' state={state.movieDetailsData.movieToGoData}></Link>
         </Container>
     )

@@ -1,6 +1,7 @@
 import { Grid } from "semantic-ui-react";
 import IndividualMovie from "./IndividualMovie";
 import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
+import { WatchListDTO } from "../../models/watchlist.models";
 
 export default function MovieCards(props: moviesCardsProps) {
 
@@ -12,13 +13,12 @@ export default function MovieCards(props: moviesCardsProps) {
                         key={index}
                         theMovieDbDTO={theMovieDbData}
                         movieToGoDTO={props.movieToGoDTO[index]}
+                        watchListDTO = {props.watchListDTO}
                     />
                 </Grid.Column>
             )
         )
     }
-
-    
 
     return (
         <>
@@ -32,5 +32,6 @@ export default function MovieCards(props: moviesCardsProps) {
 interface moviesCardsProps {
     theMovieDbDTO: TheMovieDbDTO[];
     movieToGoDTO: MovieToGoDTO[];
+    watchListDTO : WatchListDTO[] | undefined;
 }
 
