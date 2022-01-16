@@ -2,28 +2,28 @@ import { UserDTO } from "./authentication.models";
 
 // WatchList
 export interface WatchListDTO{
-    Id: int;
-    Name: string;
-    User: UserDTO;
-    WatchListItems: WatchListItemDTO[];
+    id: int;
+    name: string;
+    user: UserDTO;
+    watchListItems: WatchListItemDTO[];
 }
 export interface WatchListCreationDTO{
-    Name: string;
+    name: string;
 }
 export interface WatchListUpdateDTO{
-    Name: string;
+    name: string;
 }
 
 // WatchListItem
 export interface WatchListItemDTO{
-    Id: number;
-    Watched: boolean;
-    Movie: MovieDTO;
+    id: number;
+    watched: boolean;
+    movie: MovieDTO;
 }
 export interface WatchListItemCreationDTO{
-    WatchListID: number;
-    MovieId: number;
+    watchListID: number;
+    movieId: number;
 }
 export interface WatchListItemUpdateDTO{
-    Watched: boolean;  
+    watched: boolean;  
 }
