@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Container, Header, Segment } from "semantic-ui-react";
+import { Button, Container, Header, Popup, Segment } from "semantic-ui-react";
 import { movieToGoUrlMovieReviews, movieToGoUrlMovies, movieToGoUrlMovieVotes, movieToGoUrlWatchListItems, movieToGoUrlWatchLists, theMovieDbInTheater, theMovieDbPopulars, theMovieDbSearchByKeyword, theMovieDbTrendingDaily } from "../../endpoints";
 import GenericDataTable from "../utilities/GenericDataTable";
 
@@ -19,7 +19,7 @@ export default function DatabaseTool() {
         <Container fluid >
             <Segment color="blue" inverted>
                 <Header textAlign="center" size="huge">
-                    Database Tool <Button color="blue" icon='refresh' onClick={() => setRefresh(true)}></Button>
+                    Database Tool <Popup content='Refresh' trigger={<Button color="blue" icon='refresh' onClick={() => setRefresh(true)} />} />
                 </Header>
             </Segment>
             {getURLS.map((value, index) => {
