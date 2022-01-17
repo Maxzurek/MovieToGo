@@ -167,7 +167,7 @@ export default function GenericDataTable(props: DataTableProps) {
 
     const renderTable = () => {
         return (
-            <Table celled>
+            <Table celled size="large">
                 <TableHeader>
                     <TableRow>
                         {keys.map((header, index) => <TableHeaderCell key={index} >{header}</TableHeaderCell>)}
