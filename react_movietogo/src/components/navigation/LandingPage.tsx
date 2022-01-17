@@ -3,7 +3,7 @@ import { useEffect, useState, } from "react";
 import { Container, Header, Segment } from "semantic-ui-react";
 import { useStateIfMounted } from "use-state-if-mounted";
 
-import { movieToGoUrlMovies, movieToGoUrlWatchListsUser, theMovieDbInTheater, theMovieDbPopulars, theMovieDbTrendingDaily } from "../../endpoints";
+import { movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId, movieToGoUrlWatchListsUser, theMovieDbInTheater, theMovieDbPopulars, theMovieDbTrendingDaily } from "../../endpoints";
 import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { WatchListDTO } from "../../models/watchlist.models";
 import MovieCards from "../utilities/MovieCards";
@@ -65,15 +65,21 @@ export default function LandingPage() {
     const creatMovieToGoMovie = async (movies: TheMovieDbDTO[]): Promise<MovieToGoDTO[]> => {
 
         let movieToGoDTOs: MovieToGoDTO[] = [];
-        console.log("Creating MovieToGo Movies");
 
         await Promise.all(movies.map(async (movie, index) => {
 
             let movieCreationDTO = { TheMovieDbId: movie.id };
 
             await axios.post(movieToGoUrlMovies, movieCreationDTO)
-                .then(response => {
-                    movieToGoDTOs[index] = (response.data)
+                .then(async (response) => {
+
+                    var movieToGoDTO: MovieToGoDTO = response.data;
+
+                    await axios.get(movieToGoUrlMovieVotesByMovieId + `/${movieToGoDTO.id}`)
+                        .then((response) => {
+                            movieToGoDTO.movieVote = response.data;
+                            movieToGoDTOs[index] = (movieToGoDTO);
+                        })          
                 })
         }))
 
