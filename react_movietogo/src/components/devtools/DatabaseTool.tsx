@@ -13,11 +13,6 @@ export default function DatabaseTool() {
         { url: movieToGoUrlMovieVotes, tableName: "MovieVotes" },
         { url: movieToGoUrlWatchLists, tableName: "WatchLists" },
         { url: movieToGoUrlWatchListItems, tableName: "WatchListItems" },
-        { url: `${theMovieDbSearchByKeyword}avengers`, tableName: "TheMovieDb Search result" },
-        { url: `${theMovieDbInTheater}`, tableName: "TheMovieDb In Theater Movies" },
-        { url: `${theMovieDbPopulars}`, tableName: "TheMovieDb Popular Movies" },
-        { url: `${theMovieDbTrendingDaily}`, tableName: "TheMovieDb Daily Trending Movies" },
-        { url: `${theMovieDbTrendingDaily}`, tableName: "TheMovieDb Weekly Trending Movies" },
     ]
 
     return (
@@ -29,7 +24,7 @@ export default function DatabaseTool() {
             </Segment>
             {getURLS.map((value, index) => {
                 return (
-                    <Container fluid style={{ overflow: 'auto', maxHeight: '550px' }}>
+                    <Container key={index} fluid style={{ overflow: 'auto', maxHeight: '550px' }}>
                         <GenericDataTable key={index} url={value.url} tableName={value.tableName} refresh={refresh} setRefresh={setRefresh} />
                     </Container>
                 )
