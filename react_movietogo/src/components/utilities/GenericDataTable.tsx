@@ -8,7 +8,7 @@ interface DataTableProps {
     url: string;
     tableName: string;
     refresh?: boolean;
-    setRefresh?: React.Dispatch<React.SetStateAction<boolean>> ;
+    setRefresh?: React.Dispatch<React.SetStateAction<boolean>>;
     maxHeight?: string;
     color?: SemanticCOLORS;
 }
@@ -53,7 +53,7 @@ export default function GenericDataTable(props: DataTableProps) {
         }
 
         if (props.refresh || props.setRefresh) {
-            if(props.setRefresh !== undefined){
+            if (props.setRefresh !== undefined) {
                 props.setRefresh(false);
             }
             setError(undefined);
@@ -117,23 +117,46 @@ export default function GenericDataTable(props: DataTableProps) {
                             if (value === null) {
                                 stringValue = "NULL";
                             }
-                            else if (typeof value === 'string') {
+                            else if (typeof value === "string") {
                                 stringValue = value;
                             }
                             else if (typeof value === "number" || typeof value === "boolean") {
                                 stringValue = value.toString();
                             }
                             else if (Array.isArray(value)) {
-                                stringValue = "[";
-                                stringValue += (value.length === 0 ? "empty" : value.toString());
-                                stringValue += "]";
+                                stringValue = "";
+
+                                if (value.length === 0) {
+                                    stringValue = "[empty]";
+                                }
+                                else {
+                                    stringValue += value.map((x, index) => {
+                                        let object = "";
+                                        let isLastItem = index < value.length;
+
+                                        object += JSON.stringify(x)
+
+                                        if (!isLastItem) {
+                                            object += ';'
+                                        }
+
+                                        return object;
+                                    });
+                                }
+                                //stringValue += "]";
                             }
-                            else if (typeof value === 'object') {
+                            else if (typeof value === "object") {
                                 stringValue = JSON.stringify(value);
                             }
 
+                            let lines = stringValue.split(';');
+
                             return (
-                                <TableCell key={key} singleLine>{stringValue}</TableCell>
+                                <TableCell
+                                    key={key}
+                                >
+                                    {lines.length === 1 ? lines[0] : lines.map((line, index)=>{return <div>{line}</div>}) }
+                                </TableCell>
                             )
                         })}
                     </TableRow>
@@ -160,12 +183,12 @@ export default function GenericDataTable(props: DataTableProps) {
 
     return (
         <Segment style={{ overflow: 'auto' }} loading={loading}>
-                <Segment inverted color={labelColor} textAlign="center" >
-                    <Header>{props.tableName}</Header>
-                </Segment>
-                {data?.length > 0 ? renderTable() : undefined}
-                <DisplayApiErrors error={error!} />
-                {response?.status === 204 ? <Container textAlign="center"><Message warning>Empty table</Message></Container> : undefined}
+            <Segment inverted color={labelColor} textAlign="center" >
+                <Header>{props.tableName}</Header>
+            </Segment>
+            {data?.length > 0 ? renderTable() : undefined}
+            <DisplayApiErrors error={error!} />
+            {response?.status === 204 ? <Container fluid textAlign="center"><Message warning>Empty table</Message></Container> : undefined}
         </Segment>
     )
 };
