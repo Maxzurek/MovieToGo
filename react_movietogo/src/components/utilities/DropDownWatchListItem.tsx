@@ -16,11 +16,11 @@ DropDownWatchListItem.defaultProps = {
 
 export default function DropDownWatchListItem(props: DropDownWatchListItemProps) {
 
-    const [disabled, setDisabled] = useState(false);
+    const [disabled, setDisabled] = useState<boolean>();
 
     useEffect(() => {
         props.watchListDTO.watchListItems?.map((watchListItem) => {
-            watchListItem.movie?.id == props.movieId ? setDisabled(true) : setDisabled(false);
+            watchListItem.movie?.id === props.movieId ? setDisabled(true) : setDisabled(false);
         })
     }, [])
 
