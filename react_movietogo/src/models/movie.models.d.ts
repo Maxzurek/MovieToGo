@@ -1,4 +1,5 @@
 import { UserDTO } from "./authentication.models";
+import { WatchListDTO } from "./watchlist.models";
 
 // Movie
 export interface MovieDTO{
@@ -79,7 +80,7 @@ export interface MovieReviewCreationDTO{
 }
 
 // Data transfert between pages
-export interface MovieDetailsData {
-    theMovieDbData: TheMovieDbDTO | undefined;
-    movieToGoData: MovieToGoDTO | undefined
+export interface NavigationContextState {
+    theMovieDbDTO: TheMovieDbDTO | undefined;
+    movieToGoDTO: MovieToGoDTO | undefined;
 }

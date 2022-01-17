@@ -77,7 +77,14 @@ export default function LandingPage() {
 
                     await axios.get(movieToGoUrlMovieVotesByMovieId + `/${movieToGoDTO.id}`)
                         .then((response) => {
-                            movieToGoDTO.movieVote = response.data;
+
+                            let movieVoteDTO = response.data;
+
+                            if(movieVoteDTO === ""){
+                                movieVoteDTO = undefined;
+                            }
+
+                            movieToGoDTO.movieVote = movieVoteDTO;
                             movieToGoDTOs[index] = (movieToGoDTO);
                         })          
                 })

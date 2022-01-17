@@ -3,7 +3,7 @@ import { useState, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchProps, SearchResultData, Search, Input } from "semantic-ui-react"
 import { movieToGoUrlMovies, theMovieDbImages, theMovieDbSearchByKeyword } from "../../endpoints";
-import { MovieCreationDTO, MovieDetailsData, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models"
+import { MovieCreationDTO, NavigationContextState, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models"
 
 interface MovieResult {
     id: number;
@@ -160,9 +160,9 @@ export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
         const selectedMovieToGoData = movieToGoData?.find( data => data.theMovieDbId === theMovieDbId) ;
         console.log(selectedMovieToGoData);
 
-        const movieDetailsData : MovieDetailsData = {
-            movieToGoData: selectedMovieToGoData,
-            theMovieDbData: selectedTheMovieDbData
+        const movieDetailsData : NavigationContextState = {
+            movieToGoDTO: selectedMovieToGoData,
+            theMovieDbDTO: selectedTheMovieDbData
         }
         
         console.log(movieDetailsData);
