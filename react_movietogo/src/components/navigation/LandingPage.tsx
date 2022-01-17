@@ -25,20 +25,17 @@ export default function LandingPage() {
 
         const fetchData = async () => {
 
-            const userWatchLists = axios.get(movieToGoUrlWatchListsUser);
-            const requestTwo = axios.get(theMovieDbTrendingDaily);
-            const requestThree = axios.get(theMovieDbPopulars);
-            const requestFour = axios.get(theMovieDbInTheater);
+            const requestOne = axios.get(theMovieDbTrendingDaily);
+            const requestTwo = axios.get(theMovieDbPopulars);
+            const requestThree = axios.get(theMovieDbInTheater);
 
-            await axios.all([userWatchLists, requestTwo, requestThree, requestFour])
+            await axios.all([requestOne, requestTwo, requestThree])
                 .then(axios.spread(async (...responses) => {
 
-                    let userWatchList = responses[0].data
-                    let trendingMovies = responses[1].data.results
-                    let popularMovies = responses[2].data.results
-                    let inTheatersMovies = responses[3].data.results
+                    let trendingMovies = responses[0].data.results
+                    let popularMovies = responses[1].data.results
+                    let inTheatersMovies = responses[2].data.results
 
-                    setWatchListDTO(userWatchList)
                     setTredingMovies(trendingMovies)
                     setPopularMovies(popularMovies)
                     setTheaterMovies(inTheatersMovies)
@@ -52,7 +49,12 @@ export default function LandingPage() {
                                     await creatMovieToGoMovie(inTheatersMovies)
                                         .then(async (response) => {
                                             setTheaterMovieToGoDTO(response)
-                                            setIsLoading(false);
+                                            await axios.get(movieToGoUrlWatchListsUser)
+                                                .then(response => {
+                                                    setWatchListDTO(response.data)
+                                                    setIsLoading(false);
+                                                })
+                                                .catch(error => { setIsLoading(false) })
                                         })
                                 })
                         })
@@ -80,13 +82,14 @@ export default function LandingPage() {
 
                             let movieVoteDTO = response.data;
 
-                            if(movieVoteDTO === ""){
+                            if (movieVoteDTO === "") {
                                 movieVoteDTO = undefined;
                             }
 
                             movieToGoDTO.movieVote = movieVoteDTO;
                             movieToGoDTOs[index] = (movieToGoDTO);
-                        })          
+                        })
+                        .catch(error => {return movieToGoDTOs})
                 })
         }))
 
