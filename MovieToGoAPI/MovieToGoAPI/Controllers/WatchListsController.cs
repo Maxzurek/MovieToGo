@@ -55,7 +55,7 @@ namespace MovieToGoAPI.Controllers
                 return NoContent();
             }
 
-            return mapper.Map<List<WatchListDTO>>(watchlists);
+            return Ok(mapper.Map<List<WatchListDTO>>(watchlists));
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace MovieToGoAPI.Controllers
         /// <returns></returns>
         [HttpGet("{Id:int}")]
         [ProducesResponseType(typeof(List<WatchListDTO>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WatchListDTO>> GetById(int Id)
         {
             logger.LogInformation("Getting a watchlist by id");
@@ -77,10 +77,10 @@ namespace MovieToGoAPI.Controllers
 
             if (watchlist == null)
             {
-                return NoContent();
+                return NotFound();
             }
 
-            return mapper.Map<WatchListDTO>(watchlist);
+            return Ok(mapper.Map<WatchListDTO>(watchlist));
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace MovieToGoAPI.Controllers
                 return NoContent();
             }
 
-            return mapper.Map<List<WatchListDTO>>(watchlists);
+            return Ok(mapper.Map<List<WatchListDTO>>(watchlists));
         }
 
         /// <summary>

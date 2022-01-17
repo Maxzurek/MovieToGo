@@ -58,7 +58,7 @@ namespace MovieToGoAPI.Controllers
                 return NoContent();
             }
 
-            return mapper.Map<List<MovieVoteDTO>>(moviesVotes);
+            return Ok(mapper.Map<List<MovieVoteDTO>>(moviesVotes));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace MovieToGoAPI.Controllers
         /// <returns></returns>
         [HttpGet("{Id:int}")]
         [ProducesResponseType(typeof(MovieVoteDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MovieVoteDTO>> Get(int Id)
         {
             logger.LogInformation("Getting vote by Id");
@@ -80,7 +80,7 @@ namespace MovieToGoAPI.Controllers
                 return NotFound();
             }
 
-            return mapper.Map<MovieVoteDTO>(movieVote);
+            return Ok(mapper.Map<MovieVoteDTO>(movieVote));
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace MovieToGoAPI.Controllers
         [HttpGet("movie/{MovieId:int}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(MovieVoteDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<MovieVoteDTO>> GetByMovieId(int MovieId)
         {
@@ -108,10 +108,10 @@ namespace MovieToGoAPI.Controllers
 
             if (movieVote == null)
             {
-                return NotFound();
+                return NoContent();
             }
 
-            return mapper.Map<MovieVoteDTO>(movieVote);
+            return Ok(mapper.Map<MovieVoteDTO>(movieVote));
         }
 
         /// <summary>

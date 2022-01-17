@@ -42,7 +42,7 @@ namespace MovieToGoAPI.Controllers
                 return NoContent();
             }
 
-            return mapper.Map<List<MovieDTO>>(movies);
+            return Ok(mapper.Map<List<MovieDTO>>(movies));
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace MovieToGoAPI.Controllers
                 return NotFound();
             }
 
-            return mapper.Map<MovieDTO>(movie);
+            return Ok(mapper.Map<MovieDTO>(movie));
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace MovieToGoAPI.Controllers
                 return NotFound();
             }
 
-            return mapper.Map<MovieDTO>(movie);
+            return Ok(mapper.Map<MovieDTO>(movie));
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace MovieToGoAPI.Controllers
 
             if (movie == null)
             {
-                return Ok();
+                return NotFound();
             }
 
             movie = mapper.Map(movieUpdateDTO, movie);

@@ -56,7 +56,7 @@ namespace MovieToGoAPI.Controllers
                 return NoContent();
             }
 
-            return mapper.Map<List<MovieReviewDTO>>(movieReviews);
+            return Ok(mapper.Map<List<MovieReviewDTO>>(movieReviews));
         }
 
 
@@ -79,7 +79,7 @@ namespace MovieToGoAPI.Controllers
                 return NotFound();
             }
 
-            return mapper.Map<MovieReviewDTO>(movieReview);
+            return Ok(mapper.Map<MovieReviewDTO>(movieReview));
         }
 
 
@@ -104,7 +104,7 @@ namespace MovieToGoAPI.Controllers
                 return NoContent();
             }
 
-            return mapper.Map<List<MovieReviewDTO>>(movieReviews);
+            return Ok(mapper.Map<List<MovieReviewDTO>>(movieReviews));
         }
 
         /// <summary>
@@ -172,8 +172,8 @@ namespace MovieToGoAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Delete(int id)
         {
             MovieReview? movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == id);
