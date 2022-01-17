@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Container, Header, Popup, Segment } from "semantic-ui-react";
-import { movieToGoUrlMovieReviews, movieToGoUrlMovies, movieToGoUrlMovieVotes, movieToGoUrlWatchListItems, movieToGoUrlWatchLists, theMovieDbInTheater, theMovieDbPopulars, theMovieDbSearchByKeyword, theMovieDbTrendingDaily } from "../../endpoints";
+import { movieToGoUrlMovieReviews, movieToGoUrlMovies, movieToGoUrlMovieVotes, movieToGoUrlWatchListItems, movieToGoUrlWatchLists} from "../../endpoints";
 import GenericDataTable from "../utilities/GenericDataTable";
 
 export default function DatabaseTool() {
