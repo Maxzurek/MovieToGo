@@ -81,13 +81,18 @@ export default function IndividualMovie(props: IndividualMovieProps) {
     }
 
     const renderDropDownItems = () => {
-        return (
-            props.watchListDTO?.map((watchList, index) => {
-                return (
-                    <DropDownWatchListItem key={index} movieId={props.movieToGoDTO.id} watchListDTO={watchList} />
-                );
-            })
-        )
+        if(props.watchListDTO){
+            return (
+                props.watchListDTO?.map((watchList, index) => {
+                    return (
+                        <DropDownWatchListItem key={index} movieId={props.movieToGoDTO.id} watchListDTO={watchList} />
+                    );
+                })
+            )
+        }
+        else{
+            return undefined;
+        }
     }
 
     return (
