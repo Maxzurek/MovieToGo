@@ -1,4 +1,4 @@
-import { Button, Container, Label, Rating, RatingProps, Image, Card, Form, Dropdown } from "semantic-ui-react";
+import { Button, Container, Label, Rating, RatingProps, Image, Card, Form, Dropdown, Popup } from "semantic-ui-react";
 import { movieToGoUrlMovieVotes, theMovieDbImages } from "../../endpoints";
 import Authorized from "../authentication/Authorized";
 import { useEffect, useState } from "react";
@@ -69,6 +69,8 @@ export default function IndividualMovie(props: IndividualMovieProps) {
         }
     }
 
+
+
     const handleOnClick = () => {
 
         const movieDetailsData: NavigationContextState = {
@@ -81,7 +83,7 @@ export default function IndividualMovie(props: IndividualMovieProps) {
     }
 
     const renderDropDownItems = () => {
-        if(props.watchListDTO){
+        if (props.watchListDTO) {
             return (
                 props.watchListDTO?.map((watchList, index) => {
                     return (
@@ -90,10 +92,13 @@ export default function IndividualMovie(props: IndividualMovieProps) {
                 })
             )
         }
-        else{
+        else {
             return undefined;
         }
     }
+
+
+
 
     return (
         <Form >
@@ -122,10 +127,11 @@ export default function IndividualMovie(props: IndividualMovieProps) {
 
                         <Authorized
                             authorized={
-                                <Label attached="top right" color="yellow">
+                                <Label   attached="top right" color="yellow">
                                     <Dropdown
                                         item
-                                        trigger={<><Button circular icon='add' basic size="mini" color="vk" /></>}
+                                        // trigger={<><Button circular icon='add' basic size="mini" color="vk" /></>}
+                                        trigger={<><Popup on='hover' content={props.watchListDTO?"Add Movie to Watchlist":"No Watchlist"} trigger={<Button circular icon='add' basic size="mini" color="vk"  />} /></>}
                                         icon={null}>
                                         <Dropdown.Menu>
                                             {renderDropDownItems()}
