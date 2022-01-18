@@ -19,9 +19,10 @@ export default function DropDownWatchListItem(props: DropDownWatchListItemProps)
     const [disabled, setDisabled] = useState<boolean>();
 
     useEffect(() => {
-        props.watchListDTO.watchListItems?.map((watchListItem) => {
-            watchListItem.movie?.id === props.movieId ? setDisabled(true) : setDisabled(false);
-        })
+
+        let watchListItem = props.watchListDTO.watchListItems?.find(x => x.movie?.id === props.movieId);
+        setDisabled(watchListItem ? true : false);
+        
     }, [])
 
     const createWatchListItem = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>, data: DropdownItemProps) => {
@@ -50,6 +51,7 @@ export default function DropDownWatchListItem(props: DropDownWatchListItemProps)
 
     return (
         <DropdownItem
+            key={props.watchListDTO.id}
             disabled={disabled}
             icon={props.icon}
             text={props.watchListDTO.name}
