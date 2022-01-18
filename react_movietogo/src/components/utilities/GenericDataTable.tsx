@@ -132,7 +132,7 @@ export default function GenericDataTable(props: DataTableProps) {
                                 else {
                                     stringValue += value.map((x, index) => {
                                         let object = "";
-                                        let isLastItem = index < value.length;
+                                        let isLastItem = index === value.length -1;
 
                                         object += JSON.stringify(x)
 
@@ -140,10 +140,10 @@ export default function GenericDataTable(props: DataTableProps) {
                                             object += ';'
                                         }
 
+                                        console.log(object);
                                         return object;
                                     });
                                 }
-                                //stringValue += "]";
                             }
                             else if (typeof value === "object") {
                                 stringValue = JSON.stringify(value);
