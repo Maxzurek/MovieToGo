@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import { Container, Header, Message, Segment, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
+import { Container, Dropdown, DropdownItem, DropdownMenu, Header, Message, Segment, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
 import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 import DisplayApiErrors from "./DisplayApiErrors";
 
@@ -124,23 +124,25 @@ export default function GenericDataTable(props: DataTableProps) {
                                 stringValue = value.toString();
                             }
                             else if (Array.isArray(value)) {
-                                stringValue = "";
+                                stringValue = "[   ";
 
                                 if (value.length === 0) {
-                                    stringValue = "[empty]";
+                                    stringValue = "empty";
                                 }
                                 else {
                                     stringValue += value.map((x, index) => {
                                         let object = "";
-                                        let isLastItem = index === value.length -1;
+                                        let isLastItem = index === value.length - 1;
 
                                         object += JSON.stringify(x)
 
                                         if (!isLastItem) {
                                             object += ';'
                                         }
+                                        else{
+                                            object += '   ]'
+                                        }
 
-                                        console.log(object);
                                         return object;
                                     });
                                 }
@@ -155,7 +157,17 @@ export default function GenericDataTable(props: DataTableProps) {
                                 <TableCell
                                     key={key}
                                 >
-                                    {lines.length === 1 ? lines[0] : lines.map((line, index)=>{return <div>{line}</div>}) }
+                                    {lines.length === 1 ?
+                                        lines[0]
+                                        :
+                                        <Dropdown text="Array items">
+                                            <DropdownMenu>
+                                                {lines.map((line, index) => {
+                                                    return <DropdownItem text={line} />
+                                                })}
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    }
                                 </TableCell>
                             )
                         })}
