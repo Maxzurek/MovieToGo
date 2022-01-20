@@ -32,17 +32,13 @@ export default function MainNavbar() {
                         </Item>
                     </GridColumn>
                     <GridColumn width={2}>
-                        <Item as={NavLink} to='/jeremy' >
-                            <Header>Jeremy</Header>
-                        </Item>
                     </GridColumn>
-                    <GridColumn width={2}>
-                        <Item as={NavLink} to='/fatima' >
-                            <Header>Fatima</Header>
-                        </Item>
+                    <GridColumn width={1}>
                     </GridColumn>
                     <GridColumn width={6}>
                         <TheMovieDbSearchBar />
+                    </GridColumn>
+                    <GridColumn width={1}>
                     </GridColumn>
                     <GridColumn width={2}>
                         <Authorized
