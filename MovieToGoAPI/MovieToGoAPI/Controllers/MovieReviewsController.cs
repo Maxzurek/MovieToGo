@@ -89,7 +89,7 @@ namespace MovieToGoAPI.Controllers
         /// <param name="MovieId"></param>
         /// <returns></returns>
         [HttpGet("movie/{MovieId:int}")]
-        [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<MovieReviewDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<MovieReviewDTO>>> GetByMovieId(int MovieId)
         {
