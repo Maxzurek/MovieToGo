@@ -87,7 +87,7 @@ export default function IndividualMovie(props: IndividualMovieProps) {
             return (
                 props.watchListDTO?.map((watchList, index) => {
                     return (
-                        <DropDownWatchListItem key={index} movieId={props.movieToGoDTO.id} watchListDTO={watchList} />
+                        <DropDownWatchListItem key={index} movieId={props.movieToGoDTO?.id} watchListDTO={watchList} />
                     );
                 })
             )

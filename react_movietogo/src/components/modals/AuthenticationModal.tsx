@@ -31,8 +31,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     const { displayOkMessage } = useContext(ModalContext);
     const [apiErrors, setApiErrors] = useState<any>({});
     const [selection, setSelection] = useState(props.defaultSelection);
-    const navigate = useNavigate();
-    const location = useLocation();
 
     const LOGIN = 'login';
     const REGISTER = 'register';
@@ -62,13 +60,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
             saveToken(response.data);
             update(getClaims());
             props.setOpen(false);
-
-            if(location.pathname === '/'){
-                window.location.reload();
-            }
-            else{
-                navigate('/');
-            }
         }
         catch (error: any) {
             console.log(error);

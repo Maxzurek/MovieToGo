@@ -16,6 +16,7 @@ import { WatchListDTO } from './models/watchlist.models';
 import axios from 'axios';
 import { theMovieDbTrendingDaily, theMovieDbPopulars, theMovieDbInTheater, movieToGoUrlWatchListsUser, movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId } from './endpoints';
 import AppDataContext from './components/contexts/AppDataContext';
+import { useStateIfMounted } from 'use-state-if-mounted';
 
 configureInterceptor();
 
@@ -26,13 +27,13 @@ export default function App() {
   const [isOkMessageModalOpen, setOkMessageModalOpen] = useState(false);
   const [okMessageModalContent, setOkMessageModalContent] = useState('');
 
-  const [trendingTheMovieDbDTO, setTrendingTheMovieDbDTO] = useState<TheMovieDbDTO[]>([]);
-  const [trendingMovieToGoDTO, setTrendingMovieToGoDTO] = useState<MovieToGoDTO[]>([]);
-  const [popularTheMovieDbDTO, setPopularTheMovieDbDTO] = useState<TheMovieDbDTO[]>([]);
-  const [popularMovieToGoDTO, setPopularMovieToGoDTO] = useState<MovieToGoDTO[]>([]);
-  const [inTheatersTheMovieDbDTO, setInTheatersTheMovieDbDTO] = useState<TheMovieDbDTO[]>([]);
-  const [inTheatersMovieToGoDTO, setInTheatersMovieToGoDTO] = useState<MovieToGoDTO[]>([]);
-  const [userWatchListDTO, setUserWatchListDTO] = useState<WatchListDTO[] | undefined>(undefined);
+  const [trendingTheMovieDbDTO, setTrendingTheMovieDbDTO] = useStateIfMounted<TheMovieDbDTO[]>([]);
+  const [trendingMovieToGoDTO, setTrendingMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
+  const [popularTheMovieDbDTO, setPopularTheMovieDbDTO] = useStateIfMounted<TheMovieDbDTO[]>([]);
+  const [popularMovieToGoDTO, setPopularMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
+  const [inTheatersTheMovieDbDTO, setInTheatersTheMovieDbDTO] = useStateIfMounted<TheMovieDbDTO[]>([]);
+  const [inTheatersMovieToGoDTO, setInTheatersMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
+  const [userWatchListDTO, setUserWatchListDTO] = useStateIfMounted<WatchListDTO[] | undefined>(undefined);
   const [isLoadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
@@ -46,6 +47,8 @@ export default function App() {
   }, [okMessageModalContent])
 
   useEffect(() => {
+
+    setLoadingData(true);
 
     const fetchData = async () => {
 
@@ -75,11 +78,17 @@ export default function App() {
                     await creatMovieToGoMovie(inTheatersMovies)
                       .then(async (response) => {
                         setInTheatersMovieToGoDTO(response)
-                        await axios.get(movieToGoUrlWatchListsUser)
-                          .then(response => {
-                            setUserWatchListDTO(response.data)
-                            setLoadingData(false);
-                          })
+
+                        if (claims.length > 0) {
+                          await axios.get(movieToGoUrlWatchListsUser)
+                            .then(response => {
+                              setUserWatchListDTO(response.data)
+                              setLoadingData(false);
+                            })
+                        }
+                        else {
+                          setLoadingData(false);
+                        }
                       })
                   })
               })
@@ -95,7 +104,7 @@ export default function App() {
 
     fetchData();
 
-  }, [])
+  }, [claims])
 
   const creatMovieToGoMovie = async (movies: TheMovieDbDTO[]): Promise<MovieToGoDTO[]> => {
 
@@ -110,22 +119,24 @@ export default function App() {
 
           var movieToGoDTO: MovieToGoDTO = response.data;
 
-          await axios.get(movieToGoUrlMovieVotesByMovieId + `/${movieToGoDTO.id}`)
-            .then((response) => {
+          if (claims.length > 0) {
+            await axios.get(movieToGoUrlMovieVotesByMovieId + `/${movieToGoDTO.id}`)
+              .then((response) => {
 
-              let movieVoteDTO = response.data;
+                let movieVoteDTO = response.data;
 
-              if (movieVoteDTO === "") {
-                movieVoteDTO = undefined;
-              }
+                if (movieVoteDTO === "") {
+                  movieVoteDTO = undefined;
+                }
 
-              movieToGoDTO.movieVote = movieVoteDTO;
-              movieToGoDTOs[index] = (movieToGoDTO);
-            })
-            .catch((error) => {
-              console.log(error);
-              return movieToGoDTOs;
-            })
+                movieToGoDTO.movieVote = movieVoteDTO;
+                movieToGoDTOs[index] = (movieToGoDTO);
+              })
+              .catch((error) => {
+                console.log(error);
+                return movieToGoDTOs;
+              })
+          }
         })
     }))
 

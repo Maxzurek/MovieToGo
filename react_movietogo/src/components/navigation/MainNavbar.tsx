@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { Button, Container, Dropdown, Grid, GridColumn, GridRow, Header, Icon, Image, Item, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
+import { Dropdown, Grid, GridColumn, GridRow, Header, Icon, Image, Item, Menu, MenuItem } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
 import { logout } from "../authentication/handleJWT";
 import AuthenticationContext from "../contexts/AuthenticationContext";
@@ -12,8 +11,6 @@ export default function MainNavbar() {
 
     const { claims, update } = useContext(AuthenticationContext);
     const { displayAuthenticationModal } = useContext(ModalContext);
-
-    const [activeItem, setActiveItem] = useState('home');
     const navigate = useNavigate();
 
     const handleLogoutClick = () => {
@@ -31,7 +28,7 @@ export default function MainNavbar() {
                 <GridRow style={{ padding: 0 }}>
                     <GridColumn width={2}>
                         <Item as={NavLink} to='/'>
-                            <Image src="/images/MovieToGo_Logo.ico" size="tiny"/>
+                            <Image src="/images/MovieToGo_Logo.ico" size="tiny" />
                         </Item>
                     </GridColumn>
                     <GridColumn width={2}>
@@ -57,7 +54,7 @@ export default function MainNavbar() {
                                 >
                                     <Dropdown.Menu>
                                         <Dropdown.Item icon='edit' text='Edit Profile' name="edit" onClick={() => console.log("TODO redirect to edit profile")} />
-                                        <Dropdown.Item icon='list' text='WatchLists' name="watchLists" onClick={() =>navigate('/watchlist')} />
+                                        <Dropdown.Item icon='list' text='WatchLists' name="watchLists" onClick={() => navigate('/watchlist')} />
                                         <Dropdown.Item icon='sign out' text='Logout' name="logout" onClick={handleLogoutClick} />
                                     </Dropdown.Menu>
                                 </Dropdown>
