@@ -122,7 +122,10 @@ export default function App() {
               movieToGoDTO.movieVote = movieVoteDTO;
               movieToGoDTOs[index] = (movieToGoDTO);
             })
-            .catch(error => { return movieToGoDTOs })
+            .catch((error) => {
+              console.log(error);
+              return movieToGoDTOs;
+            })
         })
     }))
 
@@ -146,7 +149,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AppDataContext.Provider 
+      <AppDataContext.Provider
         value={{
           trendingTheMovieDbDTO,
           setTrendingTheMovieDbDTO: setTrendingTheMovieDbDTO,
@@ -155,13 +158,13 @@ export default function App() {
           popularTheMovieDbDTO,
           setPopularTheMovieDbDTO: setPopularTheMovieDbDTO,
           popularMovieToGoDTO,
-          setPopularMovieToGoDTO : setPopularMovieToGoDTO,
+          setPopularMovieToGoDTO: setPopularMovieToGoDTO,
           inTheatersTheMovieDbDTO,
           setInTheatersTheMovieDbDTO: setInTheatersTheMovieDbDTO,
           inTheatersMovieToGoDTO,
           setInTheatersMovieToGoDTO: setInTheatersMovieToGoDTO,
           userWatchListDTO,
-          setUserWatchListDTO : setUserWatchListDTO,
+          setUserWatchListDTO: setUserWatchListDTO,
           isLoadingData,
           setLoadingData: setLoadingData
         }}

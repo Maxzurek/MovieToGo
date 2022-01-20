@@ -1,100 +1,19 @@
-import axios from "axios";
-import { useEffect, useState, } from "react";
+import { useContext } from "react";
 import { Container, Header, Segment } from "semantic-ui-react";
-import { useStateIfMounted } from "use-state-if-mounted";
-
-import { movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId, movieToGoUrlWatchListsUser, theMovieDbInTheater, theMovieDbPopulars, theMovieDbTrendingDaily } from "../../endpoints";
-import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
-import { WatchListDTO } from "../../models/watchlist.models";
+import AppDataContext from "../contexts/AppDataContext";
 import MovieCards from "../utilities/MovieCards";
-
-
 
 export default function LandingPage() {
 
-    const [tredingMovies, setTredingMovies] = useStateIfMounted<TheMovieDbDTO[]>([]);
-    const [tredingmovieToGoDTO, setTredingMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
-    const [popularMovies, setPopularMovies] = useStateIfMounted<TheMovieDbDTO[]>([]);
-    const [popularmovieToGoDTO, setPopularMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
-    const [theaterMovies, setTheaterMovies] = useStateIfMounted<TheMovieDbDTO[]>([]);
-    const [theatermovieToGoDTO, setTheaterMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
-    const [watchListDTO, setWatchListDTO] = useStateIfMounted<WatchListDTO[] | undefined>(undefined);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-
-        const fetchData = async () => {
-
-            const requestOne = axios.get(theMovieDbTrendingDaily);
-            const requestTwo = axios.get(theMovieDbPopulars);
-            const requestThree = axios.get(theMovieDbInTheater);
-
-            await axios.all([requestOne, requestTwo, requestThree])
-                .then(axios.spread(async (...responses) => {
-
-                    let trendingMovies = responses[0].data.results
-                    let popularMovies = responses[1].data.results
-                    let inTheatersMovies = responses[2].data.results
-
-                    setTredingMovies(trendingMovies)
-                    setPopularMovies(popularMovies)
-                    setTheaterMovies(inTheatersMovies)
-
-                    await creatMovieToGoMovie(trendingMovies)
-                        .then(async (response) => {
-                            setTredingMovieToGoDTO(response);
-                            await creatMovieToGoMovie(popularMovies)
-                                .then(async (response) => {
-                                    setPopularMovieToGoDTO(response)
-                                    await creatMovieToGoMovie(inTheatersMovies)
-                                        .then(async (response) => {
-                                            setTheaterMovieToGoDTO(response)
-                                            await axios.get(movieToGoUrlWatchListsUser)
-                                                .then(response => {
-                                                    setWatchListDTO(response.data)
-                                                    setIsLoading(false);
-                                                })
-                                                .catch(error => { setIsLoading(false) })
-                                        })
-                                })
-                        })
-                }))
-        }
-
-        fetchData();
-    }, [])
-
-    const creatMovieToGoMovie = async (movies: TheMovieDbDTO[]): Promise<MovieToGoDTO[]> => {
-
-        let movieToGoDTOs: MovieToGoDTO[] = [];
-
-        await Promise.all(movies.map(async (movie, index) => {
-
-            let movieCreationDTO = { TheMovieDbId: movie.id };
-
-            await axios.post(movieToGoUrlMovies, movieCreationDTO)
-                .then(async (response) => {
-
-                    var movieToGoDTO: MovieToGoDTO = response.data;
-
-                    await axios.get(movieToGoUrlMovieVotesByMovieId + `/${movieToGoDTO.id}`)
-                        .then((response) => {
-
-                            let movieVoteDTO = response.data;
-
-                            if (movieVoteDTO === "") {
-                                movieVoteDTO = undefined;
-                            }
-
-                            movieToGoDTO.movieVote = movieVoteDTO;
-                            movieToGoDTOs[index] = (movieToGoDTO);
-                        })
-                        .catch(error => {return movieToGoDTOs})
-                })
-        }))
-
-        return movieToGoDTOs;
-    }
+    const {
+        userWatchListDTO,
+        trendingTheMovieDbDTO,
+        trendingMovieToGoDTO,
+        popularTheMovieDbDTO,
+        popularMovieToGoDTO,
+        inTheatersTheMovieDbDTO,
+        inTheatersMovieToGoDTO,
+        isLoadingData } = useContext(AppDataContext);
 
     const renderCards = () => {
         return (
@@ -105,9 +24,9 @@ export default function LandingPage() {
                     </Header>
                 </Segment>
                 <MovieCards
-                    theMovieDbDTO={tredingMovies}
-                    movieToGoDTO={tredingmovieToGoDTO}
-                    watchListDTO={watchListDTO}
+                    theMovieDbDTO={trendingTheMovieDbDTO}
+                    movieToGoDTO={trendingMovieToGoDTO}
+                    watchListDTO={userWatchListDTO}
                 />
 
                 <Segment color="grey" inverted>
@@ -117,9 +36,9 @@ export default function LandingPage() {
                 </Segment>
 
                 <MovieCards
-                    theMovieDbDTO={popularMovies}
-                    movieToGoDTO={popularmovieToGoDTO}
-                    watchListDTO={watchListDTO}
+                    theMovieDbDTO={popularTheMovieDbDTO}
+                    movieToGoDTO={popularMovieToGoDTO}
+                    watchListDTO={userWatchListDTO}
                 />
 
                 <Segment color="brown" inverted>
@@ -129,9 +48,9 @@ export default function LandingPage() {
                 </Segment>
 
                 <MovieCards
-                    theMovieDbDTO={theaterMovies}
-                    movieToGoDTO={theatermovieToGoDTO}
-                    watchListDTO={watchListDTO}
+                    theMovieDbDTO={inTheatersTheMovieDbDTO}
+                    movieToGoDTO={inTheatersMovieToGoDTO}
+                    watchListDTO={userWatchListDTO}
                 />
             </>
         )
@@ -140,10 +59,9 @@ export default function LandingPage() {
     return (
 
         <Container fluid textAlign="left">
-            {isLoading ? undefined : renderCards()}
+            <Segment loading={isLoadingData}>
+                {isLoadingData ? undefined : renderCards()}
+            </Segment>
         </Container>
     )
 };
-
-
-
