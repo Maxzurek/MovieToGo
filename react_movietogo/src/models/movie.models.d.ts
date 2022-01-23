@@ -14,7 +14,7 @@ export interface MovieDTO{
 export interface TheMovieDbDTO{
     adult: string;
     backdrop_path: string;
-    genre_ids: string;
+    genre_ids: [];
     original_language: string;
     original_title: string;
     poster_path: string;
@@ -35,7 +35,7 @@ export interface MovieToGoDTO{
     theMovieDbId: number;
     voteAverage: number;
     voteCount: number;
-    movieReviews: MovieReviewDTO | undefined;
+    movieReviews: MovieReviewDTO[] | undefined;
     movieVote: MovieVoteDTO | undefined;
 }
 export interface MovieCreationDTO{
@@ -52,7 +52,7 @@ export interface MovieVoteDTO{
     id: number;
     vote: number;
     user: UserDTO | undefined;
-    movieId: number;
+    movieId: number | undefined;
 }
 export interface MovieVoteCreationDTO{
     vote: number;
@@ -72,7 +72,7 @@ export interface MovieReviewDTO{
 }
 export interface MovieReviewCreationDTO{
     body: string;
-    dateCreated: Date;
+    dateCreated: date;
     movieId: number;
 }
 export interface MovieReviewCreationDTO{
@@ -83,4 +83,11 @@ export interface MovieReviewCreationDTO{
 export interface NavigationContextState {
     theMovieDbDTO: TheMovieDbDTO | undefined;
     movieToGoDTO: MovieToGoDTO | undefined;
+}
+
+//Movie GenresDTO
+export interface GenresDTO{
+    id: number;
+    name: string;
+
 }

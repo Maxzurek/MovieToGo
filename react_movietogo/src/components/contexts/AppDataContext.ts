@@ -1,8 +1,12 @@
 import React from "react";
-import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
+import { GenresDTO, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { WatchListDTO } from "../../models/watchlist.models";
 
 const AppDataContext = React.createContext<{
+
+    genresDTO: GenresDTO[];
+    setGenresDTO(genreDTO: GenresDTO[]): void;
+
     trendingTheMovieDbDTO: TheMovieDbDTO[];
     setTrendingTheMovieDbDTO(trendingTheMovieDbDTO: TheMovieDbDTO[]): void;
     trendingMovieToGoDTO: MovieToGoDTO[];
@@ -25,6 +29,9 @@ const AppDataContext = React.createContext<{
     setLoadingData(isLoadingData: boolean): void;
 
 }>({
+    genresDTO: [],
+    setGenresDTO: () => { },
+
     trendingTheMovieDbDTO: [],
     setTrendingTheMovieDbDTO: () => { },
     trendingMovieToGoDTO: [],

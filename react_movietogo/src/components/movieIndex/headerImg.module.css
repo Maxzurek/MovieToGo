@@ -1,0 +1,41 @@
+.headerImg {
+    width: 100%;
+    margin: auto;
+    height: 80rem;
+    background-size: 100%, cover !important;
+    background-position: center  center ;
+    position: relative;
+    /* background-position: center, center !important; */
+  }
+  
+
+  .headerImgoverlay__title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.7rem solid #d8a860;
+    align-self: flex-start;
+  }
+ .headerImgoverlay__desc {
+    font-size: 2.3rem;
+    text-align: justify;
+    line-height: auto;
+    font-weight: 100;
+    padding-top: 2rem;
+  }
+  
+  .headerImgoverlay {
+    position: relative;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    top: 20rem;
+    width: 40%;
+    /* height: 45%; */
+    height: auto;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  

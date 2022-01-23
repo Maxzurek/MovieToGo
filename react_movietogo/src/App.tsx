@@ -11,10 +11,10 @@ import ModalContext from './components/contexts/ModalContext';
 import AuthenticationModal from './components/modals/AuthenticationModal';
 import OkMessageModal from './components/modals/OkMessageModal';
 import configureInterceptor from './components/authentication/httpInterceptor';
-import { TheMovieDbDTO, MovieToGoDTO } from './models/movie.models';
+import { TheMovieDbDTO, MovieToGoDTO, GenresDTO } from './models/movie.models';
 import { WatchListDTO } from './models/watchlist.models';
 import axios from 'axios';
-import { theMovieDbTrendingDaily, theMovieDbPopulars, theMovieDbInTheater, movieToGoUrlWatchListsUser, movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId } from './endpoints';
+import { theMovieDbTrendingDaily, theMovieDbPopulars, theMovieDbInTheater, movieToGoUrlWatchListsUser, movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId, theMovieDbGenres } from './endpoints';
 import AppDataContext from './components/contexts/AppDataContext';
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -27,6 +27,7 @@ export default function App() {
   const [isOkMessageModalOpen, setOkMessageModalOpen] = useState(false);
   const [okMessageModalContent, setOkMessageModalContent] = useState('');
 
+  const [genresDTO, setGenresDTO] = useState<GenresDTO[]>([]);
   const [trendingTheMovieDbDTO, setTrendingTheMovieDbDTO] = useStateIfMounted<TheMovieDbDTO[]>([]);
   const [trendingMovieToGoDTO, setTrendingMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
   const [popularTheMovieDbDTO, setPopularTheMovieDbDTO] = useStateIfMounted<TheMovieDbDTO[]>([]);
@@ -49,6 +50,16 @@ export default function App() {
   useEffect(() => {
 
     setLoadingData(true);
+
+    const getGenresList = async () => {
+
+      await axios.get(theMovieDbGenres)
+
+        .then((response) => {
+          setGenresDTO(response.data.genres)
+        })
+        .catch(error => console.log(error))
+    }
 
     const fetchData = async () => {
 
@@ -101,9 +112,9 @@ export default function App() {
       }
 
     }
-
+    getGenresList();
     fetchData();
-
+    
   }, [claims])
 
   const creatMovieToGoMovie = async (movies: TheMovieDbDTO[]): Promise<MovieToGoDTO[]> => {
@@ -162,6 +173,8 @@ export default function App() {
     <BrowserRouter>
       <AppDataContext.Provider
         value={{
+          genresDTO,
+          setGenresDTO: setGenresDTO,
           trendingTheMovieDbDTO,
           setTrendingTheMovieDbDTO: setTrendingTheMovieDbDTO,
           trendingMovieToGoDTO,

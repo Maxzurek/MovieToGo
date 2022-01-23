@@ -4,7 +4,7 @@ import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { WatchListDTO } from "../../models/watchlist.models";
 
 export default function MovieCards(props: moviesCardsProps) {
-
+    
     const renderGridColumn = () => {
         return (
             props.theMovieDbDTO.map((theMovieDbData, index) => 

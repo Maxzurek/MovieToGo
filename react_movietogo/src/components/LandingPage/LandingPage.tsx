@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Container, Header, Segment } from "semantic-ui-react";
 import AppDataContext from "../contexts/AppDataContext";
-import MovieCards from "../utilities/MovieCards";
+import MovieCards from "./MovieCards";
 
 export default function LandingPage() {
 

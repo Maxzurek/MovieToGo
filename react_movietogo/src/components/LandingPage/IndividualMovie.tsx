@@ -4,73 +4,15 @@ import Authorized from "../authentication/Authorized";
 import { useEffect, useState } from "react";
 import { NavigationContextState, MovieToGoDTO, MovieVoteDTO, MovieVoteUpdateDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { WatchListDTO } from "../../models/watchlist.models";
 import DropDownWatchListItem from "./DropDownWatchListItem";
+import MovieRating from "../utilities/MovieRating";
 
 
 export default function IndividualMovie(props: IndividualMovieProps) {
 
     const navigate = useNavigate();
-    const [rating, setRating] = useState<any>(1);
-
-
-    useEffect(() => {
-        if (props.movieToGoDTO?.movieVote) {
-            setRating(props.movieToGoDTO?.movieVote.vote)
-        }
-    }, [props.movieToGoDTO])
-
-    const handleChangeOnRate = async (e: React.MouseEvent<HTMLDivElement>, data: RatingProps) => {
-
-        e.preventDefault();
-
-        setRating(data.rating);
-
-        //add Rating
-        var movieVoteCreationDTO: MovieVoteDTO = {
-            id: 0,
-            vote: 0,
-            user: undefined,
-            movieId: 0
-        }
-        var movieVoteUpdateDTO: MovieVoteUpdateDTO = {
-            vote: 0
-        }
-
-        if (props.movieToGoDTO.movieVote === undefined) {
-
-            movieVoteCreationDTO.movieId = props.movieToGoDTO.id;
-
-            if (data.rating && typeof data.rating === 'number') {
-                movieVoteCreationDTO.vote = data.rating
-            }
-
-            console.log(movieVoteCreationDTO)
-            await axios.post(movieToGoUrlMovieVotes, movieVoteCreationDTO)
-                .then(response => {
-                    props.movieToGoDTO.movieVote = response.data;
-                })
-                .catch(error => console.log(error))
-
-        }
-        else {
-
-            //Update Rating
-            if (data.rating && typeof data.rating === 'number') {
-                movieVoteUpdateDTO.vote = data.rating
-            }
-
-            await axios.put(movieToGoUrlMovieVotes + `/${props.movieToGoDTO.movieVote?.id}`, { vote: data.rating })
-                .then(response => {
-                    props.movieToGoDTO.movieVote = response.data;
-                })
-                .catch(error => console.log(error))
-        }
-    }
-
-
-
+  
     const handleOnClick = () => {
 
         const movieDetailsData: NavigationContextState = {
@@ -78,7 +20,6 @@ export default function IndividualMovie(props: IndividualMovieProps) {
             theMovieDbDTO: props.theMovieDbDTO,
         }
 
-        console.log(movieDetailsData);
         navigate('/movie', { state: { movieDetailsData } })
     }
 
@@ -99,7 +40,6 @@ export default function IndividualMovie(props: IndividualMovieProps) {
 
 
 
-
     return (
         <Form >
             <Container >
@@ -115,12 +55,7 @@ export default function IndividualMovie(props: IndividualMovieProps) {
                         </Container>
                         <Authorized
                             authorized={
-                                <Rating onRate={handleChangeOnRate}
-                                    icon="star"
-                                    maxRating={5}
-                                    size="huge"
-                                    rating={rating}
-                                />
+                                <MovieRating  movieToGoDTO={props.movieToGoDTO} />
                             }
                             notAuthorized={<></>}
                         />
@@ -130,7 +65,6 @@ export default function IndividualMovie(props: IndividualMovieProps) {
                                 <Label   attached="top right" color="yellow">
                                     <Dropdown
                                         item
-                                        // trigger={<><Button circular icon='add' basic size="mini" color="vk" /></>}
                                         trigger={<><Popup on='hover' content={props.watchListDTO?"Add Movie to Watchlist":"No Watchlist"} trigger={<Button circular icon='add' basic size="mini" color="vk"  />} /></>}
                                         icon={null}>
                                         <Dropdown.Menu>
