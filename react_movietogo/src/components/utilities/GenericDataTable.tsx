@@ -64,7 +64,7 @@ export default function GenericDataTable(props: DataTableProps) {
             getRequest();
         }
 
-    }, [props.refresh, props.url])
+    }, [props])
 
     useEffect(() => { // Controls the loading state
 
@@ -163,7 +163,7 @@ export default function GenericDataTable(props: DataTableProps) {
                                         <Dropdown text="Array items">
                                             <DropdownMenu>
                                                 {lines.map((line, index) => {
-                                                    return <DropdownItem text={line} />
+                                                    return <DropdownItem key={index} text={line} />
                                                 })}
                                             </DropdownMenu>
                                         </Dropdown>
