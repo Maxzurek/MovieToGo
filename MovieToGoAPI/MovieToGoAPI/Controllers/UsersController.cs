@@ -97,6 +97,29 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
+        /// Add a Admin role claim to the user claims. Must be authorized (JWT bearer with policy = "IsAdmin").
+        /// </summary>
+        /// <param name="userDTO"></param>
+        /// <returns></returns>
+        [HttpPost("makeAdmin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> MakeAdmin([FromBody] UserDTO userDTO)
+        {
+            User user = await userManager.FindByNameAsync(userDTO.UserName);
+
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            await userManager.AddClaimAsync(user, new Claim("role", "Admin"));
+
+            return NoContent();
+        }
+
+        /// <summary>
         /// Return a list of all the registered users. Must be authorized (JWT bearer with policy = "IsAdmin").
         /// </summary>
         /// <returns></returns>
