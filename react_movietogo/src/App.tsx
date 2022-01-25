@@ -60,7 +60,7 @@ export default function App() {
     }
 
     const fetchData = async () => {
-      console.log("Fetching data")
+
       const requestOne = axios.get(theMovieDbTrendingDaily);
       const requestTwo = axios.get(theMovieDbPopulars);
       const requestThree = axios.get(theMovieDbInTheater);
