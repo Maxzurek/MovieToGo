@@ -17,6 +17,8 @@ import axios from 'axios';
 import { theMovieDbTrendingDaily, theMovieDbPopulars, theMovieDbInTheater, movieToGoUrlWatchListsUser, movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId, theMovieDbGenres } from './endpoints';
 import AppDataContext from './components/contexts/AppDataContext';
 import { useStateIfMounted } from 'use-state-if-mounted';
+import RedirectionPage from './components/navigation/RedirectionPage';
+import { adminRole } from './roles';
 
 configureInterceptor();
 
@@ -80,13 +82,13 @@ export default function App() {
             setPopularTheMovieDbDTO(popularMovies)
             setInTheatersTheMovieDbDTO(inTheatersMovies)
 
-            await creatMovieToGoMovie(trendingMovies)
+            await createMovieToGoMovie(trendingMovies)
               .then(async (response) => {
                 setTrendingMovieToGoDTO(response);
-                await creatMovieToGoMovie(popularMovies)
+                await createMovieToGoMovie(popularMovies)
                   .then(async (response) => {
                     setPopularMovieToGoDTO(response)
-                    await creatMovieToGoMovie(inTheatersMovies)
+                    await createMovieToGoMovie(inTheatersMovies)
                       .then(async (response) => {
                         setInTheatersMovieToGoDTO(response)
 
@@ -117,7 +119,7 @@ export default function App() {
     
   }, [claims])
 
-  const creatMovieToGoMovie = async (movies: TheMovieDbDTO[]): Promise<MovieToGoDTO[]> => {
+  const createMovieToGoMovie = async (movies: TheMovieDbDTO[]): Promise<MovieToGoDTO[]> => {
 
     let movieToGoDTOs: MovieToGoDTO[] = [];
 
@@ -155,18 +157,18 @@ export default function App() {
   }
 
   const isAdmin = () => {
-    return claims.findIndex(claim => claim.name === 'role' && claim.value === 'admin') > -1;
+    return claims.findIndex(claim => claim.name === 'role' && claim.value === adminRole) > -1;
   }
 
   function getElement(requiredRole: string, componentToRender: JSX.Element) {
     if (requiredRole.length === 0) {
       return componentToRender;
     }
-    if (requiredRole === 'admin' && isAdmin()) {
+    if (requiredRole === adminRole && isAdmin()) {
       return componentToRender;
     }
 
-    return <h1>Unauthorized : You are not allowed to see this page. Please log in first.</h1>;
+    return <RedirectionPage />;
   }
 
   return (

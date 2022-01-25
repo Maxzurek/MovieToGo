@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Dropdown, Grid, GridColumn, GridRow, Header, Icon, Image, Item, Menu, MenuItem } from "semantic-ui-react";
+import { adminRole } from "../../roles";
 import Authorized from "../authentication/Authorized";
 import { logout } from "../authentication/handleJWT";
 import AuthenticationContext from "../contexts/AuthenticationContext";
@@ -23,7 +24,7 @@ export default function MainNavbar() {
         const userName = claims.filter(x => x.name === 'username')[0]?.value;
         const role = claims.filter(x => x.name === 'role')[0]?.value;
 
-        return `${userName}${role? ' ('+role+')': undefined}`;
+        return `${userName}${role? ' ('+role+')': ""}`;
     }
 
     return (
@@ -55,6 +56,10 @@ export default function MainNavbar() {
                                     <Dropdown.Menu>
                                         <Dropdown.Item icon='edit' text='Edit Profile' name="edit" onClick={() => console.log("TODO redirect to edit profile")} />
                                         <Dropdown.Item icon='list' text='WatchLists' name="watchLists" onClick={() => navigate('/watchlist')} />
+                                        <Authorized 
+                                            authorized={ <Dropdown.Item icon='wrench' text='Admin Tools' name="adminTools" onClick={() => navigate('/dev')} />}
+                                            role={adminRole}
+                                        />
                                         <Dropdown.Item icon='sign out' text='Logout' name="logout" onClick={handleLogoutClick} />
                                     </Dropdown.Menu>
                                 </Dropdown>
