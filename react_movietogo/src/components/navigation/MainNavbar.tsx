@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Dropdown, Grid, GridColumn, GridRow, Header, Icon, Image, Item, Menu, MenuItem } from "semantic-ui-react";
 import Authorized from "../authentication/Authorized";
@@ -18,8 +18,12 @@ export default function MainNavbar() {
         update([]);
     }
 
-    const getLoggedInUsername = () => {
-        return claims.filter(x => x.name === 'username')[0]?.value;
+    const getLoggedInUsernameAndRole = () => {
+
+        const userName = claims.filter(x => x.name === 'username')[0]?.value;
+        const role = claims.filter(x => x.name === 'role')[0]?.value;
+
+        return `${userName}${role? ' ('+role+')': undefined}`;
     }
 
     return (
@@ -45,7 +49,7 @@ export default function MainNavbar() {
                             authorized={
                                 <Dropdown
                                     item
-                                    trigger={<><Icon name='user outline' />{getLoggedInUsername()}</>}
+                                    trigger={<><Icon name='user outline' />{getLoggedInUsernameAndRole()}</>}
                                     icon={null}
                                 >
                                     <Dropdown.Menu>
