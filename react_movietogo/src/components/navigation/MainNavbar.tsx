@@ -54,13 +54,12 @@ export default function MainNavbar() {
                                     icon={null}
                                 >
                                     <Dropdown.Menu>
-                                        <Dropdown.Item icon='edit' text='Edit Profile' name="edit" onClick={() => console.log("TODO redirect to edit profile")} />
-                                        <Dropdown.Item icon='list' text='WatchLists' name="watchLists" onClick={() => navigate('/watchlist')} />
+                                        <Dropdown.Item icon='list' text=' WatchLists' name="watchLists" onClick={() => navigate('/watchlist')} />
                                         <Authorized 
-                                            authorized={ <Dropdown.Item icon='wrench' text='Admin Tools' name="adminTools" onClick={() => navigate('/dev')} />}
+                                            authorized={ <Dropdown.Item icon='wrench' text=' Admin Tools' name="adminTools" onClick={() => navigate('/dev')} />}
                                             role={adminRole}
                                         />
-                                        <Dropdown.Item icon='sign out' text='Logout' name="logout" onClick={handleLogoutClick} />
+                                        <Dropdown.Item icon='sign out' text=' Logout' name="logout" onClick={handleLogoutClick} />
                                     </Dropdown.Menu>
                                 </Dropdown>
                             }
