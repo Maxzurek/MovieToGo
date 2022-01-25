@@ -51,7 +51,7 @@ namespace MovieToGoAPI
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("IsAdmin", policy => policy.RequireRole("Administrator"));
+                options.AddPolicy("IsAdmin", policy => policy.RequireRole("Admin"));
             });
 
             services.Configure<IdentityOptions>(options =>
