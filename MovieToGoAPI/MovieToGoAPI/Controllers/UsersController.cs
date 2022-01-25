@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MovieToGoAPI.DTOs.Users;
 using MovieToGoAPI.Entities;
 using MovieToGoAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -39,8 +43,8 @@ namespace MovieToGoAPI.Controllers
         /// <param name="userCreationDTO"></param>
         /// <returns></returns>
         [HttpPost("create")]
-        [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<AuthenticationResponse>> Create([FromBody] UserCreationDTO userCreationDTO)
         {
             logger.LogInformation("Creating a user account");
@@ -54,7 +58,7 @@ namespace MovieToGoAPI.Controllers
                 return BadRequest(result);
             }
 
-            return BuildToken(user);
+            return await BuildToken(user);
         }
 
         /// <summary>
@@ -63,8 +67,8 @@ namespace MovieToGoAPI.Controllers
         /// <param name="userLoginDTO"></param>
         /// <returns></returns>
         [HttpPost("login")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] UserLoginDTO userLoginDTO)
         {
             logger.LogInformation("Login user account");
@@ -89,14 +93,47 @@ namespace MovieToGoAPI.Controllers
                 return Unauthorized("Invalid Login Attempt");
             }
 
-            return BuildToken(user);
+            return await BuildToken(user);
         }
 
-        [HttpDelete("{UserId}")]
+        /// <summary>
+        /// Return a list of all the registered users. Must be authorized (JWT bearer with policy = "IsAdmin").
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
+        [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> Get()
+        {
+            logger.LogInformation("Getting all users");
+
+            List<User> users = await userManager.Users.ToListAsync();
+
+            if(users.Count == 0)
+            {
+                return NoContent();
+            }
+
+            return Ok(mapper.Map<List<UserDTO>>(users));
+        }
+
+        /// <summary>
+        /// Delete a user by it's UserId. Must be authorized (JWT bearer with policy = "IsAdmin").
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        [HttpDelete("{UserId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(IdentityResult), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Delete(string UserId)
         {
+            logger.LogInformation("Deleting a user");
+
             User userToDelete = await userManager.FindByIdAsync(UserId);
 
             if(userToDelete == null)
@@ -117,18 +154,17 @@ namespace MovieToGoAPI.Controllers
         /**********************************************************************************************************
         * Private Methods
         ***********************************************************************************************************/
-        private AuthenticationResponse BuildToken(User user)
+        private async Task<AuthenticationResponse> BuildToken(User user)
         {
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim("username", user.UserName)
-        };
+            IList<Claim> claims = await userManager.GetClaimsAsync(user);
 
-            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Keyjwt"]));
-            SigningCredentials signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            claims.Add(new Claim("username", user.UserName));
+
+            SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(configuration["Keyjwt"]));
+            SigningCredentials signingCredentials = new(key, SecurityAlgorithms.HmacSha256);
             DateTime expiration = DateTime.UtcNow.AddYears(1);
 
-            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
+            JwtSecurityToken jwtSecurityToken = new(
                 issuer: null, 
                 audience: null, 
                 claims: claims, 

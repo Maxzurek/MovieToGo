@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieToGoAPI.DTOs.Movies;
 using MovieToGoAPI.Entities;
 using MovieToGoAPI.Models;
+using System.Net;
 
 namespace MovieToGoAPI.Controllers
 {
@@ -25,12 +28,14 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get all TheMovieDb movies references with MovieToGo votes
+        /// Get all TheMovieDb movies references with MovieToGo votes. Must be authorized (JWT bearer with policy = "IsAdmin").
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
         [ProducesResponseType(typeof(List<MovieDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<MovieDTO>>> Get()
         {
             logger.LogInformation("Getting all movies");
@@ -99,19 +104,17 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Movie>> Post([FromBody] MovieCreationDTO movieCreationDTO)
         {
-            logger.LogInformation("Movies post");
+            logger.LogInformation("Creating a movie");
 
             Movie? existingMovie =  await context.Movies.FirstOrDefaultAsync(x => x.TheMovieDbId == movieCreationDTO.TheMovieDbId);
 
             if(existingMovie != null) // We already have a reference to TheMovieDb movie Id in our database, no need to add it again
             {
-                logger.LogInformation("Movie already in database");
+                logger.LogInformation("Movie already in database - OK");
                 return Ok(mapper.Map<MovieDTO>(existingMovie));
             }
 
             Movie movie = mapper.Map<Movie>(movieCreationDTO);
-
-            logger.LogInformation("Creating a movie");
 
             EntityEntry<Movie> entityEntry = context.Movies.Add(movie);
             await context.SaveChangesAsync();
@@ -120,16 +123,20 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Update a movie by his MovieToGo Id
+        /// Update a movie by his MovieToGo Id. Must be authorized (JWT bearer with policy = "IsAdmin").
         /// </summary>
         /// <param name="movieToGoId"></param>
         /// <param name="movieUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{movieToGoId:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
         [ProducesResponseType(typeof(MovieDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Movie>> Put(int movieToGoId, [FromBody] MovieUpdateDTO movieUpdateDTO)
         {
+            logger.LogInformation("Updating a movie");
+
             Movie? movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == movieToGoId);
 
             if (movie == null)
@@ -144,15 +151,19 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Delete a movie by his MovieToGo Id
+        /// Delete a movie by his MovieToGo Id. Must be authorized (JWT bearer with policy = "IsAdmin").
         /// </summary>
         /// <param name="movieToGoId"></param>
         /// <returns></returns>
         [HttpDelete("{movieToGoId:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(int movieToGoId)
         {
+            logger.LogInformation("Deleting a movie");
+
             Movie? movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == movieToGoId);
 
             if (movie == null)

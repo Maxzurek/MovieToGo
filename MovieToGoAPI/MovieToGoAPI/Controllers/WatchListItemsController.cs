@@ -38,15 +38,17 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get all watchlistitems
+        /// Get all WatchListItems. Must be authorized (JWT bearer with policy = "IsAdmin").
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
         [ProducesResponseType(typeof(List<WatchListItemDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<WatchListItemDTO>>> GetAll()
         {
-            logger.LogInformation("Getting all watchlistitems");
+            logger.LogInformation("Getting all WatchListItems");
 
             List<WatchListItem> watchListItems = await context.WatchListItems
                 .Include(x => x.Movie)
@@ -61,16 +63,17 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get a watchlistitem by Id
+        /// Get a WatchListItem by Id. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpGet("{Id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(WatchListItemDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WatchListItemDTO>> GetById(int Id)
         {
-            logger.LogInformation("Getting a watchlistitem by id");
+            logger.LogInformation("Getting a WatchListItem by Id");
 
             WatchListItem? watchListItem = await context.WatchListItems
                 .Include(x => x.Movie)
@@ -85,11 +88,12 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get all watchlistitems by watchlist Id
+        /// Get all watchlistitems by watchlist Id. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="WatchListId"></param>
         /// <returns></returns>
         [HttpGet("watchlist/{WatchListId:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(List<WatchListItemDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<WatchListItemDTO>>> GetByWatchListId(int WatchListId)
@@ -110,7 +114,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Create a watchlistitem
+        /// Create a watchlistitem. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="watchListItemCreationDTO"></param>
         /// <returns></returns>
@@ -153,13 +157,15 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Update a watchlistitem
+        /// Update a watchlistitem. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="watchListItemUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{Id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(WatchListItemDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Put(int Id, [FromBody] WatchListItemUpdateDTO watchListItemUpdateDTO)
         {
@@ -177,12 +183,14 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Delete a watchlistitem
+        /// Delete a watchlistitem. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpDelete]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(int Id)
         {

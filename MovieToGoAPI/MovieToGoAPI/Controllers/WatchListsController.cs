@@ -38,15 +38,17 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get all WatchLists
+        /// Get all WatchLists. Must be authorized (JWT bearer with policy = "IsAdmin").
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
         [ProducesResponseType(typeof(List<WatchListDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<WatchListDTO>>> GetAll()
         {
-            logger.LogInformation("Getting all watchlists");
+            logger.LogInformation("Getting all WatchLists");
 
             List<WatchList> watchlists = await context.WatchLists.Include(x=> x.User ).Include(x => x.WatchListItems).ToListAsync();
 
@@ -59,16 +61,18 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get a watchlist by his Id
+        /// Get a WatchList by his Id. Must be authorized (JWT bearer). 
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpGet("{Id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(List<WatchListDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WatchListDTO>> GetById(int Id)
         {
-            logger.LogInformation("Getting a watchlist by id");
+            logger.LogInformation("Getting a WatchList by Id");
 
             WatchList? watchlist = await context.WatchLists
                 .Include(x => x.User)
@@ -84,17 +88,17 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get a user watchlist. JWT bearer required
+        /// Get a user watchlist. Must be authorized (JWT bearer).
         /// </summary>
-        /// <param name="UserId"></param>
         /// <returns></returns>
         [HttpGet("user")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(List<WatchListDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<WatchListDTO>>> GetByUserId()
         {
-            logger.LogInformation("Getting a user's watchlists");
+            logger.LogInformation("Getting a user's WatchLists");
 
             string? userId = await authorizationService.validateUserClaim(this, userManager);
 
@@ -105,7 +109,6 @@ namespace MovieToGoAPI.Controllers
 
             List<WatchList> watchlists = await context.WatchLists.Include(x => x.User).Include(x => x.WatchListItems).Where(x => x.UserId == userId).ToListAsync();
 
-
             if (watchlists.Count == 0)
             {
                 return NoContent();
@@ -115,7 +118,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Create a watchlist. JWT bearer required
+        /// Create a WatchList. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="watchListCreationDTO"></param>
         /// <returns></returns>
@@ -126,7 +129,7 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Post([FromBody] WatchListCreationDTO watchListCreationDTO)
         {
-            logger.LogInformation("Creating a watchlist");
+            logger.LogInformation("Creating a WatchList");
 
             string? userId = await authorizationService.validateUserClaim(this, userManager);
 
@@ -148,17 +151,21 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Update a watchlist
+        /// Update a WatchList. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="watchListUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{Id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(WatchListDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         public async Task<ActionResult> Put(int Id, [FromBody] WatchListUpdateDTO watchListUpdateDTO)
         {
+            logger.LogInformation("Updating a WatchList");
+
             WatchList? watchList = await context.WatchLists.FirstOrDefaultAsync(x => x.Id == Id);
 
             if (watchList == null)
@@ -173,15 +180,19 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Delete a watchlist
+        /// Delete a WatchList. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpDelete]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(int Id)
         {
+            logger.LogInformation("Deleting a WatchList");
+
             WatchList? watchList = await context.WatchLists.FirstOrDefaultAsync(x => x.Id == Id);
 
             if (watchList == null)

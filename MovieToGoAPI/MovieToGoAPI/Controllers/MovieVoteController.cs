@@ -41,15 +41,17 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// get all MovieVotes
+        /// Get all MovieVotes. Must be authorized (JWT bearer with policy = "IsAdmin").
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
         [ProducesResponseType(typeof(List<MovieVoteDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<MovieVoteDTO>>> Get()
         {
-            logger.LogInformation("Getting all movies");
+            logger.LogInformation("Getting all MovieVotes");
 
             List<MovieVote> moviesVotes = await context.MovieVotes.ToListAsync();
 
@@ -62,16 +64,18 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get MovieVote by ID
+        /// Get MovieVote by ID. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpGet("{Id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(MovieVoteDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MovieVoteDTO>> Get(int Id)
         {
-            logger.LogInformation("Getting vote by Id");
+            logger.LogInformation("Getting a MovieVote by Id");
 
             MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
 
@@ -84,7 +88,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get a MovieVote by it's MovieId foreign key. User must be logged in (JWT bearer).
+        /// Get a MovieVote by it's MovieId foreign key. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="MovieId"></param>
         /// <returns></returns>
@@ -95,7 +99,7 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<MovieVoteDTO>> GetByMovieId(int MovieId)
         {
-            logger.LogInformation("Getting vote by Id");
+            logger.LogInformation("Getting a MovieVote by Id");
 
             string? userId = await authorizationService.validateUserClaim(this, userManager);
 
@@ -115,7 +119,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Create MovieVote
+        /// Create a MovieVote. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="movieVoteCreationDTO"></param>
         /// <returns></returns>
@@ -126,7 +130,7 @@ namespace MovieToGoAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<MovieVoteDTO>> Post([FromBody] MovieVoteCreationDTO movieVoteCreationDTO)
         {
-            logger.LogInformation("Creating a Vote");
+            logger.LogInformation("Creating a MovieVote");
 
             string? userId = await authorizationService.validateUserClaim(this, userManager);
 
@@ -144,18 +148,19 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Update MovieVote by ID
+        /// Update MovieVote by ID. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="MovieVoteDTO"></param>
         /// <returns></returns>
         [HttpPut("{Id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(MovieVoteDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         public async Task<ActionResult<MovieVoteDTO>> Put(int Id, [FromBody] MovieVoteUpdateDTO MovieVoteDTO)
         {
-            logger.LogInformation("Updating a Vote");
+            logger.LogInformation("Updating a MovieVote");
 
             MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
 
@@ -172,17 +177,18 @@ namespace MovieToGoAPI.Controllers
 
 
         /// <summary>
-        /// Delete MovieVote by ID
+        /// Delete MovieVote by ID. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpDelete("{Id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         public async Task<ActionResult> Delete(int Id)
         {
-            logger.LogInformation("Deleting a Vote");
+            logger.LogInformation("Deleting a MovieVote");
 
             MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.Id == Id);
 

@@ -8,6 +8,7 @@ using MovieToGoAPI.APIBehavior;
 using MovieToGoAPI.Entities;
 using MovieToGoAPI.Filters;
 using MovieToGoAPI.Services;
+using System.Net;
 using System.Reflection;
 using System.Text;
 
@@ -48,6 +49,10 @@ namespace MovieToGoAPI
                 };
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin", policy => policy.RequireRole("Administrator"));
+            });
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -103,7 +108,6 @@ namespace MovieToGoAPI
                                 }
                             },
                             new string[] {}
-
                     }
                 });
             });

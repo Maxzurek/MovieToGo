@@ -39,12 +39,14 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Get all movie Reviews
+        /// Get all movie Reviews. Must be authorized (JWT bearer with policy = "IsAdmin").
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
         [ProducesResponseType(typeof(List<MovieReviewDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<MovieReviewDTO>>> Get()
         {
             logger.LogInformation("Getting all Movie Reviews");
@@ -61,7 +63,7 @@ namespace MovieToGoAPI.Controllers
 
 
         /// <summary>
-        /// Get Movie Review by ID
+        /// Get Movie Review by ID.
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -84,7 +86,7 @@ namespace MovieToGoAPI.Controllers
 
 
         /// <summary>
-        /// Get all movie Reviews by Moovie Id
+        /// Get all movie Reviews by Movie Id.
         /// </summary>
         /// <param name="MovieId"></param>
         /// <returns></returns>
@@ -108,7 +110,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Create Movie Review
+        /// Create Movie Review. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="movieReviewCreationDTO"></param>
         /// <returns></returns>
@@ -116,7 +118,7 @@ namespace MovieToGoAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(MovieReviewDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(List<ErrorMessage>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<MovieReviewDTO>> Post([FromBody] MovieReviewCreationDTO movieReviewCreationDTO)
         {
             logger.LogInformation("Creating Movie Review");
@@ -142,16 +144,20 @@ namespace MovieToGoAPI.Controllers
 
 
         /// <summary>
-        /// Update Movie Review by ID
+        /// Update Movie Review by ID. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="id"></param>
         /// <param name="movieReviewUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(MovieReviewDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MovieReviewDTO>> Put(int id, [FromBody] MovieReviewUpdateDTO movieReviewUpdateDTO)
         {
+            logger.LogInformation("Updating a Movie Review");
+
             MovieReview? movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == id);
 
             if (movieReview == null)
@@ -167,15 +173,19 @@ namespace MovieToGoAPI.Controllers
 
 
         /// <summary>
-        /// Delete movie Review by ID
+        /// Delete movie Review by ID. Must be authorized (JWT bearer).
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(int id)
         {
+            logger.LogInformation("Deleting a Movie Review");
+
             MovieReview? movieReview = await context.MovieReviews.FirstOrDefaultAsync(x => x.Id == id);
 
             if (movieReview == null)
