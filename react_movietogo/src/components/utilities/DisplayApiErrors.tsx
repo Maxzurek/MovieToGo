@@ -11,7 +11,6 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
 
     const [message, setMessage] = useState<ReactElement>(<></>);
 
-
     const getError400MessageComponent = (response: AxiosResponse): ReactElement => {
         return (
             <Message negative>
@@ -38,7 +37,14 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
         return (
             <Container textAlign="center" fluid>
                 <Message negative>{SERVER_ERR_MESSAGE}</Message>
+            </Container>
+        )
+    }
 
+    const getGenericErrorMessageComponent = (response: AxiosResponse): ReactElement => {
+        return(
+            <Container textAlign="center" fluid>
+                <Message negative>{response.data}</Message>
             </Container>
         )
     }
@@ -62,6 +68,7 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
                     setMessage(getError500MessageComponent());
                     break;
                 default:
+                    setMessage(getGenericErrorMessageComponent(response));
                     break;
             }
         }
