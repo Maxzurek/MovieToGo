@@ -24,12 +24,12 @@ configureInterceptor();
 
 export default function App() {
 
-  const [claims, setClaims] = useState<Claim[]>([]);
+  const [claims, setClaims] = useState<Claim[]>(getClaims);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
   const [isOkMessageModalOpen, setOkMessageModalOpen] = useState(false);
   const [okMessageModalContent, setOkMessageModalContent] = useState('');
 
-  const [genresDTO, setGenresDTO] = useState<GenresDTO[]>([]);
+  const [genresDTO, setGenresDTO] = useStateIfMounted<GenresDTO[]>([]);
   const [trendingTheMovieDbDTO, setTrendingTheMovieDbDTO] = useStateIfMounted<TheMovieDbDTO[]>([]);
   const [trendingMovieToGoDTO, setTrendingMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
   const [popularTheMovieDbDTO, setPopularTheMovieDbDTO] = useStateIfMounted<TheMovieDbDTO[]>([]);
@@ -37,11 +37,7 @@ export default function App() {
   const [inTheatersTheMovieDbDTO, setInTheatersTheMovieDbDTO] = useStateIfMounted<TheMovieDbDTO[]>([]);
   const [inTheatersMovieToGoDTO, setInTheatersMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
   const [userWatchListDTO, setUserWatchListDTO] = useStateIfMounted<WatchListDTO[] | undefined>(undefined);
-  const [isLoadingData, setLoadingData] = useState(true);
-
-  useEffect(() => {
-    setClaims(getClaims);
-  }, [])
+  const [isLoadingData, setLoadingData] = useStateIfMounted(true);
 
   useEffect(() => {
     if (okMessageModalContent) {
@@ -64,7 +60,7 @@ export default function App() {
     }
 
     const fetchData = async () => {
-
+      console.log("Fetching data")
       const requestOne = axios.get(theMovieDbTrendingDaily);
       const requestTwo = axios.get(theMovieDbPopulars);
       const requestThree = axios.get(theMovieDbInTheater);
@@ -114,9 +110,10 @@ export default function App() {
       }
 
     }
+
     getGenresList();
     fetchData();
-    
+
   }, [claims])
 
   const createMovieToGoMovie = async (movies: TheMovieDbDTO[]): Promise<MovieToGoDTO[]> => {
@@ -143,13 +140,13 @@ export default function App() {
                 }
 
                 movieToGoDTO.movieVote = movieVoteDTO;
-                movieToGoDTOs[index] = (movieToGoDTO);
               })
               .catch((error) => {
                 console.log(error);
-                return movieToGoDTOs;
               })
           }
+            
+          movieToGoDTOs.push(movieToGoDTO);
         })
     }))
 
