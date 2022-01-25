@@ -146,7 +146,7 @@ export default function App() {
               })
           }
             
-          movieToGoDTOs.push(movieToGoDTO);
+          movieToGoDTOs[index] = movieToGoDTO;
         })
     }))
 
