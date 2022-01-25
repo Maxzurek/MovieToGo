@@ -47,6 +47,7 @@ export default function GenericDataTable(props: DataTableProps) {
 
             } catch (error) {
                 let axiosError = error as AxiosError;
+                setData([])
                 setResponse(undefined);
                 setError(axiosError);
             }
@@ -104,7 +105,61 @@ export default function GenericDataTable(props: DataTableProps) {
         }
     }, [response, error, data])
 
-    const renderTableRows = () => {
+    const renderTableHeaderRows = () => {
+        return (
+            keys.map((header, index) => {
+                return <TableHeaderCell key={index} >{header}</TableHeaderCell>
+            })
+        )
+    }
+
+    const getLines = (value: unknown): string[] => {
+
+        var stringValue = '';
+
+        if (value === null) {
+            stringValue = "NULL";
+        }
+        else if (typeof value === "string") {
+            stringValue = value;
+        }
+        else if (typeof value === "number" || typeof value === "boolean") {
+            stringValue = value.toString();
+        }
+        else if (Array.isArray(value)) {
+            stringValue = "[   ";
+
+            if (value.length === 0) {
+                stringValue = "empty";
+            }
+            else {
+                stringValue += value.map((x, index) => {
+                    let object = "";
+                    let isLastItem = index === value.length - 1;
+
+                    object += JSON.stringify(x)
+
+                    if (!isLastItem) {
+                        object += ';'
+                    }
+                    else {
+                        object += '   ]'
+                    }
+
+                    return object;
+                });
+            }
+        }
+        else if (typeof value === "object") {
+            stringValue = JSON.stringify(value);
+        }
+
+        let lines = stringValue.split(';');
+
+        return lines;
+    }
+
+    const renderTableBodyRows = () => {
 
         return (
             data?.map((dataObject: any, index: number) => {
@@ -112,46 +167,7 @@ export default function GenericDataTable(props: DataTableProps) {
                     <TableRow key={index}>
                         {Object.entries(dataObject).map(([key, value]) => {
 
-                            var stringValue = '';
-
-                            if (value === null) {
-                                stringValue = "NULL";
-                            }
-                            else if (typeof value === "string") {
-                                stringValue = value;
-                            }
-                            else if (typeof value === "number" || typeof value === "boolean") {
-                                stringValue = value.toString();
-                            }
-                            else if (Array.isArray(value)) {
-                                stringValue = "[   ";
-
-                                if (value.length === 0) {
-                                    stringValue = "empty";
-                                }
-                                else {
-                                    stringValue += value.map((x, index) => {
-                                        let object = "";
-                                        let isLastItem = index === value.length - 1;
-
-                                        object += JSON.stringify(x)
-
-                                        if (!isLastItem) {
-                                            object += ';'
-                                        }
-                                        else{
-                                            object += '   ]'
-                                        }
-
-                                        return object;
-                                    });
-                                }
-                            }
-                            else if (typeof value === "object") {
-                                stringValue = JSON.stringify(value);
-                            }
-
-                            let lines = stringValue.split(';');
+                            let lines = getLines(value);
 
                             return (
                                 <TableCell
@@ -181,13 +197,10 @@ export default function GenericDataTable(props: DataTableProps) {
         return (
             <Table celled size="large">
                 <TableHeader>
-                    <TableRow>
-                        {keys.map((header, index) => <TableHeaderCell key={index} >{header}</TableHeaderCell>)}
-                    </TableRow>
+                    {renderTableHeaderRows()}
                 </TableHeader>
-
                 <TableBody>
-                    {renderTableRows()}
+                    {renderTableBodyRows()}
                 </TableBody>
             </Table>
         )
