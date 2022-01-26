@@ -5,7 +5,7 @@ import { movieToGoUrlWatchListItems } from "../../endpoints";
 import { WatchListDTO, WatchListItemCreationDTO, WatchListItemDTO } from "../../models/watchlist.models";
 
 interface DropDownWatchListItemProps {
-    movieId: number;
+    movieId: number | undefined;
     watchListDTO: WatchListDTO;
     icon?: string;
 }
@@ -32,7 +32,7 @@ export default function DropDownWatchListItem(props: DropDownWatchListItemProps)
             movieId: 0
         }
 
-        watchListItemCreationDTO.movieId = props.movieId;
+        if(props.movieId) {watchListItemCreationDTO.movieId = props.movieId};
         watchListItemCreationDTO.watchListID = props.watchListDTO.id;
 
         var watchListItemDTO: WatchListItemDTO = {

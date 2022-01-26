@@ -32,7 +32,7 @@ export default function ReviewRating(props: reviewRatingProps) {
 
                 values.movieId = props.movieToGoDTO.id
                 values.dateCreated = new Date()
-                console.log("values")
+                //console.log("values")
 
                 await axios.post(movieToGoUrlMovieReviews, values)
                     .then(response => {
@@ -58,27 +58,32 @@ export default function ReviewRating(props: reviewRatingProps) {
     return (
         <>
             <Container>
-                <Segment textAlign="center"><h3> RATE AND REVIEW </h3>
-                </Segment>
-                <br />
-                <Container>
-
-                    <Authorized
-                        authorized={
-                            <MovieRating movieToGoDTO={props.movieToGoDTO} />
-                        }
-                        notAuthorized={<></>}
-                    />
-                </Container>
-                <br />
-                <ReviewForm model={reviewCreationDTO} onSubmit={onSubmitReview} />
-                <DisplayApiErrors error={movieReviwErrors} />
-                {reviewSubmissionSuccessMsg ? <Container textAlign="center"><Message positive>{reviewSubmissionSuccessMsg}</Message></Container> : undefined}
-
-                <br /> <br />
-                <Segment textAlign="center"><h3> CRITIC REVIEWS FOR MOVIE </h3> </Segment>
-                <br />
-                <ReviewsDetail movieToGoDTO={props.movieToGoDTO} />
+                <Authorized
+                    authorized={
+                        <>
+                            <Segment textAlign="center"><h3> RATE AND REVIEW </h3>
+                            </Segment>
+                            <br />
+                            <Container>
+                                <h3>Your Rating  : <MovieRating movieToGoDTO={props.movieToGoDTO} /> </h3>
+                            </Container>
+                            <br />
+                            <ReviewForm model={reviewCreationDTO} onSubmit={onSubmitReview} />
+                            <DisplayApiErrors error={movieReviwErrors} />
+                            {reviewSubmissionSuccessMsg ? <Container textAlign="center"><Message positive>{reviewSubmissionSuccessMsg}</Message></Container> : undefined}
+                            <br /> <br />
+                            <Segment textAlign="center"><h3> CRITIC REVIEWS FOR MOVIE </h3> </Segment>
+                            <br />
+                            <ReviewsDetail movieToGoDTO={props.movieToGoDTO} />
+                        </>
+                    }
+                    notAuthorized={
+                        <>
+                            <br /> <br />
+                            <Segment textAlign="center"><h3> CRITIC REVIEWS FOR MOVIE </h3> </Segment>
+                            <br />
+                            <ReviewsDetail movieToGoDTO={props.movieToGoDTO} />
+                        </>} />
             </Container>
         </>
 

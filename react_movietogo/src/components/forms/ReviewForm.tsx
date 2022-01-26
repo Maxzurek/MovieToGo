@@ -36,7 +36,7 @@ export default function ReviewForm(props: reviewFormProps) {
                         onChange={formikProps.handleChange}
                         name="body"
                         label="Review"
-                        placeholder='What did you think of the movie? (optional)'
+                        placeholder='What did you think of the movie ?'
 
                     />
                     {formikProps.errors.body ? <Message negative content={formikProps.errors.body} /> : undefined}

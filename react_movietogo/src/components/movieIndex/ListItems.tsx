@@ -38,7 +38,7 @@ export default function ListItems(props: listItemsProps) {
             setGenresName(genresName)
             console.log()
         }
-    }, [])
+    }, [genresDTO])
 
     return (
         <div>

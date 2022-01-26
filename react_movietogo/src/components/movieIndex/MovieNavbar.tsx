@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { Grid, GridColumn, GridRow, Menu, MenuItem, Segment } from "semantic-ui-react";
 import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
-import ListReviews from "./ReviewsDetail";
 import MovieDetails from "./MovieDetails";
 import ReviewRating from "./ReviewRating";
-
+import Authorized from "../authentication/Authorized";
+import { WatchListDTO } from "../../models/watchlist.models";
 
 
 export interface movieNavbar {
     theMovieDbDTO: TheMovieDbDTO | undefined;
     movieToGoDTO: MovieToGoDTO | undefined;
+    watchListDTO: WatchListDTO[] | undefined;
 
 }
 
@@ -22,13 +23,17 @@ export default function MovieNavbar(props: movieNavbar) {
         setActiveItem(name);
     }
 
+    
+
     const renderSegment = () => {
         switch (activeItem) {
             case 'detailFilm':
                 return (<MovieDetails theMovieDbDTO={props.theMovieDbDTO}
-                                       movieToGoDTO={props.movieToGoDTO} />)
+                                      movieToGoDTO={props.movieToGoDTO} 
+                                      watchListDTO ={props.watchListDTO}
+                    />)
             case 'reviewRate':
-                return (<ReviewRating movieToGoDTO = {props.movieToGoDTO} />)
+                return (<ReviewRating movieToGoDTO={props.movieToGoDTO} /> )
             case 'TODO':
                 console.log("reviews")
                 break;
@@ -74,7 +79,8 @@ export default function MovieNavbar(props: movieNavbar) {
                         {activeItem ?
                             renderSegmentFunc
                             : <MovieDetails theMovieDbDTO={props.theMovieDbDTO}
-                                movieToGoDTO={props.movieToGoDTO} />
+                                movieToGoDTO={props.movieToGoDTO} 
+                                watchListDTO ={props.watchListDTO}/>
                         }
                     </Segment>
                 </GridRow>

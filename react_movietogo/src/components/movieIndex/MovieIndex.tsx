@@ -1,7 +1,9 @@
+import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Container, Header } from "semantic-ui-react";
 import { MovieToGoDTO, NavigationContextState, TheMovieDbDTO } from "../../models/movie.models";
 import { WatchListDTO } from "../../models/watchlist.models";
+import AppDataContext from "../contexts/AppDataContext";
 
 import HeaderImg from "./HeaderImg";
 import MovieNavbar from "./MovieNavbar";
@@ -16,6 +18,8 @@ export default function MovieIndex() {
     const location = useLocation();
     const state = location.state as StateType;
 
+    const{userWatchListDTO}=useContext(AppDataContext)
+
     return (
         <>
             <HeaderImg
@@ -25,6 +29,7 @@ export default function MovieIndex() {
                 posterImg={state.movieDetailsData.theMovieDbDTO?.poster_path} />
             <MovieNavbar  theMovieDbDTO={state.movieDetailsData.theMovieDbDTO}
                           movieToGoDTO={state.movieDetailsData.movieToGoDTO}
+                          watchListDTO = {userWatchListDTO}
               />
         </>
     )

@@ -83,6 +83,7 @@ export interface MovieReviewCreationDTO{
 export interface NavigationContextState {
     theMovieDbDTO: TheMovieDbDTO | undefined;
     movieToGoDTO: MovieToGoDTO | undefined;
+    // watchListDTO: WatchListDTO[] | undefined;
 }
 
 //Movie GenresDTO
