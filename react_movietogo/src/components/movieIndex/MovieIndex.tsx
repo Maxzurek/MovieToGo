@@ -1,36 +1,24 @@
 import { useContext } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Container, Header } from "semantic-ui-react";
-import { MovieToGoDTO, NavigationContextState, TheMovieDbDTO } from "../../models/movie.models";
-import { WatchListDTO } from "../../models/watchlist.models";
 import AppDataContext from "../contexts/AppDataContext";
 
 import HeaderImg from "./HeaderImg";
 import MovieNavbar from "./MovieNavbar";
 
-interface StateType {
-    movieDetailsData: NavigationContextState
-}
-
-
 export default function MovieIndex() {
 
-    const location = useLocation();
-    const state = location.state as StateType;
-
-    const{userWatchListDTO}=useContext(AppDataContext)
+    const { userWatchListDTO, navigationDTO } = useContext(AppDataContext)
 
     return (
         <>
             <HeaderImg
-                title={state.movieDetailsData.theMovieDbDTO?.title}
-                overview={state.movieDetailsData.theMovieDbDTO?.overview}
-                image={state.movieDetailsData.theMovieDbDTO?.backdrop_path}
-                posterImg={state.movieDetailsData.theMovieDbDTO?.poster_path} />
-            <MovieNavbar  theMovieDbDTO={state.movieDetailsData.theMovieDbDTO}
-                          movieToGoDTO={state.movieDetailsData.movieToGoDTO}
-                          watchListDTO = {userWatchListDTO}
-              />
+                title={navigationDTO?.theMovieDbDTO?.title}
+                overview={navigationDTO?.theMovieDbDTO?.overview}
+                image={navigationDTO?.theMovieDbDTO?.backdrop_path}
+                posterImg={navigationDTO?.theMovieDbDTO?.poster_path} />
+            <MovieNavbar theMovieDbDTO={navigationDTO?.theMovieDbDTO}
+                movieToGoDTO={navigationDTO?.movieToGoDTO}
+                watchListDTO={userWatchListDTO}
+            />
         </>
     )
 };
