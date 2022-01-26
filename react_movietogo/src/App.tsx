@@ -31,7 +31,6 @@ export default function App() {
 
   const [genresDTO, setGenresDTO] = useStateIfMounted<GenresDTO[]>([]);
   const [userWatchListDTO, setUserWatchListDTO] = useStateIfMounted<WatchListDTO[] | undefined>(undefined);
-  const [navigationDTO, setNavigationDTO] = useState<NavigationMovieDTO>();
 
   useEffect(() => {
 
@@ -95,8 +94,6 @@ export default function App() {
           setGenresDTO: setGenresDTO,
           userWatchListDTO,
           setUserWatchListDTO: setUserWatchListDTO,
-          navigationDTO,
-          setNavigationDTO: setNavigationDTO,
         }}
       >
         <AuthenticationContext.Provider value={{ claims, update: setClaims }}>

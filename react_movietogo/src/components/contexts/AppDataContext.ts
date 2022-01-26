@@ -9,19 +9,12 @@ const AppDataContext = React.createContext<{
 
     userWatchListDTO: WatchListDTO[] | undefined;
     setUserWatchListDTO(userWatchListDTO: WatchListDTO[] | undefined): void;
-
-    navigationDTO: NavigationMovieDTO | undefined;
-    setNavigationDTO(navigationDTO: NavigationMovieDTO) : void;
-    
 }>({
     genresDTO: [],
     setGenresDTO: () => { },
 
     userWatchListDTO: undefined,
     setUserWatchListDTO: () => { },
-
-    navigationDTO: undefined,
-    setNavigationDTO: ()=>{},
 });
 
 export default AppDataContext;
