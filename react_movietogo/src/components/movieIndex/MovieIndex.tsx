@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { movieToGoUrlMovies, theMovieDbApiKey, theMovieDbMovie } from "../../endpoints";
+import { movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId, theMovieDbApiKey, theMovieDbMovie } from "../../endpoints";
 import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import AppDataContext from "../contexts/AppDataContext";
 
@@ -35,17 +35,35 @@ export default function MovieIndex() {
         const requestOne = axios.get(`${theMovieDbMovie}/${theMovieDbId}?api_key=${theMovieDbApiKey}&language=en-US`)
         const requestTwo = axios.get(movieToGoUrlMovies + `/${movieToGoId}`)
 
-        await axios.all([requestOne, requestTwo])
-            .then(axios.spread(async (...responses) => {
+        try {
+            await axios.all([requestOne, requestTwo])
+                .then(axios.spread(async (...responses) => {
 
-                let theMovieDbDTO = responses[0].data
-                console.log(theMovieDbDTO)
-                let movieToGoDTO = responses[1].data
+                    let theMovieDbDTO = responses[0].data
+                    console.log(theMovieDbDTO)
+                    let movieToGoDTO = responses[1].data
 
-                setTheMovieDbDTO(theMovieDbDTO)
-                setMovieToGoDTO(movieToGoDTO)
-                setLoadingData(false)
-            }))
+                    await axios.get(movieToGoUrlMovieVotesByMovieId + `/${movieToGoDTO.id}`)
+                        .then((response) => {
+
+                            let movieVoteDTO = response.data;
+
+                            if (movieVoteDTO === "") {
+                                movieVoteDTO = undefined;
+                            }
+
+                            movieToGoDTO.movieVote = movieVoteDTO;
+
+                            setTheMovieDbDTO(theMovieDbDTO)
+                            setMovieToGoDTO(movieToGoDTO)
+                            setLoadingData(false)
+                        })
+
+                }))
+        } catch (error) {
+            // Todo Do something with error
+            setLoadingData(false)
+        }
     }
 
     const renderComponents = () => {
@@ -66,6 +84,6 @@ export default function MovieIndex() {
     }
 
     return (
-        isLoadingData? <></> : renderComponents()
+        isLoadingData ? <></> : renderComponents()
     )
 };
