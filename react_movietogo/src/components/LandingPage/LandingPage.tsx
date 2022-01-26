@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Container, Divider, Segment } from "semantic-ui-react";
+import { Container, Divider, Loader, Segment } from "semantic-ui-react";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { theMovieDbTrendingDaily, theMovieDbPopulars, theMovieDbInTheater, movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId } from "../../endpoints";
 import { TheMovieDbDTO, MovieToGoDTO } from "../../models/movie.models";
@@ -19,7 +19,7 @@ export default function LandingPage() {
     const [popularMovieToGoDTO, setPopularMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
     const [inTheatersTheMovieDbDTO, setInTheatersTheMovieDbDTO] = useStateIfMounted<TheMovieDbDTO[]>([]);
     const [inTheatersMovieToGoDTO, setInTheatersMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
-    
+
     const [isLoadingData, setLoadingData] = useStateIfMounted(true);
 
     const location = useLocation();
@@ -27,7 +27,6 @@ export default function LandingPage() {
     useEffect(() => {
 
         fetchData();
-        console.log("Fetching Data");
 
     }, [location.key])
 
@@ -145,9 +144,8 @@ export default function LandingPage() {
     return (
 
         <Container fluid textAlign="left">
-            <Segment loading={isLoadingData}>
-                {isLoadingData ? undefined : renderCards()}
-            </Segment>
+            <Loader active={isLoadingData} />
+            {isLoadingData ? undefined : renderCards()}
         </Container>
     )
 };

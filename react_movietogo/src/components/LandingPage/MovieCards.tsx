@@ -3,7 +3,7 @@ import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { WatchListDTO } from "../../models/watchlist.models";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import { LeftArrow, RightArrow } from "./ScrollMenuArrow";
-import { Container } from "semantic-ui-react";
+import { Container, Dimmer, Loader } from "semantic-ui-react";
 
 export default function MovieCards(props: moviesCardsProps) {
 
@@ -35,4 +35,5 @@ interface moviesCardsProps {
     theMovieDbDTO: TheMovieDbDTO[];
     movieToGoDTO: MovieToGoDTO[];
     watchListDTO: WatchListDTO[] | undefined;
+    loading?: boolean;
 }
