@@ -1,9 +1,10 @@
 import axios from "axios"
-import { useState, useReducer } from "react";
+import { useState, useReducer, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchProps, SearchResultData, Search, Input } from "semantic-ui-react"
 import { movieToGoUrlMovies, theMovieDbImages, theMovieDbSearchByKeyword } from "../../endpoints";
-import { MovieCreationDTO, NavigationContextState, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models"
+import { MovieCreationDTO, MovieToGoDTO, NavigationMovieDTO, TheMovieDbDTO } from "../../models/movie.models"
+import AppDataContext from "../contexts/AppDataContext";
 
 interface MovieResult {
     id: number;
@@ -64,6 +65,7 @@ TheMovieDbSearchBar.defaultProps = {
 
 export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
 
+    const {setNavigationDTO} = useContext(AppDataContext);
     const [timer, setTimer] = useState<NodeJS.Timeout>();
     const [{ loading, results, value, theMovieDbData, movieToGoData }, dispatch] = useReducer(reducer, initialState);
     const navigate = useNavigate();
@@ -160,13 +162,14 @@ export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
         const selectedMovieToGoData = movieToGoData?.find( data => data.theMovieDbId === theMovieDbId) ;
         console.log(selectedMovieToGoData);
 
-        const movieDetailsData : NavigationContextState = {
+        const navigationMovieDTO : NavigationMovieDTO = {
             movieToGoDTO: selectedMovieToGoData,
             theMovieDbDTO: selectedTheMovieDbData
         }
         
-        console.log(movieDetailsData);
-        navigate('/movie', { state: {movieDetailsData} })
+        setNavigationDTO(navigationMovieDTO)
+
+        navigate('/movie')
     }
 
     return (
