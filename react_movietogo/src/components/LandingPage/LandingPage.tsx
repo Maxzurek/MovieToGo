@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Container, Header, Segment } from "semantic-ui-react";
+import { Container, Divider, Segment } from "semantic-ui-react";
 import AppDataContext from "../contexts/AppDataContext";
 import MovieCards from "./MovieCards";
 
@@ -18,36 +18,26 @@ export default function LandingPage() {
     const renderCards = () => {
         return (
             <>
-                <Segment color="teal" inverted>
-                    <Header textAlign="center" size="huge">
-                        Movies Trending
-                    </Header>
-                </Segment>
                 <MovieCards
+                    title='Trending Movies'
                     theMovieDbDTO={trendingTheMovieDbDTO}
                     movieToGoDTO={trendingMovieToGoDTO}
                     watchListDTO={userWatchListDTO}
                 />
 
-                <Segment color="grey" inverted>
-                    <Header textAlign="center" size="huge">
-                        Movies Popular
-                    </Header>
-                </Segment>
+                <Divider />
 
                 <MovieCards
+                    title='Popular Movies'
                     theMovieDbDTO={popularTheMovieDbDTO}
                     movieToGoDTO={popularMovieToGoDTO}
                     watchListDTO={userWatchListDTO}
                 />
 
-                <Segment color="brown" inverted>
-                    <Header textAlign="center" size="huge">
-                        Movies In theater
-                    </Header>
-                </Segment>
+                <Divider />
 
                 <MovieCards
+                    title='In Theaters'
                     theMovieDbDTO={inTheatersTheMovieDbDTO}
                     movieToGoDTO={inTheatersMovieToGoDTO}
                     watchListDTO={userWatchListDTO}
