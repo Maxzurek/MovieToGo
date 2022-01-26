@@ -1,4 +1,4 @@
-import IndividualMovie from "./IndividualMovie";
+import IndividualMovie from "../utilities/IndividualMovie";
 import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { WatchListDTO } from "../../models/watchlist.models";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
