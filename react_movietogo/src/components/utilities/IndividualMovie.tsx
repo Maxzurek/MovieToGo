@@ -12,19 +12,11 @@ import { MovieToGoDTO, NavigationMovieDTO, TheMovieDbDTO } from "../../models/mo
 
 export default function IndividualMovie(props: IndividualMovieProps) {
 
-    const { setNavigationDTO } = useContext(AppDataContext);
     const navigate = useNavigate();
 
     const handleOnClick = () => {
 
-        const navigationMovieDTO: NavigationMovieDTO = {
-            movieToGoDTO: props.movieToGoDTO,
-            theMovieDbDTO: props.theMovieDbDTO,
-        }
-
-        setNavigationDTO(navigationMovieDTO)
-
-        navigate('/movie')
+        navigate('/movie', {state: {theMovieDbId: props.theMovieDbDTO?.id, movieToGoId: props.movieToGoDTO.id}})
     }
 
     const renderDropDownItems = () => {

@@ -65,7 +65,6 @@ TheMovieDbSearchBar.defaultProps = {
 
 export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
 
-    const {setNavigationDTO} = useContext(AppDataContext);
     const [timer, setTimer] = useState<NodeJS.Timeout>();
     const [{ loading, results, value, theMovieDbData, movieToGoData }, dispatch] = useReducer(reducer, initialState);
     const navigate = useNavigate();
@@ -156,20 +155,13 @@ export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
     }
 
     const handleResultSelect = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, data: SearchResultData) => {
+
         const theMovieDbId = data.result.id;
-        console.log(movieToGoData);
         const selectedTheMovieDbData = theMovieDbData?.find(data => data.id === theMovieDbId);
         const selectedMovieToGoData = movieToGoData?.find( data => data.theMovieDbId === theMovieDbId) ;
-        console.log(selectedMovieToGoData);
 
-        const navigationMovieDTO : NavigationMovieDTO = {
-            movieToGoDTO: selectedMovieToGoData,
-            theMovieDbDTO: selectedTheMovieDbData
-        }
-        
-        setNavigationDTO(navigationMovieDTO)
 
-        navigate('/movie')
+        navigate('/movie', {state: {theMovieDbId: selectedTheMovieDbData?.id, movieToGoId: selectedMovieToGoData?.id}})
     }
 
     return (

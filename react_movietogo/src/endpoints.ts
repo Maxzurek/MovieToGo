@@ -1,9 +1,9 @@
 // Base MovieToGo URL => https://localhost:7246/api
-const movieToGoBaseUrl = process.env.REACT_APP_MOVIETOGO_API_URL;
+export const movieToGoBaseUrl = process.env.REACT_APP_MOVIETOGO_API_URL;
 // Base TheMovieDb URL => https://api.themoviedb.org/3
-const theMovieDbBaseUrl = process.env.REACT_APP_THEMOVIEDB_API_URL;
+export const theMovieDbBaseUrl = process.env.REACT_APP_THEMOVIEDB_API_URL;
 // TheMovieDb API Key
-const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
+export const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 
 
 // MovieToGo endpoints
@@ -58,3 +58,6 @@ const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 
     // Images
     export const theMovieDbImages = `https://image.tmdb.org/t/p/original`;
+
+    // Movie
+    export const theMovieDbMovie = `${theMovieDbBaseUrl}/movie`;;

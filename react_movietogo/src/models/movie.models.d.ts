@@ -2,7 +2,7 @@ import { UserDTO } from "./authentication.models";
 import { WatchListDTO } from "./watchlist.models";
 
 // Movie
-export interface MovieDTO{
+export interface MovieDTO {
     id: number;
     theMovieDbId: number;
     voteAverage: number;
@@ -11,7 +11,7 @@ export interface MovieDTO{
 }
 
 // TheMovieDb Movie
-export interface TheMovieDbDTO{
+export interface TheMovieDbDTO {
     adult: string;
     backdrop_path: string;
     genre_ids: [];
@@ -29,8 +29,36 @@ export interface TheMovieDbDTO{
     media_type: string;
 }
 
+export interface TheMovieDbDetailsDTO {
+    adult: string;
+    backdrop_path: string;
+    belongs_to_collection: string;
+    budget: number;
+    genres: [];
+    homepage: string;
+    id: number;
+    imdb_id: string;
+    original_language: string;
+    original_title: string;
+    overview: string;
+    popularity: number;
+    poster_path: string;
+    production_companies: [];
+    production_countries: [];
+    release_date: string;
+    revenue: number;
+    runtime: number;
+    spoken_languages: [];
+    status: string;
+    tagline: string;
+    title: string;
+    video: bool;
+    vote_average: number;
+    vote_count: number;
+}
+
 // MovieToGo Movies 
-export interface MovieToGoDTO{
+export interface MovieToGoDTO {
     id: number;
     theMovieDbId: number;
     voteAverage: number;
@@ -38,44 +66,44 @@ export interface MovieToGoDTO{
     movieReviews: MovieReviewDTO[] | undefined;
     movieVote: MovieVoteDTO | undefined;
 }
-export interface MovieCreationDTO{
+export interface MovieCreationDTO {
     theMovieDbId: number;
 }
-export interface MovieUpdateDTO{
+export interface MovieUpdateDTO {
     theMovieDbId: number;
     voteAverage: number;
     voteCount: number;
 }
 
 // MovieVotes
-export interface MovieVoteDTO{
+export interface MovieVoteDTO {
     id: number;
     vote: number;
     user: UserDTO | undefined;
     movieId: number | undefined;
 }
-export interface MovieVoteCreationDTO{
+export interface MovieVoteCreationDTO {
     vote: number;
     movieId: number;
 }
-export interface MovieVoteUpdateDTO{
+export interface MovieVoteUpdateDTO {
     vote: number;
 }
 
 // MovieReviews
-export interface MovieReviewDTO{
+export interface MovieReviewDTO {
     id: number;
     body: string;
     dateCreated: Date;
     movieId: number;
     user: UserDTO;
 }
-export interface MovieReviewCreationDTO{
+export interface MovieReviewCreationDTO {
     body: string;
     dateCreated: date;
     movieId: number;
 }
-export interface MovieReviewCreationDTO{
+export interface MovieReviewCreationDTO {
     body: string;
 }
 
@@ -86,7 +114,7 @@ export interface NavigationMovieDTO {
 }
 
 //Movie GenresDTO
-export interface GenresDTO{
+export interface GenresDTO {
     id: number;
     name: string;
 
