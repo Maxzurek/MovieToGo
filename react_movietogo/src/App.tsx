@@ -11,7 +11,7 @@ import ModalContext from './components/contexts/ModalContext';
 import AuthenticationModal from './components/modals/AuthenticationModal';
 import OkMessageModal from './components/modals/OkMessageModal';
 import configureInterceptor from './components/authentication/httpInterceptor';
-import { GenresDTO } from './models/movie.models';
+import { GenresDTO, NavigationMovieDTO } from './models/movie.models';
 import { WatchListDTO } from './models/watchlist.models';
 import axios from 'axios';
 import { movieToGoUrlWatchListsUser, theMovieDbGenres } from './endpoints';
@@ -31,6 +31,7 @@ export default function App() {
 
   const [genresDTO, setGenresDTO] = useStateIfMounted<GenresDTO[]>([]);
   const [userWatchListDTO, setUserWatchListDTO] = useStateIfMounted<WatchListDTO[] | undefined>(undefined);
+  const [navigationDTO, setNavigationDTO] = useState<NavigationMovieDTO>();
 
   useEffect(() => {
 
@@ -94,6 +95,8 @@ export default function App() {
           setGenresDTO: setGenresDTO,
           userWatchListDTO,
           setUserWatchListDTO: setUserWatchListDTO,
+          navigationDTO,
+          setNavigationDTO: setNavigationDTO,
         }}
       >
         <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
