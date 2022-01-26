@@ -79,8 +79,7 @@ export interface MovieReviewCreationDTO{
     body: string;
 }
 
-// Data transfert between pages
-export interface NavigationContextState {
+export interface NavigationMovieDTO {
     theMovieDbDTO: TheMovieDbDTO | undefined;
     movieToGoDTO: MovieToGoDTO | undefined;
 }
