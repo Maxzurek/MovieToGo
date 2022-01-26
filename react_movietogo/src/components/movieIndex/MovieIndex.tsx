@@ -26,7 +26,7 @@ export default function MovieIndex() {
     useEffect(() => {
 
         fetchData();
-    }, [])
+    }, [theMovieDbId, movieToGoId])
 
     const fetchData = async () => {
 
