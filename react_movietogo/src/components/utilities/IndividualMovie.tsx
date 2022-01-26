@@ -17,12 +17,12 @@ export default function IndividualMovie(props: IndividualMovieProps) {
 
     const handleOnClick = () => {
 
-        const movieDetailsData: NavigationMovieDTO = {
+        const navigationMovieDTO: NavigationMovieDTO = {
             movieToGoDTO: props.movieToGoDTO,
             theMovieDbDTO: props.theMovieDbDTO,
         }
 
-        setNavigationDTO(movieDetailsData)
+        setNavigationDTO(navigationMovieDTO)
 
         navigate('/movie')
     }
