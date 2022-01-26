@@ -1,25 +1,30 @@
 import { Button, Container, Label, Image, Card, Dropdown, Popup, Segment, Header } from "semantic-ui-react";
 import { theMovieDbImages } from "../../endpoints";
 import Authorized from "../authentication/Authorized";
-import { NavigationContextState, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { useNavigate } from "react-router-dom";
 import { WatchListDTO } from "../../models/watchlist.models";
-import DropDownWatchListItem from "./DropDownWatchListItem";
-import MovieRating from "../utilities/MovieRating";
+import DropDownWatchListItem from "../LandingPage/DropDownWatchListItem";
+import MovieRating from "./MovieRating";
+import { useContext } from "react";
+import AppDataContext from "../contexts/AppDataContext";
+import { MovieToGoDTO, NavigationMovieDTO, TheMovieDbDTO } from "../../models/movie.models";
 
 
 export default function IndividualMovie(props: IndividualMovieProps) {
 
+    const { setNavigationDTO } = useContext(AppDataContext);
     const navigate = useNavigate();
 
     const handleOnClick = () => {
 
-        const movieDetailsData: NavigationContextState = {
+        const movieDetailsData: NavigationMovieDTO = {
             movieToGoDTO: props.movieToGoDTO,
             theMovieDbDTO: props.theMovieDbDTO,
         }
 
-        navigate('/movie', { state: { movieDetailsData } })
+        setNavigationDTO(movieDetailsData)
+
+        navigate('/movie')
     }
 
     const renderDropDownItems = () => {
@@ -44,7 +49,7 @@ export default function IndividualMovie(props: IndividualMovieProps) {
                     <Header as='h3'>Overall Rating: {props.movieToGoDTO.voteAverage}/10</Header>
                     : <Header as='h3'>No Rating Yet</Header>}
             </Segment>
-            <Image src={theMovieDbImages + props.theMovieDbDTO.poster_path} style={{cursor: "pointer" }} onClick={handleOnClick}/>
+            <Image src={theMovieDbImages + props.theMovieDbDTO.poster_path} style={{ cursor: "pointer" }} onClick={handleOnClick} />
             <Card.Content>
                 <Container as={'a'} onClick={handleOnClick} >
                     <Card.Header><h3>{props.theMovieDbDTO.title}</h3></Card.Header>
