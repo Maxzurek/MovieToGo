@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId, theMovieDbApiKey, theMovieDbMovie } from "../../endpoints";
 import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
+import { getClaims } from "../authentication/handleJWT";
 import AppDataContext from "../contexts/AppDataContext";
 
 import HeaderImg from "./HeaderImg";
@@ -40,25 +41,26 @@ export default function MovieIndex() {
                 .then(axios.spread(async (...responses) => {
 
                     let theMovieDbDTO = responses[0].data
-                    console.log(theMovieDbDTO)
                     let movieToGoDTO = responses[1].data
 
-                    await axios.get(movieToGoUrlMovieVotesByMovieId + `/${movieToGoDTO.id}`)
-                        .then((response) => {
+                    if (getClaims().length > 0) {
+                        await axios.get(movieToGoUrlMovieVotesByMovieId + `/${movieToGoDTO.id}`)
+                            .then((response) => {
 
-                            let movieVoteDTO = response.data;
+                                let movieVoteDTO = response.data;
 
-                            if (movieVoteDTO === "") {
-                                movieVoteDTO = undefined;
-                            }
+                                if (movieVoteDTO === "") {
+                                    movieVoteDTO = undefined;
+                                }
 
-                            movieToGoDTO.movieVote = movieVoteDTO;
+                                movieToGoDTO.movieVote = movieVoteDTO;
 
-                            setTheMovieDbDTO(theMovieDbDTO)
-                            setMovieToGoDTO(movieToGoDTO)
-                            setLoadingData(false)
-                        })
-
+                            })
+                    }
+                    
+                    setTheMovieDbDTO(theMovieDbDTO)
+                    setMovieToGoDTO(movieToGoDTO)
+                    setLoadingData(false)
                 }))
         } catch (error) {
             // Todo Do something with error
