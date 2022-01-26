@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Grid, GridRow, GridColumn, Menu, MenuItem, Segment, Header } from "semantic-ui-react";
-import DatabaseTool from "./DatabaseTool";
+import AdminTool from "./AdminTool";
 import TestFormsTool from "./TestFormsTool";
 
-export default function IndexAdminTools() {
+export default function AdminToolIndex() {
 
-    const [activeItem, setActiveItem] = useState('');
+    const [activeItem, setActiveItem] = useState('usermanagement');
 
-    const menuItemsStyle = {padding: "13px 10px"}
+    const menuItemsStyle = { padding: "13px 10px" }
 
     const handleItemClick = (e: any, { name }: any) => {
         setActiveItem(name);
@@ -16,7 +16,7 @@ export default function IndexAdminTools() {
     const renderSegment = () => {
         switch (activeItem) {
             case 'database':
-                return (<DatabaseTool />)
+                return (<AdminTool />)
             case 'testform':
                 return (<TestFormsTool />)
             case 'usermanagement':
@@ -36,30 +36,21 @@ export default function IndexAdminTools() {
                         <Menu fluid vertical tabular>
 
                             <MenuItem
-                                name='database'
-                                active={activeItem === 'database'}
-                                onClick={handleItemClick}
-                                style={menuItemsStyle}
-                            >
-                                Database
-                            </MenuItem>
-
-                            <MenuItem
-                                name='testform'
-                                active={activeItem === 'testform'}
-                                onClick={handleItemClick}
-                                style={menuItemsStyle}
-                            >
-                                Test Forms
-                            </MenuItem>
-
-                            <MenuItem
                                 name='usermanagement'
                                 active={activeItem === 'usermanagement'}
                                 onClick={handleItemClick}
                                 style={menuItemsStyle}
                             >
                                 User Management
+                            </MenuItem>
+
+                            <MenuItem
+                                name='database'
+                                active={activeItem === 'database'}
+                                onClick={handleItemClick}
+                                style={menuItemsStyle}
+                            >
+                                Database
                             </MenuItem>
 
                         </Menu>

@@ -24,27 +24,36 @@ export default function MainNavbar() {
         const userName = claims.filter(x => x.name === 'username')[0]?.value;
         const role = claims.filter(x => x.name === 'role')[0]?.value;
 
-        return `${userName}${role? ' ('+role+')': ""}`;
+        return `${userName}${role ? ' (' + role + ')' : ""}`;
     }
 
     return (
         <>
             <Grid as={Menu} stackable pointing secondary size='large' icon='labeled' color="blue" verticalAlign="bottom">
                 <GridRow style={{ padding: 0 }}>
+
                     <GridColumn width={2}>
                         <Item as={NavLink} to='/'>
                             <Image src="/images/MovieToGo_Logo.ico" size="tiny" />
                         </Item>
                     </GridColumn>
+
                     <GridColumn width={2}>
                     </GridColumn>
+
                     <GridColumn width={1}>
                     </GridColumn>
+
                     <GridColumn width={6}>
                         <TheMovieDbSearchBar />
                     </GridColumn>
+
                     <GridColumn width={1}>
                     </GridColumn>
+
+                    <GridColumn width={2}>
+                    </GridColumn>
+
                     <GridColumn width={2}>
                         <Authorized
                             authorized={
@@ -55,8 +64,8 @@ export default function MainNavbar() {
                                 >
                                     <Dropdown.Menu>
                                         <Dropdown.Item icon='list' text=' WatchLists' name="watchLists" onClick={() => navigate('/watchlist')} />
-                                        <Authorized 
-                                            authorized={ <Dropdown.Item icon='wrench' text=' Admin Tools' name="adminTools" onClick={() => navigate('/dev')} />}
+                                        <Authorized
+                                            authorized={<Dropdown.Item icon='wrench' text=' Admin Tools' name="adminTools" onClick={() => navigate('/admin')} />}
                                             role={adminRole}
                                         />
                                         <Dropdown.Item icon='sign out' text=' Logout' name="logout" onClick={handleLogoutClick} />
@@ -71,11 +80,7 @@ export default function MainNavbar() {
                             }
                         />
                     </GridColumn>
-                    <GridColumn width={2}>
-                        <Item as={NavLink} to='/dev' >
-                            <Header>DevTools</Header>
-                        </Item>
-                    </GridColumn>
+                    
                 </GridRow>
             </Grid>
         </>
