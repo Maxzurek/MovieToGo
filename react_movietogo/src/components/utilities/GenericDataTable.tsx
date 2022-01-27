@@ -197,7 +197,9 @@ export default function GenericDataTable(props: DataTableProps) {
         return (
             <Table celled size="large">
                 <TableHeader>
-                    {renderTableHeaderRows()}
+                    <TableRow>
+                        {renderTableHeaderRows()}
+                    </TableRow>
                 </TableHeader>
                 <TableBody>
                     {renderTableBodyRows()}
