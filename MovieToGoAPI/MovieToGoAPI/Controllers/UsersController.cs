@@ -105,13 +105,25 @@ namespace MovieToGoAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> MakeAdmin([FromBody] UserDTO userDTO)
         {
+            logger.LogInformation("Making a user an admin");
+
             User user = await userManager.FindByNameAsync(userDTO.UserName);
 
             if (user == null)
             {
-                return BadRequest("User not found");
+                return NotFound("User not found");
+            }
+
+            IList<Claim> claims = await userManager.GetClaimsAsync(user);
+
+            Claim? isExistingClaim = claims.FirstOrDefault(x => x.Type == "role" && x.Value == "Admin");
+
+            if (isExistingClaim != null)
+            {
+                return BadRequest(new List<string>() { $"User: {user.UserName} is already an Admin"});
             }
 
             await userManager.AddClaimAsync(user, new Claim("role", "Admin"));
@@ -128,13 +140,25 @@ namespace MovieToGoAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> RemoveAdmin([FromBody] UserDTO userDTO)
         {
+            logger.LogInformation("Removing admin from a user");
+
             User user = await userManager.FindByNameAsync(userDTO.UserName);
 
             if (user == null)
             {
-                return BadRequest("User not found");
+                return NotFound("User not found");
+            }
+
+            IList<Claim> claims = await userManager.GetClaimsAsync(user);
+
+            Claim? isExistingClaim = claims.FirstOrDefault(x => x.Type == "role" && x.Value == "Admin");
+
+            if (isExistingClaim == null)
+            {
+                return BadRequest(new List<string>() { $"User: {user.UserName} is not an Admin" });
             }
 
             await userManager.RemoveClaimAsync(user, new Claim("role", "Admin"));
