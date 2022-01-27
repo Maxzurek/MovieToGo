@@ -97,7 +97,7 @@ namespace MovieToGoAPI.Controllers
         }
 
         /// <summary>
-        /// Add a Admin role claim to the user claims. Must be authorized (JWT bearer with policy = "IsAdmin").
+        /// Add an Admin role claim to the user claims. Must be authorized (JWT bearer with policy = "IsAdmin").
         /// </summary>
         /// <param name="userDTO"></param>
         /// <returns></returns>
@@ -115,6 +115,29 @@ namespace MovieToGoAPI.Controllers
             }
 
             await userManager.AddClaimAsync(user, new Claim("role", "Admin"));
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Remove the Admin role claim from the user claims. Must be authorized (JWT bearer with policy = "IsAdmin").
+        /// </summary>
+        /// <param name="userDTO"></param>
+        /// <returns></returns>
+        [HttpPost("removeAdmin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> RemoveAdmin([FromBody] UserDTO userDTO)
+        {
+            User user = await userManager.FindByNameAsync(userDTO.UserName);
+
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            await userManager.RemoveClaimAsync(user, new Claim("role", "Admin"));
 
             return NoContent();
         }
