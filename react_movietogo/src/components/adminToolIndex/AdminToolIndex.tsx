@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Grid, GridRow, GridColumn, Menu, MenuItem, Segment, Header } from "semantic-ui-react";
 import DatabaseTool from "./DatabaseTool";
 import TestFormsTool from "./TestFormsTool";
+import UserManagementTool from "./UserManagementTool";
 
 export default function AdminToolIndex() {
 
@@ -20,8 +21,7 @@ export default function AdminToolIndex() {
             case 'testform':
                 return (<TestFormsTool />)
             case 'usermanagement':
-                console.log("TODO: Render user management tool")
-                return <></>
+                return (<UserManagementTool />)
             default:
                 return <></>
         }
