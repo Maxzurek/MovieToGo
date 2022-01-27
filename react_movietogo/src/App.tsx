@@ -48,7 +48,12 @@ export default function App() {
 
   useEffect(() => {
 
-    fetchUserWatchListDTO();
+    if(claims.length > 0){
+      fetchUserWatchListDTO();
+    }
+    else{
+      setUserWatchListDTO(undefined);
+    }
 
   }, [claims])
 
