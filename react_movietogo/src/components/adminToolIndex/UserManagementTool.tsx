@@ -21,7 +21,6 @@ export default function UserManagementTool(props: UserManagementToolProps) {
 
     const fetchUsers = async () => {
 
-        console.log("Fetching data")
         setError(undefined);
 
         await axios.get(movieToGoUrlUsers)
