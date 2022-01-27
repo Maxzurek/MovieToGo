@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import { Container } from 'semantic-ui-react';
 import routes from './routeConfig';
@@ -32,6 +32,8 @@ export default function App() {
   const [genresDTO, setGenresDTO] = useStateIfMounted<GenresDTO[]>([]);
   const [userWatchListDTO, setUserWatchListDTO] = useStateIfMounted<WatchListDTO[] | undefined>(undefined);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
 
     if (okMessageModalContent) {
@@ -52,6 +54,7 @@ export default function App() {
       fetchUserWatchListDTO();
     }
     else{
+      navigate("/")
       setUserWatchListDTO(undefined);
     }
 

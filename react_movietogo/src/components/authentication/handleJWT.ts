@@ -1,9 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { AuthenticationResponse, Claim } from "../../models/authentication.models";
 
 const TOKEN_KEY = 'token';
 const EXPIRATION_KEY = 'tokenExpiration'
-const navigate = useNavigate();
 
 export const saveToken = (authenticationResponse: AuthenticationResponse) => {
     localStorage.setItem(TOKEN_KEY, authenticationResponse.token);
@@ -42,7 +40,6 @@ export const getClaims = (): Claim[] => {
 
 export const logout = () => {
     localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(EXPIRATION_KEY);
-    navigate("/");
+    localStorage.removeItem(EXPIRATION_KEY);  
 };
 
