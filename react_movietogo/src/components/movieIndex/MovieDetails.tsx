@@ -1,6 +1,6 @@
 
 import { Button, Container, Dropdown, Grid, Header, Icon, Label, List, ListContent, ListIcon, ListItem, Popup, Rating, Search, Segment } from "semantic-ui-react"
-import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models"
+import { MovieToGoDTO, TheMovieDbDetailsDTO, TheMovieDbDTO } from "../../models/movie.models"
 import { WatchListDTO } from "../../models/watchlist.models"
 import Authorized from "../authentication/Authorized"
 import DropDownWatchListItem from "../LandingPage/DropDownWatchListItem"
@@ -8,7 +8,7 @@ import ListItems from "./ListItems"
 
 
 interface movieDetails {
-    theMovieDbDTO: TheMovieDbDTO | undefined;
+    theMovieDbDTO: TheMovieDbDetailsDTO | undefined;
     movieToGoDTO: MovieToGoDTO | undefined;
     watchListDTO: WatchListDTO[] | undefined;
 }
@@ -123,7 +123,7 @@ export default function MovieDetails(props: movieDetails) {
                         <Grid.Column >
                             <Header >GENRES</Header>
                             <ListContent >
-                                <ListItems genresIDs={props.theMovieDbDTO?.genre_ids} />
+                                  <ListItems genresIDs={props.theMovieDbDTO?.genres} />
                             </ListContent>
                         </Grid.Column>
 

@@ -32,7 +32,6 @@ export default function ReviewRating(props: reviewRatingProps) {
 
                 values.movieId = props.movieToGoDTO.id
                 values.dateCreated = new Date()
-                //console.log("values")
 
                 await axios.post(movieToGoUrlMovieReviews, values)
                     .then(response => {
@@ -72,7 +71,7 @@ export default function ReviewRating(props: reviewRatingProps) {
                             <DisplayApiErrors error={movieReviwErrors} />
                             {reviewSubmissionSuccessMsg ? <Container textAlign="center"><Message positive>{reviewSubmissionSuccessMsg}</Message></Container> : undefined}
                             <br /> <br />
-                            <Segment textAlign="center"><h3> CRITIC REVIEWS FOR MOVIE </h3> </Segment>
+                            <Segment textAlign="center"><h3>{props.movieToGoDTO?.movieReviews?.length? "CRITIC REVIEWS FOR MOVIE": "NO REVIEWS YET"}  </h3> </Segment>
                             <br />
                             <ReviewsDetail movieToGoDTO={props.movieToGoDTO} />
                         </>

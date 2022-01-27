@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId, theMovieDbApiKey, theMovieDbMovie } from "../../endpoints";
-import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
+import { MovieToGoDTO, TheMovieDbDetailsDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { getClaims } from "../authentication/handleJWT";
 import AppDataContext from "../contexts/AppDataContext";
 
@@ -20,7 +20,7 @@ export default function MovieIndex() {
     const { state } = useLocation();
     const { theMovieDbId, movieToGoId } = state as StateType;
 
-    const [theMovieDbDTO, setTheMovieDbDTO] = useState<TheMovieDbDTO>();
+    const [theMovieDbDTO, setTheMovieDbDTO] = useState<TheMovieDbDetailsDTO>();
     const [movieToGoDTO, setMovieToGoDTO] = useState<MovieToGoDTO>();
     const [isLoadingData, setLoadingData] = useState(true);
 

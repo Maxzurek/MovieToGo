@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Grid, GridColumn, GridRow, Menu, MenuItem, Segment } from "semantic-ui-react";
-import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
+import { MovieToGoDTO, TheMovieDbDetailsDTO, TheMovieDbDTO } from "../../models/movie.models";
 import MovieDetails from "./MovieDetails";
 import ReviewRating from "./ReviewRating";
 import Authorized from "../authentication/Authorized";
@@ -8,7 +8,7 @@ import { WatchListDTO } from "../../models/watchlist.models";
 
 
 export interface movieNavbar {
-    theMovieDbDTO: TheMovieDbDTO | undefined;
+    theMovieDbDTO: TheMovieDbDetailsDTO | undefined;
     movieToGoDTO: MovieToGoDTO | undefined;
     watchListDTO: WatchListDTO[] | undefined;
 
