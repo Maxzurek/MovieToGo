@@ -3,16 +3,16 @@ import { Button, Container, Header, Popup, Segment } from "semantic-ui-react";
 import { movieToGoUrlMovieReviews, movieToGoUrlMovies, movieToGoUrlMovieVotes, movieToGoUrlWatchListItems, movieToGoUrlWatchLists} from "../../endpoints";
 import GenericDataTable from "../utilities/GenericDataTable";
 
-export default function AdminTool() {
+export default function DatabaseTool() {
 
     const [refresh, setRefresh] = useState(false);
 
     const getURLS = [
-        { url: movieToGoUrlMovies, tableName: "Movies" },
-        { url: movieToGoUrlMovieReviews, tableName: "MovieReviews" },
-        { url: movieToGoUrlMovieVotes, tableName: "MovieVotes" },
         { url: movieToGoUrlWatchLists, tableName: "WatchLists" },
         { url: movieToGoUrlWatchListItems, tableName: "WatchListItems" },
+        { url: movieToGoUrlMovieReviews, tableName: "MovieReviews" },
+        { url: movieToGoUrlMovieVotes, tableName: "MovieVotes" },
+        { url: movieToGoUrlMovies, tableName: "Movies" },
     ]
 
     return (

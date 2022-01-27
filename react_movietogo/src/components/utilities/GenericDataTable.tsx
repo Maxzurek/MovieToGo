@@ -176,7 +176,7 @@ export default function GenericDataTable(props: DataTableProps) {
                                     {lines.length === 1 ?
                                         lines[0]
                                         :
-                                        <Dropdown text="Array items">
+                                        <Dropdown text="Array items" scrolling>
                                             <DropdownMenu>
                                                 {lines.map((line, index) => {
                                                     return <DropdownItem key={index} text={line} />
@@ -207,13 +207,16 @@ export default function GenericDataTable(props: DataTableProps) {
     }
 
     return (
-        <Segment style={{ overflow: 'auto' }} loading={loading}>
+        <Segment loading={loading}>
             <Segment inverted color={labelColor} textAlign="center" >
                 <Header>{props.tableName}</Header>
             </Segment>
-            {data?.length > 0 ? renderTable() : undefined}
-            <DisplayApiErrors error={error!} />
-            {response?.status === 204 ? <Container fluid textAlign="center"><Message warning>Empty table</Message></Container> : undefined}
+            <Container fluid style={{ overflow: 'auto' }}>
+                {data?.length > 0 ? renderTable() : undefined}
+                <DisplayApiErrors error={error!} />
+                {response?.status === 204 ? <Container fluid textAlign="center"><Message warning>Empty table</Message></Container> : undefined}
+
+            </Container>
         </Segment>
     )
 };

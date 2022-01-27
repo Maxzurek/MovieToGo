@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Grid, GridRow, GridColumn, Menu, MenuItem, Segment, Header } from "semantic-ui-react";
-import AdminTool from "./AdminTool";
+import DatabaseTool from "./DatabaseTool";
 import TestFormsTool from "./TestFormsTool";
 
 export default function AdminToolIndex() {
@@ -16,17 +16,16 @@ export default function AdminToolIndex() {
     const renderSegment = () => {
         switch (activeItem) {
             case 'database':
-                return (<AdminTool />)
+                return (<DatabaseTool />)
             case 'testform':
                 return (<TestFormsTool />)
             case 'usermanagement':
                 console.log("TODO: Render user management tool")
-                break;
+                return <></>
             default:
+                return <></>
         }
     }
-
-    const renderSegmentFunc = renderSegment();
 
     return (
         <>
@@ -58,7 +57,7 @@ export default function AdminToolIndex() {
                     <GridColumn width={13}>
                         <Segment>
                             {activeItem ?
-                                renderSegmentFunc
+                                renderSegment()
                                 :
                                 <Segment color="blue" inverted>
                                     <Header textAlign="center" size="huge">
