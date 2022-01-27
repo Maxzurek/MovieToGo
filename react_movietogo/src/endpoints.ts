@@ -8,6 +8,11 @@ export const theMovieDbApiKey = process.env.REACT_APP_THEMOVIEDB_API_KEY;
 
 // MovieToGo endpoints
 
+    // Users
+    export const movieToGoUrlUsers = `${movieToGoBaseUrl}/users`;
+    export const movieToGoUrlUsersMakeAdmin = `${movieToGoBaseUrl}/users/makeAdmin`;
+    export const movieToGoUrlUsersRemoveAdmin = `${movieToGoBaseUrl}/users/removeAdmin`;
+
     // Genres
     export const movieToGoUrlGenres = `${movieToGoBaseUrl}/genres`;
 
