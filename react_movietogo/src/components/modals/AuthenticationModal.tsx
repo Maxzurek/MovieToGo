@@ -37,7 +37,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
     const registerUser = async (values: UserCreationDTO, actions: FormikHelpers<UserCreationDTO>) => {
 
-        setApiErrors({});
+        setApiErrors(undefined);
 
         try {
             var response = await axios.post<AuthenticationResponse>(movieToGoUrlAccountsCreate, values);
@@ -53,7 +53,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
     const attemptLogin = async (values: UserLoginDTO, actions: FormikHelpers<UserLoginDTO>) => {
 
-        setApiErrors({});
+        setApiErrors(undefined);
 
         try {
             var response = await axios.post<AuthenticationResponse>(movieToGoUrlAccountsLogin, values)
@@ -90,7 +90,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 setSelection(REGISTER);
                 break;
             case 'close':
-                setApiErrors({});
+                setApiErrors(undefined);
                 setSelection(props.defaultSelection);
                 props.setOpen(false);
                 break;
@@ -100,7 +100,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     }
 
     useEffect(() => {
-        setApiErrors({});
+        setApiErrors(undefined);
     }, [props.open, selection])
 
     return (

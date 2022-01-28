@@ -54,6 +54,7 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
     }
 
     const getGenericErrorMessageComponent = (response: AxiosResponse): ReactElement => {
+        console.log("Error 500")
         return(
             <Container textAlign="center" fluid>
                 <Message negative>{response.data}</Message>
@@ -86,7 +87,6 @@ export default function DisplayApiErrors(props: ApiErrorsProps) {
         }
         else if(props.response)
         {
-            console.log("response status: "+props.response.status)
             switch ( props.response.status) {
                 case 204:
                     setMessage(getResponse204MessageComponent());

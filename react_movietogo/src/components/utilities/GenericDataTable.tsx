@@ -216,7 +216,6 @@ export default function GenericDataTable(props: DataTableProps) {
             <Container fluid style={{ overflow: 'auto', maxHeight: '550px' }}>
                 {data?.length > 0 ? renderTable() : undefined}
                 <DisplayApiErrors response={response} error={error} />
-
             </Container>
         </Segment>
     )
