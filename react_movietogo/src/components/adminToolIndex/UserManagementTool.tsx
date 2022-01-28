@@ -88,8 +88,8 @@ export default function UserManagementTool(props: UserManagementToolProps) {
                     <Header>Users</Header>
                 </Segment>
                 <UserTable userDTOs={userDTOs} makeAdmin={makeAdmin} removeAdmin={removeAdmin} />
+                <DisplayApiErrors response={response} error={error} />
             </Segment>
-            <DisplayApiErrors response={response} error={error} />
         </Container>
 
     )
