@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useContext, useEffect, useState } from "react";
-import { Button, Container, Header, Popup, Segment } from "semantic-ui-react";
+import { Button, Container, Header, Popup, Segment, SemanticCOLORS } from "semantic-ui-react";
 import { movieToGoUrlUsers, movieToGoUrlUsersMakeAdmin, movieToGoUrlUsersRemoveAdmin } from "../../endpoints";
 import { UserDTO } from "../../models/authentication.models";
 import ModalContext from "../contexts/ModalContext";
@@ -17,17 +17,27 @@ export default function UserManagementTool(props: UserManagementToolProps) {
 
     const [refresh, setRefresh] = useState(false);
     const [userDTOs, setUserDTOs] = useState<UserDTO[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [labelColor, setLabelColor] = useState<SemanticCOLORS>('yellow');
+    const [response, setResponse] = useState<AxiosResponse>();
     const [error, setError] = useState<AxiosError>();
 
     const fetchUsers = async () => {
 
+        setLoading(true);
+        setLabelColor("yellow");
         setError(undefined);
 
         await axios.get(movieToGoUrlUsers)
             .then((response: AxiosResponse<UserDTO[]>) => {
-                setUserDTOs(response.data)
+                setResponse(response);
+                setUserDTOs(response.data);
+                response.data.length > 0 ? setLabelColor('green') : setLabelColor('orange');;
+                setLoading(false);
             })
             .catch(error => {
+                setLoading(false);
+                setLabelColor('red');
                 setUserDTOs([]);
                 setError(error);
             })
@@ -73,8 +83,13 @@ export default function UserManagementTool(props: UserManagementToolProps) {
                     User Management Tool <Popup content='Refresh' trigger={<Button color="blue" icon='refresh' onClick={() => setRefresh(!refresh)} />} />
                 </Header>
             </Segment>
-            <UserTable userDTOs={userDTOs} makeAdmin={makeAdmin} removeAdmin={removeAdmin} />
-            <DisplayApiErrors error={error!} />
+            <Segment loading={loading}>
+                <Segment color={labelColor} inverted textAlign="center">
+                    <Header>Users</Header>
+                </Segment>
+                <UserTable userDTOs={userDTOs} makeAdmin={makeAdmin} removeAdmin={removeAdmin} />
+            </Segment>
+            <DisplayApiErrors response={response} error={error} />
         </Container>
 
     )
