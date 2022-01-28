@@ -24,12 +24,11 @@ export default function DatabaseTool() {
             </Segment>
             {getURLS.map((value, index) => {
                 return (
-                    <Container key={index} fluid style={{ overflow: 'auto', maxHeight: '550px' }}>
+                    <Container key={index} fluid >
                         <GenericDataTable key={index} url={value.url} tableName={value.tableName} refresh={refresh} setRefresh={setRefresh} />
                     </Container>
                 )
             })}
-
         </Container>
     )
 };

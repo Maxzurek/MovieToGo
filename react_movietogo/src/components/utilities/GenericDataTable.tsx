@@ -213,10 +213,9 @@ export default function GenericDataTable(props: DataTableProps) {
             <Segment inverted color={labelColor} textAlign="center" >
                 <Header>{props.tableName}</Header>
             </Segment>
-            <Container fluid style={{ overflow: 'auto' }}>
+            <Container fluid style={{ overflow: 'auto', maxHeight: '550px' }}>
                 {data?.length > 0 ? renderTable() : undefined}
-                <DisplayApiErrors error={error!} />
-                {response?.status === 204 ? <Container fluid textAlign="center"><Message warning>Empty table</Message></Container> : undefined}
+                <DisplayApiErrors response={response} error={error} />
 
             </Container>
         </Segment>
