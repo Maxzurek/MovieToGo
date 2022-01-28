@@ -73,7 +73,7 @@ export default function MovieIndex() {
             <>
                 <HeaderImg
                     title={theMovieDbDTO?.title}
-                    overview={theMovieDbDTO?.overview}
+                    overview={theMovieDbDTO?.tagline}
                     image={theMovieDbDTO?.backdrop_path}
                     posterImg={theMovieDbDTO?.poster_path} />
                 <MovieNavbar

@@ -1,41 +1,57 @@
-.headerImg {
-    width: 100%;
-    margin: auto;
-    height: 80rem;
-    background-size: 100%, cover !important;
-    background-position: center  center ;
-    position: relative;
-    /* background-position: center, center !important; */
-  }
-  
+/* Container holding the image and the text */
+.container {
+  position: relative;
+  text-align: left;
+  color: white;
+}
 
-  .headerImgoverlay__title {
-    font-size: 3.5rem;
-    font-weight: bold;
-    padding-bottom: 0.5rem;
-    border-bottom: 0.7rem solid #d8a860;
-    align-self: flex-start;
-  }
- .headerImgoverlay__desc {
-    font-size: 2.3rem;
-    text-align: justify;
-    line-height: auto;
-    font-weight: 100;
-    padding-top: 2rem;
-  }
-  
-  .headerImgoverlay {
-    position: relative;
-    background: rgba(0, 0, 0, 0.3);
-    color: white;
-    top: 20rem;
-    width: 40%;
-    /* height: 45%; */
-    height: auto;
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
+/* Bottom left text */
+.bottom_left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
+
+/* Top left text */
+.top_left {
+  background: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 20px;
+  left: 16px;
+}
+
+/* Top right text */
+.top_right {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+}
+
+/* Bottom right text */
+.bottom_right {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+/* Centered text */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.headerImgoverlaytitle {
+  font-size: 4.4vw;
+  font-weight: bold;
+  padding-bottom: 0.5vw;
+  border-bottom: 0.7vw solid #d8a860;
+}
+
+.headerImgoverlaydesc {
+  font-size: 3.2vw;
+  text-align: justify;
+  font-weight: lighter;
+  padding-top: 2vw;
+}
