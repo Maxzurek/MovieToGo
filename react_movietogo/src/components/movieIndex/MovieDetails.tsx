@@ -68,12 +68,16 @@ export default function MovieDetails(props: movieDetails) {
                         <br /> <br />
                         <Container>
                             <Button.Group color='teal'>
-                                <Button>{props.watchListDTO ? "ADD TO WATCHLIST" : "NO WATCHLIST"}</Button>
+                                {/* <Button>{props.watchListDTO ? "ADD TO WATCHLIST" : "NO WATCHLIST"}</Button> */}
                                 <Dropdown
+                                    button
+                                    labeled
+                                    text = {props.watchListDTO ? "ADD TO WATCHLIST " : "NO WATCHLIST "}
                                     className='button icon'
                                     floating
                                     icon='add'
                                     options={renderDropDownItems()}
+                                    
                                
                                 />
                             </Button.Group>
