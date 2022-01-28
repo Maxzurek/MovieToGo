@@ -34,6 +34,7 @@ export default function ReviewForm(props: reviewFormProps) {
 
                     <TextArea
                         onChange={formikProps.handleChange}
+                        rows = "6"
                         name="body"
                         label="Review"
                         placeholder='What did you think of the movie ?'
