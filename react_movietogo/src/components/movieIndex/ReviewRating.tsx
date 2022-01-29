@@ -19,7 +19,7 @@ interface reviewRatingProps {
 
 export default function ReviewRating(props: reviewRatingProps) {
 
-    const [movieReviwErrors, setMovieReviewErrors] = useState<any>({});
+    const [movieReviwErrors, setMovieReviewErrors] = useState<any>(undefined);
     const [reviewSubmissionSuccessMsg, setReviewSubmissionSuccessMsg] = useState('');
 
 
@@ -38,7 +38,7 @@ export default function ReviewRating(props: reviewRatingProps) {
                         props.movieToGoDTO?.movieReviews?.push(response.data);
                     })
 
-                setMovieReviewErrors({})
+                setMovieReviewErrors(undefined)
                 setReviewSubmissionSuccessMsg('');
                 setReviewSubmissionSuccessMsg('Review submitted!');
             }
@@ -79,7 +79,7 @@ export default function ReviewRating(props: reviewRatingProps) {
                     notAuthorized={
                         <>
                             <br /> <br />
-                            <Segment textAlign="center"><h3> CRITIC REVIEWS FOR MOVIE </h3> </Segment>
+                            <Segment textAlign="center"><h3>{props.movieToGoDTO?.movieReviews?.length? "CRITIC REVIEWS FOR MOVIE": "NO REVIEWS YET"}  </h3> </Segment>
                             <br />
                             <ReviewsDetail movieToGoDTO={props.movieToGoDTO} />
                         </>} />
