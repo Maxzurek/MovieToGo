@@ -1,10 +1,13 @@
 
-import { Button, Container, Dropdown, Grid, Header, Icon, Label, List, ListContent, ListIcon, ListItem, Popup, Rating, Search, Segment } from "semantic-ui-react"
+import { Button, Container, Dropdown, Grid, Header, Icon, ItemContent, Label, List, ListContent, ListIcon, ListItem, Popup, Rating, Search, Segment } from "semantic-ui-react"
 import { MovieToGoDTO, TheMovieDbDetailsDTO, TheMovieDbDTO } from "../../models/movie.models"
 import { WatchListDTO } from "../../models/watchlist.models"
 import Authorized from "../authentication/Authorized"
 import DropDownWatchListItem from "../LandingPage/DropDownWatchListItem"
-import ListItems from "./ListItems"
+import ListItemCompanies from "./ListItemCompanies"
+import ListItemsGenres from "./ListItemsGenres"
+import ListItems from "./ListItemsGenres"
+import ListLanguages from "./ListLanguages"
 
 
 interface movieDetails {
@@ -38,15 +41,15 @@ export default function MovieDetails(props: movieDetails) {
                     <Grid columns={2} stackable >
                         <Grid.Row verticalAlign='middle' textAlign='center'>
                             <Grid.Column>
-                                <Header icon >
+                                <Header icon color="teal">
                                     <Icon name='star' color="yellow" size="large" />
-                                    <span> {props.movieToGoDTO?.voteAverage ? `AUDIENCE SCORE : ${props.movieToGoDTO?.voteAverage}` : "NO SCORE YET"} </span>
+                                    <span > {props.movieToGoDTO?.voteAverage ? `AUDIENCE SCORE : ${props.movieToGoDTO?.voteAverage}` : "NO SCORE YET"} </span>
 
                                 </Header>
                             </Grid.Column>
 
                             <Grid.Column>
-                                <Header icon>
+                                <Header icon color="teal">
                                     <Icon name='commenting' color="yellow" />
                                     REVIEWS : {props.movieToGoDTO?.movieReviews?.length}
                                 </Header>
@@ -58,8 +61,8 @@ export default function MovieDetails(props: movieDetails) {
 
                 <Segment>
                     <Container fluid textAlign="left">
-                        <Header> DESCRIPTION : </Header>
-                        <Header as='h3'>{props.theMovieDbDTO?.overview}</Header>
+                        <Header > DESCRIPTION : </Header>
+                        <Header as='h4'>{props.theMovieDbDTO?.overview}</Header>
                     </Container>
                 </Segment>
 
@@ -68,17 +71,14 @@ export default function MovieDetails(props: movieDetails) {
                         <br /> <br />
                         <Container>
                             <Button.Group color='teal'>
-                                {/* <Button>{props.watchListDTO ? "ADD TO WATCHLIST" : "NO WATCHLIST"}</Button> */}
                                 <Dropdown
                                     button
                                     labeled
-                                    text = {props.watchListDTO ? "ADD TO WATCHLIST " : "NO WATCHLIST "}
+                                    text={props.watchListDTO ? "ADD TO WATCHLIST " : "NO WATCHLIST "}
                                     className='button icon'
                                     floating
                                     icon='add'
                                     options={renderDropDownItems()}
-                                    
-                               
                                 />
                             </Button.Group>
 
@@ -89,58 +89,66 @@ export default function MovieDetails(props: movieDetails) {
                     notAuthorized={<></>}
                 />
 
-
                 <Segment>
                     <br />
-                    <Grid columns={2} doubling stackable >
+                    <Grid columns={2} doubling stackable textAlign="center" >
 
-                        <Authorized
-                            authorized={
-                                <Grid.Column>
-                                    <Header>IMDB RATING</Header>
-                                    <ListContent >
-                                        <List.Item >{props.movieToGoDTO?.voteAverage}</List.Item>
-                                    </ListContent>
-                                </Grid.Column>
-                            }
-                            notAuthorized={<></>} />
+                        <Grid.Column  >
+                            <Header color="teal">IMDB RATING</Header>
+                            <ListContent  >
+                                <ItemContent as="h4"> {props.movieToGoDTO?.voteAverage}</ItemContent>
+                            </ListContent>
+                        </Grid.Column>
 
                         <Grid.Column>
-                            <Header>RELEASE DATE</Header>
-                            <ListContent >
-                                <List.Item >{props.theMovieDbDTO?.release_date}</List.Item>
+                            <Header color="teal">RELEASE DATE</Header>
+                            <ListContent  >
+                                <ItemContent as="h4"> {props.theMovieDbDTO?.release_date}</ItemContent>
                             </ListContent>
                         </Grid.Column>
                         <Grid.Column>
-                            <Header>POPULARITY</Header>
+                            <Header color="teal">POPULARITY</Header>
                             <ListContent >
-                                <List.Item >{props.theMovieDbDTO?.popularity}</List.Item>
-                            </ListContent>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <Header>ORIGINAL LANGUAGE</Header>
-                            <ListContent >
-                                <List.Item >{props.theMovieDbDTO?.original_language.toUpperCase()}</List.Item>
+                                <ItemContent as="h4" >{props.theMovieDbDTO?.popularity}</ItemContent>
                             </ListContent>
                         </Grid.Column>
 
                         <Grid.Column >
-                            <Header >GENRES</Header>
+                            <Header color="teal">BUDGET</Header>
                             <ListContent >
-                                  <ListItems genresIDs={props.theMovieDbDTO?.genres} />
+                                <ItemContent as="h4" >{props.theMovieDbDTO?.budget}</ItemContent>
                             </ListContent>
                         </Grid.Column>
 
-                        <Authorized
-                            authorized={
-                                <Grid.Column>
-                                    <Header>VOTE COUNT</Header>
-                                    <ListContent >
-                                        <List.Item >{props.movieToGoDTO?.voteCount ? props.movieToGoDTO?.voteCount : 0}</List.Item>
-                                    </ListContent>
-                                </Grid.Column>
-                            }
-                            notAuthorized={<></>} />
+                        <Grid.Column>
+                            <Header color="teal">SPOKEN LANGUAGES</Header>
+                            <ListContent >
+                                <ListLanguages listItemLanguages={props.theMovieDbDTO?.spoken_languages} />
+                            </ListContent>
+                        </Grid.Column>
+
+                        <Grid.Column >
+                            <Header color="teal">PRODUCTION COMPANIES</Header>
+                            <ListContent >
+                                <ListItemCompanies listItemCompanies={props.theMovieDbDTO?.production_companies} />
+                            </ListContent>
+                        </Grid.Column>
+
+
+                        <Grid.Column >
+                            <Header color="teal">GENRES</Header>
+                            <ListContent >
+                                <ListItemsGenres genresIDs={props.theMovieDbDTO?.genres} />
+                            </ListContent>
+                        </Grid.Column>
+
+                        <Grid.Column>
+                            <Header color="teal">VOTE COUNT</Header>
+                            <ListContent >
+                                <ItemContent as="h4" >{props.movieToGoDTO?.voteCount ? props.movieToGoDTO?.voteCount : 0}</ItemContent>
+                            </ListContent>
+                        </Grid.Column>
+
                     </Grid>
                 </Segment>
             </Container>

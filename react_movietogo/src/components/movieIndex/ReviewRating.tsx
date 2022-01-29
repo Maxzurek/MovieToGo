@@ -1,7 +1,7 @@
 import axios from "axios";
 import { FormikHelpers } from "formik";
 import { useState } from "react";
-import { Container, Message, Rating, Segment } from "semantic-ui-react";
+import { Container, Header, Message, Rating, Segment } from "semantic-ui-react";
 import { movieToGoUrlMovieReviews } from "../../endpoints";
 import { MovieReviewCreationDTO, MovieToGoDTO } from "../../models/movie.models";
 import Authorized from "../authentication/Authorized";
@@ -60,26 +60,29 @@ export default function ReviewRating(props: reviewRatingProps) {
                 <Authorized
                     authorized={
                         <>
-                            <Segment textAlign="center"><h3> RATE AND REVIEW </h3>
+                            <Segment textAlign="center" ><Header as="h3" color="teal"> RATE AND REVIEW </Header> 
                             </Segment>
-                            <br />
-                            <Container>
-                                <h3>Your Rating  : <MovieRating movieToGoDTO={props.movieToGoDTO} /> </h3>
-                            </Container>
-                            <br />
                             <ReviewForm model={reviewCreationDTO} onSubmit={onSubmitReview} />
                             <DisplayApiErrors error={movieReviwErrors} />
                             {reviewSubmissionSuccessMsg ? <Container textAlign="center"><Message positive>{reviewSubmissionSuccessMsg}</Message></Container> : undefined}
                             <br /> <br />
-                            <Segment textAlign="center"><h3>{props.movieToGoDTO?.movieReviews?.length? "CRITIC REVIEWS FOR MOVIE": "NO REVIEWS YET"}  </h3> </Segment>
+
+                            <Container>
+                                <Header textAlign="center" as="h3" color="teal">Your Rating  : <MovieRating movieToGoDTO={props.movieToGoDTO} /> </Header>
+                            </Container>
+
+                            <br /> <br />
+                            <Segment textAlign="center"><Header as="h3" color="teal">{props.movieToGoDTO?.movieReviews?.length ? "CRITIC REVIEWS FOR MOVIE" : "NO REVIEWS YET"}  </Header> </Segment>
                             <br />
+
                             <ReviewsDetail movieToGoDTO={props.movieToGoDTO} />
                         </>
                     }
                     notAuthorized={
                         <>
                             <br /> <br />
-                            <Segment textAlign="center"><h3>{props.movieToGoDTO?.movieReviews?.length? "CRITIC REVIEWS FOR MOVIE": "NO REVIEWS YET"}  </h3> </Segment>
+                            <Segment textAlign="center">
+                                <Header as="h3" color="teal">{props.movieToGoDTO?.movieReviews?.length ? "CRITIC REVIEWS FOR MOVIE" : "NO REVIEWS YET"}</Header> </Segment>
                             <br />
                             <ReviewsDetail movieToGoDTO={props.movieToGoDTO} />
                         </>} />

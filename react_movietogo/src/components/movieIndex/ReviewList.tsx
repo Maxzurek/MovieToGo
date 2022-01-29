@@ -9,7 +9,7 @@ export default function ReviewList(props: reviewListProps) {
 
 
     const formatDate = (dateString: string) => {
-        
+
         const options: Intl.DateTimeFormatOptions = { //Typescript ways of adding the type
             year: "numeric",
             month: "long",
@@ -18,20 +18,23 @@ export default function ReviewList(props: reviewListProps) {
         return new Date(dateString).toLocaleDateString([], options);
     };
 
+    const reviews = [props.movieReviewDTO.body].join(' ');
 
 
     const renderReviewCard = () => {
         return (
             <Card>
                 <Card.Content >
-                    <Icon name='user' size="large" /> {props.movieReviewDTO.user.userName}
-                    <Card.Description as='h3' >
-                        {props.movieReviewDTO.body}
-                    </Card.Description>
-                    <Card.Content extra>
-                        <Card.Meta as='h2'>{formatDate(props.movieReviewDTO.dateCreated.toString())}</Card.Meta>
-                    </Card.Content>
+                    <Icon name='user' size="large" color="teal" /> {props.movieReviewDTO.user.userName}
+
                 </Card.Content>
+                <Card.Content as='h3' description={reviews} />
+
+
+                <Card.Content extra>
+                    <Card.Meta as='h2'>{formatDate(props.movieReviewDTO.dateCreated.toString())}</Card.Meta>
+                </Card.Content>
+
             </Card>
 
         )
