@@ -11,8 +11,7 @@ function Arrow({ children, disabled, onClick }: {
     const [isMobile, setMobile] = useState(false);
 
     const resize = () => {
-        let currentHideNav = window.innerWidth <= 600;
-        // Are we mobile?
+        let currentHideNav = window.innerWidth <= 767; // Width less than 768px? We are mobile
         setMobile(currentHideNav);
     };
 
