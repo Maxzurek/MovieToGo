@@ -5,9 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { WatchListDTO } from "../../models/watchlist.models";
 import DropDownWatchListItem from "../LandingPage/DropDownWatchListItem";
 import MovieRating from "./MovieRating";
-import { useContext } from "react";
-import AppDataContext from "../contexts/AppDataContext";
-import { MovieToGoDTO, NavigationMovieDTO, TheMovieDbDTO } from "../../models/movie.models";
+import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 
 
 export default function IndividualMovie(props: IndividualMovieProps) {
@@ -16,7 +14,7 @@ export default function IndividualMovie(props: IndividualMovieProps) {
 
     const handleOnClick = () => {
 
-        navigate('/movie', {state: {theMovieDbId: props.theMovieDbDTO?.id, movieToGoId: props.movieToGoDTO.id}})
+        navigate('/movie', { state: { theMovieDbId: props.theMovieDbDTO?.id, movieToGoId: props.movieToGoDTO.id } })
     }
 
     const renderDropDownItems = () => {
@@ -31,6 +29,20 @@ export default function IndividualMovie(props: IndividualMovieProps) {
         }
         else {
             return undefined;
+        }
+    }
+    const deleteMovieFromWatchList = () => {
+
+      
+    }
+
+    const getPopupContent = () => {
+
+        if (props.isInWatchList) {
+            return "Remove From WatchList"
+        } else {
+
+            return props.watchListDTO ? "Add Movie to Watchlist" : "No Watchlist"
         }
     }
 
@@ -59,10 +71,12 @@ export default function IndividualMovie(props: IndividualMovieProps) {
                         <Label attached="top right" color="yellow">
                             <Dropdown
                                 item
-                                trigger={<><Popup on='hover' content={props.watchListDTO ? "Add Movie to Watchlist" : "No Watchlist"} trigger={<Button circular icon='add' basic size="mini" color="vk" />} /></>}
+                                trigger={<><Popup on='hover' content={getPopupContent()}
+                                    trigger={<Button onClick={props.isInWatchList ? () => deleteMovieFromWatchList() : () => { }} circular icon={props.isInWatchList ? 'delete' : 'add'} basic size="mini" color="vk" />} /></>}
                                 icon={null}>
                                 <Dropdown.Menu>
-                                    {renderDropDownItems()}
+                                    {props.isInWatchList ? undefined : renderDropDownItems()}
+
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Label>
@@ -79,4 +93,6 @@ export interface IndividualMovieProps {
     movieToGoDTO: MovieToGoDTO;
     watchListDTO: WatchListDTO[] | undefined;
     itemId: string;
+    isInWatchList?: boolean;
+    watchListItemID? : number;
 }

@@ -38,13 +38,20 @@ export default function MovieDetails(props: movieDetails) {
         <>
             <Container>
                 <Segment  >
-                    <Grid columns={2} stackable >
+                    <Grid columns={3} stackable >
                         <Grid.Row verticalAlign='middle' textAlign='center'>
                             <Grid.Column>
                                 <Header icon color="teal">
                                     <Icon name='star' color="yellow" size="large" />
                                     <span > {props.movieToGoDTO?.voteAverage ? `AUDIENCE SCORE : ${props.movieToGoDTO?.voteAverage}` : "NO SCORE YET"} </span>
 
+                                </Header>
+                            </Grid.Column>
+
+                            <Grid.Column>
+                                <Header icon color="teal">
+                                    <Icon name='user outline' color="yellow" />
+                                    VOTE COUNT : {props.movieToGoDTO?.voteCount ? props.movieToGoDTO?.voteCount : 0}
                                 </Header>
                             </Grid.Column>
 
@@ -93,12 +100,12 @@ export default function MovieDetails(props: movieDetails) {
                     <br />
                     <Grid columns={2} doubling stackable textAlign="center" >
 
-                        <Grid.Column  >
+                        {/* <Grid.Column  >
                             <Header color="teal">IMDB RATING</Header>
                             <ListContent  >
                                 <ItemContent as="h4"> {props.movieToGoDTO?.voteAverage}</ItemContent>
                             </ListContent>
-                        </Grid.Column>
+                        </Grid.Column> */}
 
                         <Grid.Column>
                             <Header color="teal">RELEASE DATE</Header>
@@ -112,18 +119,16 @@ export default function MovieDetails(props: movieDetails) {
                                 <ItemContent as="h4" >{props.theMovieDbDTO?.popularity}</ItemContent>
                             </ListContent>
                         </Grid.Column>
-
+                        <Grid.Column>
+                            <Header color="teal">AVAILABLE IN</Header>
+                            <ListContent >
+                                <ListLanguages listItemLanguages={props.theMovieDbDTO?.spoken_languages} />
+                            </ListContent>
+                        </Grid.Column>
                         <Grid.Column >
                             <Header color="teal">BUDGET</Header>
                             <ListContent >
-                                <ItemContent as="h4" >{props.theMovieDbDTO?.budget}</ItemContent>
-                            </ListContent>
-                        </Grid.Column>
-
-                        <Grid.Column>
-                            <Header color="teal">SPOKEN LANGUAGES</Header>
-                            <ListContent >
-                                <ListLanguages listItemLanguages={props.theMovieDbDTO?.spoken_languages} />
+                                <ItemContent as="h4" >{props.theMovieDbDTO?.budget}$</ItemContent>
                             </ListContent>
                         </Grid.Column>
 
@@ -142,12 +147,12 @@ export default function MovieDetails(props: movieDetails) {
                             </ListContent>
                         </Grid.Column>
 
-                        <Grid.Column>
+                        {/* <Grid.Column>
                             <Header color="teal">VOTE COUNT</Header>
                             <ListContent >
                                 <ItemContent as="h4" >{props.movieToGoDTO?.voteCount ? props.movieToGoDTO?.voteCount : 0}</ItemContent>
                             </ListContent>
-                        </Grid.Column>
+                        </Grid.Column> */}
 
                     </Grid>
                 </Segment>
