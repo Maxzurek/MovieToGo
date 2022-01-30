@@ -19,6 +19,7 @@ import AppDataContext from './components/contexts/AppDataContext';
 import { useStateIfMounted } from 'use-state-if-mounted';
 import RedirectionPage from './components/navigation/RedirectionPage';
 import { adminRole, loggedInUser } from './roles';
+import MediaProvider from './components/mediaContexr/MediaProvider';
 
 configureInterceptor();
 
@@ -48,10 +49,10 @@ export default function App() {
 
   useEffect(() => {
 
-    if(claims.length > 0){
+    if (claims.length > 0) {
       fetchUserWatchListDTO();
     }
-    else{
+    else {
       setUserWatchListDTO(undefined);
     }
 
@@ -87,8 +88,7 @@ export default function App() {
     if (requiredRole === adminRole && isAdmin()) {
       return componentToRender;
     }
-    if(requiredRole === loggedInUser && claims.length > 0)
-    {
+    if (requiredRole === loggedInUser && claims.length > 0) {
       return componentToRender;
     }
 
@@ -97,43 +97,48 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AppDataContext.Provider
-        value={{
-          genresDTO,
-          setGenresDTO: setGenresDTO,
-          userWatchListDTO,
-          setUserWatchListDTO: setUserWatchListDTO,
-        }}
-      >
-        <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
-          <ModalContext.Provider
-            value={{
-              isAuthModalOpen,
-              setAuthModalOpen: setAuthModalOpen,
-              isOkMessageModalOpen,
-              setOkMessageModalOpen: setOkMessageModalOpen,
-              okMessageModalContent,
-              setOkMessageModalContent: setOkMessageModalContent,
-              displayAuthenticationModal: setAuthModalOpen,
-              displayOkMessage: setOkMessageModalContent,
-            }}
-          >
-            <MainNavbar />
-            <Container fluid>
-              <Routes>
-                {routes.map(route =>
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={getElement(route.requiredRole, route.component)}>
-                  </Route>)}
-              </Routes>
-            </Container>
-            <AuthenticationModal open={isAuthModalOpen} setOpen={setAuthModalOpen} defaultSelection="login" />
-            <OkMessageModal message={okMessageModalContent} setMessage={setOkMessageModalContent} open={isOkMessageModalOpen} setOpen={setOkMessageModalOpen} />
-          </ModalContext.Provider>
-        </AuthenticationContext.Provider>
-      </AppDataContext.Provider>
+      <MediaProvider>
+        <AppDataContext.Provider
+          value={{
+            genresDTO,
+            setGenresDTO: setGenresDTO,
+            userWatchListDTO,
+            setUserWatchListDTO: setUserWatchListDTO,
+          }}
+        >
+          <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
+            <ModalContext.Provider
+              value={{
+                isAuthModalOpen,
+                setAuthModalOpen: setAuthModalOpen,
+                isOkMessageModalOpen,
+                setOkMessageModalOpen: setOkMessageModalOpen,
+                okMessageModalContent,
+                setOkMessageModalContent: setOkMessageModalContent,
+                displayAuthenticationModal: setAuthModalOpen,
+                displayOkMessage: setOkMessageModalContent,
+              }}
+            >
+
+              <MainNavbar />
+
+              <Container fluid>
+                <Routes>
+                  {routes.map(route =>
+                    <Route
+                      key={route.path}
+                      path={route.path}
+                      element={getElement(route.requiredRole, route.component)}>
+                    </Route>)}
+                </Routes>
+              </Container>
+              
+              <AuthenticationModal open={isAuthModalOpen} setOpen={setAuthModalOpen} defaultSelection="login" />
+              <OkMessageModal message={okMessageModalContent} setMessage={setOkMessageModalContent} open={isOkMessageModalOpen} setOpen={setOkMessageModalOpen} />
+            </ModalContext.Provider>
+          </AuthenticationContext.Provider>
+        </AppDataContext.Provider>
+      </MediaProvider>
     </BrowserRouter>
   )
 };
