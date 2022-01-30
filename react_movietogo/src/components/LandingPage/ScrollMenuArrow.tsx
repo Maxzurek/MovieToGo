@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { VisibilityContext } from "react-horizontal-scrolling-menu";
 import { Button, Icon } from "semantic-ui-react";
+import Media from "../mediaContexr/Media";
 
 
 function Arrow({ children, disabled, onClick }: {
@@ -22,8 +23,7 @@ function Arrow({ children, disabled, onClick }: {
 
     return (
         <>
-            {isMobile ? <></> 
-            :
+            <Media tablet desktop>
                 <Button
                     disabled={disabled}
                     onClick={onClick}
@@ -37,8 +37,11 @@ function Arrow({ children, disabled, onClick }: {
                 >
                     {children}
                 </Button>
-            }
+            </Media>
 
+            <Media mobile>
+                <></>
+            </Media>
         </>
     );
 }
