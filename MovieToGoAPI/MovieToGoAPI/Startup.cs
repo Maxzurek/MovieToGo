@@ -11,6 +11,7 @@ using MovieToGoAPI.Services;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace MovieToGoAPI
 {
@@ -122,6 +123,7 @@ namespace MovieToGoAPI
             });
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
