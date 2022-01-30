@@ -112,7 +112,7 @@ export default function LandingPage() {
 
     const renderCards = () => {
         return (
-            <>
+            <Container fluid>
                 <MovieCards
                     title='Trending Movies'
                     theMovieDbDTO={trendingTheMovieDbDTO}
@@ -137,7 +137,7 @@ export default function LandingPage() {
                     movieToGoDTO={inTheatersMovieToGoDTO}
                     watchListDTO={userWatchListDTO}
                 />
-            </>
+            </Container>
         )
     }
 
