@@ -61,7 +61,7 @@ export default function IndividualMovie(props: IndividualMovieProps) {
             <Image src={theMovieDbImages + props.theMovieDbDTO.poster_path} style={{ cursor: "pointer" }} onClick={handleOnClick} />
             <Card.Content>
                 <Container as={'a'} onClick={handleOnClick} >
-                    <Card.Header><h3>{props.theMovieDbDTO.title}</h3></Card.Header>
+                    <Header as='h3' color="blue">{props.theMovieDbDTO.title}</Header>
                     <Card.Meta>{props.theMovieDbDTO.release_date}</Card.Meta>
                 </Container>
                 <Authorized
