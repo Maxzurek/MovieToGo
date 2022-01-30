@@ -5,7 +5,13 @@
 .authentication_popup_form{
   margin-top: 10px;
 }
+
 .ui.search > .results { 
     overflow-y: auto;   
     max-height: 550px; 
+}
+
+.ui.fluid.container {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
