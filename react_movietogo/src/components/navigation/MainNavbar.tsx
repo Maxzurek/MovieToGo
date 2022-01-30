@@ -30,67 +30,69 @@ export default function MainNavbar() {
 
     const renderTabletDesktopNavbar = () => {
         return (
-            <Grid as={Menu} pointing secondary size='large' icon='labeled' color="teal" verticalAlign="bottom">
-                <GridRow style={{ padding: 0 }}>
+            <Container fluid style={{ backgroundColor: "rgba(47, 108, 179, 0.3)" }}>
+                <Grid as={Menu} pointing secondary size='large' icon='labeled' color="blue" verticalAlign="bottom">
+                    <GridRow style={{ padding: 0 }}>
 
-                    <GridColumn width={2}>
-                        <Item as={NavLink} to='/'>
-                            <Image src="/images/MovieToGo_Logo.ico" size="tiny" />
-                        </Item>
-                    </GridColumn>
+                        <GridColumn width={2}>
+                            <Item as={NavLink} to='/'>
+                                <Image src="/images/MovieToGo_Logo.ico" size="tiny" />
+                            </Item>
+                        </GridColumn>
 
-                    <GridColumn width={2}>
-                    </GridColumn>
+                        <GridColumn width={2}>
+                        </GridColumn>
 
-                    <GridColumn width={1}>
-                    </GridColumn>
+                        <GridColumn width={1}>
+                        </GridColumn>
 
-                    <GridColumn width={6}>
-                        <TheMovieDbSearchBar />
-                    </GridColumn>
+                        <GridColumn width={6}>
+                            <TheMovieDbSearchBar />
+                        </GridColumn>
 
-                    <GridColumn width={1}>
-                    </GridColumn>
+                        <GridColumn width={1}>
+                        </GridColumn>
 
-                    <GridColumn width={2}>
-                    </GridColumn>
+                        <GridColumn width={2}>
+                        </GridColumn>
 
-                    <GridColumn width={2}>
-                        <Authorized
-                            authorized={
-                                <Dropdown
-                                    item
-                                    trigger={<><Icon name='user outline' />{getLoggedInUsernameAndRole()}</>}
-                                    icon={null}
-                                >
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item icon='list' text=' WatchLists' name="watchLists" onClick={() => navigate('/watchlist')} />
-                                        <Authorized
-                                            authorized={<Dropdown.Item icon='wrench' text=' Admin Tools' name="adminTools" onClick={() => navigate('/admin')} />}
-                                            role={adminRole}
-                                        />
-                                        <Dropdown.Item icon='sign out' text=' Logout' name="logout" onClick={handleLogoutClick} />
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            }
-                            notAuthorized={
-                                <MenuItem onClick={() => displayAuthenticationModal(true)}>
-                                    <Icon name='sign in' />
-                                    Login
-                                </MenuItem>
-                            }
-                        />
-                    </GridColumn>
+                        <GridColumn width={2}>
+                            <Authorized
+                                authorized={
+                                    <Dropdown
+                                        item
+                                        trigger={<><Icon name='user outline' />{getLoggedInUsernameAndRole()}</>}
+                                        icon={null}
+                                    >
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item icon='list' text=' WatchLists' name="watchLists" onClick={() => navigate('/watchlist')} />
+                                            <Authorized
+                                                authorized={<Dropdown.Item icon='wrench' text=' Admin Tools' name="adminTools" onClick={() => navigate('/admin')} />}
+                                                role={adminRole}
+                                            />
+                                            <Dropdown.Item icon='sign out' text=' Logout' name="logout" onClick={handleLogoutClick} />
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                }
+                                notAuthorized={
+                                    <MenuItem onClick={() => displayAuthenticationModal(true)}>
+                                        <Icon name='sign in' />
+                                        Login
+                                    </MenuItem>
+                                }
+                            />
+                        </GridColumn>
 
-                </GridRow>
-            </Grid>
+                    </GridRow>
+                </Grid>
+            </Container>
         )
     }
 
     const renderMobileNavBar = () => {
         return (
-            <Container style={{marginBottom: 30}}>
-                <Grid as={Menu} pointing secondary size='large' icon='labeled' color="teal" verticalAlign="bottom" columns={2}>
+            <Container fluid style={{ backgroundColor: "rgba(47, 108, 179, 0.3)", marginBottom: 30 }}>
+                <Grid as={Menu} pointing secondary size='large' icon='labeled' color="blue" verticalAlign="bottom" columns={2}>
                     <GridRow style={{ padding: 0 }}>
 
                         <GridColumn >
@@ -129,7 +131,7 @@ export default function MainNavbar() {
                     </GridRow>
                 </Grid>
 
-                <Container fluid>
+                <Container fluid style={{paddingLeft: 10, paddingRight: 20}}>
                     <TheMovieDbSearchBar />
                 </Container>
 
