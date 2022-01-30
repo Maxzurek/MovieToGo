@@ -3,14 +3,14 @@ import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { WatchListDTO } from "../../models/watchlist.models";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import { LeftArrow, RightArrow } from "./ScrollMenuArrow";
-import { Container, Dimmer, Loader } from "semantic-ui-react";
+import { Container, Dimmer, Header, Loader } from "semantic-ui-react";
 
 export default function MovieCards(props: moviesCardsProps) {
 
     return (
-        <>
+        <Container style={{marginTop: 30, width: '79%'}}>
             <Container textAlign="center" style={{ marginBottom: 20 }}>
-                <h1>{props.title}</h1>
+                <Header as="h1" color="blue">{props.title}</Header>
             </Container>
             <ScrollMenu
                 LeftArrow={<LeftArrow />}
@@ -27,7 +27,7 @@ export default function MovieCards(props: moviesCardsProps) {
                     />
                 ))}
             </ScrollMenu>
-        </>
+        </Container>
     )
 }
 
