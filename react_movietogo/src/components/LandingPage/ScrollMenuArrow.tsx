@@ -25,6 +25,7 @@ function Arrow({ children, disabled, onClick }: {
         <>
             <Media tablet desktop>
                 <Button
+                    circular
                     disabled={disabled}
                     onClick={onClick}
                     style={{
@@ -65,7 +66,7 @@ export function LeftArrow() {
 
     return (
         <Arrow disabled={disabled} onClick={() => scrollPrev()}>
-            <Icon name='arrow left' />
+            <Icon name='arrow alternate circle left' size="big"/>
         </Arrow>
     );
 }
@@ -88,7 +89,7 @@ export function RightArrow() {
 
     return (
         <Arrow disabled={disabled} onClick={() => scrollNext()}>
-            <Icon name='arrow right' />
+            <Icon name='arrow alternate circle right' size="big" />
         </Arrow>
     );
 }
