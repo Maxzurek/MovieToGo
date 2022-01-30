@@ -5,3 +5,5 @@ MovieToGoAPI/MovieToGoAPI/Properties/serviceDependencies.json
 MovieToGoAPI/MovieToGoAPI/Properties/serviceDependencies.MovieToGoAPI20220130162401 - Web Deploy.json
 MovieToGoAPI/MovieToGoAPI/Properties/ServiceDependencies/MovieToGoAPI20220130162401 - Web Deploy/mssql1.arm.json
 MovieToGoAPI/MovieToGoAPI/Properties/ServiceDependencies/MovieToGoAPI20220130162401 - Web Deploy/profile.arm.json
+MovieToGoAPI/MovieToGoAPI/Properties/serviceDependencies.local.json
+MovieToGoAPI/MovieToGoAPI/Properties/ServiceDependencies/local/appInsights1.arm.json
