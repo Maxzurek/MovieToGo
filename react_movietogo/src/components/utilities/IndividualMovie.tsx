@@ -97,8 +97,8 @@ export default function IndividualMovie(props: IndividualMovieProps) {
 export interface IndividualMovieProps {
     theMovieDbDTO: TheMovieDbDTO;
     movieToGoDTO: MovieToGoDTO;
-    watchListDTO: WatchListDTO[] | undefined;
     itemId: string;
     isInWatchList?: boolean;
     watchListItemID?: number;
+    watchListDTO?: WatchListDTO[] | undefined;
 }
