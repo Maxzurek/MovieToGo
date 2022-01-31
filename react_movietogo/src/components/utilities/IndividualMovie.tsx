@@ -7,11 +7,14 @@ import DropDownWatchListItem from "../LandingPage/DropDownWatchListItem";
 import MovieRating from "./MovieRating";
 import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import axios from "axios";
+import { useContext } from "react";
+import NotifyDataChangedContext from "../contexts/NotifyDataChangedContext";
 
 
 export default function IndividualMovie(props: IndividualMovieProps) {
 
     const navigate = useNavigate();
+    const notifyDataDeleted = useContext(NotifyDataChangedContext);
 
     const handleOnClick = () => {
 
@@ -35,7 +38,7 @@ export default function IndividualMovie(props: IndividualMovieProps) {
     const deleteMovieFromWatchList = async () => {
          await axios.delete(movieToGoUrlWatchListItems +`?Id=${props.watchListItemID}`)
             .then((response) => {
-             console.log(response);
+             notifyDataDeleted();
             })
             .catch(error => console.log(error) )
 
