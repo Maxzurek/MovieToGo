@@ -1,15 +1,6 @@
 import { UserDTO } from "./authentication.models";
 import { WatchListDTO } from "./watchlist.models";
 
-// Movie
-export interface MovieDTO {
-    id: number;
-    theMovieDbId: number;
-    voteAverage: number;
-    voteCount: number;
-    movieReviews: MovieReviewDTO[];
-}
-
 // TheMovieDb Movie
 export interface TheMovieDbDTO {
     adult: string;
