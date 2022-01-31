@@ -20,7 +20,7 @@ export default function IndividualMovie(props: IndividualMovieProps) {
 
     const handleOnClick = () => {
 
-        navigate('/movie', { state: { theMovieDbId: props.theMovieDbDTO?.id, movieToGoId: props.movieToGoDTO.id } })
+        navigate('/movie', { state: { theMovieDbId: props.theMovieDbDTO?.id, movieToGoId: props.movieToGoDTO?.id } })
     }
 
     const renderDropDownItems = () => {
@@ -67,11 +67,11 @@ export default function IndividualMovie(props: IndividualMovieProps) {
                     <Header as='h3'>Overall Rating: {props.movieToGoDTO.voteAverage}/10</Header>
                     : <Header as='h3'>No Rating Yet</Header>}
             </Segment>
-            <Image src={theMovieDbImages + props.theMovieDbDTO.poster_path} style={{ cursor: "pointer" }} onClick={handleOnClick} />
+            <Image src={theMovieDbImages + props.theMovieDbDTO?.poster_path} style={{ cursor: "pointer" }} onClick={handleOnClick} />
             <Card.Content>
                 <Container as={'a'} onClick={handleOnClick} >
-                    <Header as='h3' color="blue">{props.theMovieDbDTO.title}</Header>
-                    <Card.Meta>{props.theMovieDbDTO.release_date}</Card.Meta>
+                    <Header as='h3' color="blue">{props.theMovieDbDTO?.title}</Header>
+                    <Card.Meta>{props.theMovieDbDTO?.release_date}</Card.Meta>
                 </Container>
                 <Authorized
                     authorized={
@@ -104,11 +104,11 @@ export default function IndividualMovie(props: IndividualMovieProps) {
 }
 
 export interface IndividualMovieProps {
-    theMovieDbDTO: TheMovieDbDTO;
-    movieToGoDTO: MovieToGoDTO;
-    itemId: string;
-    isInWatchList?: boolean;
-    watchListId?: number;
-    watchListItemID?: number;
+    theMovieDbDTO: TheMovieDbDTO | undefined;
+    movieToGoDTO: MovieToGoDTO | undefined;
+    itemId: string | undefined;
+    isInWatchList?: boolean | undefined;
+    watchListId?: number | undefined;
+    watchListItemID?: number | undefined;
     watchListDTO?: WatchListDTO[] | undefined;
 }
