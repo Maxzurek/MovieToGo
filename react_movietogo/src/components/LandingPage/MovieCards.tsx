@@ -23,7 +23,6 @@ export default function MovieCards(props: moviesCardsProps) {
                         movieToGoDTO={props.movieToGoDTO[index]}
                         watchListDTO={props.watchListDTO}
                         itemId={index.toString()}
-                        isInWatchList = {true}
                     />
                 ))}
             </ScrollMenu>
