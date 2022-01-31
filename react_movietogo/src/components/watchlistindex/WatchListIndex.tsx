@@ -22,7 +22,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
 
     const { userWatchListDTO, setUserWatchListDTO } = useContext(AppDataContext)
     const [activeItem, setActiveItem] = useState(0);
-    const [selectedWatchListDTO, setSelectedWatchListDTO] = useState<WatchListDTO | undefined>(userWatchListDTO![0])
+    const [selectedWatchListDTO, setSelectedWatchListDTO] = useState<WatchListDTO | undefined>()
     const [isLoading, setIsLoading] = useState(false)
 
     const menuItemsStyle = { padding: "13px 10px" }
@@ -84,6 +84,10 @@ export default function WatchListIndex(props: WatchListIndexProps) {
         await fetchTheMovieDbData()
             .then(promise => {
                 setIsLoading(false)
+
+                if (userWatchListDTO) {
+                    setSelectedWatchListDTO(userWatchListDTO[activeItem])
+                }
             })
     }
 
