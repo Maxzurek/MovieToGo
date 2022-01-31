@@ -20,7 +20,7 @@ export default function DropDownWatchListItem(props: DropDownWatchListItemProps)
 
     useEffect(() => {
 
-        let watchListItem = props.watchListDTO.watchListItems?.find(x => x.movieToGoDTO?.id === props.movieId);
+        let watchListItem = props.watchListDTO.watchListItems?.find(x => x.movie?.id === props.movieId);
         setDisabled(watchListItem ? true : false);
         
     }, [])
@@ -38,7 +38,7 @@ export default function DropDownWatchListItem(props: DropDownWatchListItemProps)
         var watchListItemDTO: WatchListItemDTO = {
             id: 0,
             watched: false,
-            movieToGoDTO: undefined,
+            movie: undefined,
         }
 
         await axios.post(movieToGoUrlWatchListItems, watchListItemCreationDTO)
