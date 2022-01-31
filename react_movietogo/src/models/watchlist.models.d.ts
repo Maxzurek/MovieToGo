@@ -19,7 +19,7 @@ export interface WatchListUpdateDTO{
 export interface WatchListItemDTO{
     id: number;
     watched: boolean;
-    movieToGoDTO: MovieToGoDTO | undefined;
+    movie: MovieToGoDTO | undefined;
     theMovieDbDTO?: TheMovieDbDTO;
 }
 export interface WatchListItemCreationDTO{
