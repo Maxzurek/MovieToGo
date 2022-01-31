@@ -1,5 +1,5 @@
 import { UserDTO } from "./authentication.models";
-import { MovieDTO, TheMovieDbDTO } from "./movie.models";
+import { MovieToGoDTO, TheMovieDbDTO } from "./movie.models";
 
 // WatchList
 export interface WatchListDTO{
@@ -19,7 +19,7 @@ export interface WatchListUpdateDTO{
 export interface WatchListItemDTO{
     id: number;
     watched: boolean;
-    movie: MovieDTO | undefined;
+    movieToGoDTO: MovieToGoDTO | undefined;
     theMovieDbDTO?: TheMovieDbDTO;
 }
 export interface WatchListItemCreationDTO{
