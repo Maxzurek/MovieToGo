@@ -41,8 +41,19 @@ export default function IndividualMovie(props: IndividualMovieProps) {
         await axios.delete(movieToGoUrlWatchListItems + `?Id=${props.watchListItemID}`)
             .then((response) => {
                 if (props.watchListId) {
-                    userWatchListDTO?.[props.watchListId].watchListItems?.splice(props.watchListItemID!, 1);
-                    setUserWatchListDTO(userWatchListDTO);
+                    let watchLists = userWatchListDTO;
+                    let watchList = watchLists?.find(x => x.id === props.watchListId);
+                    let watchlistItemIndex = watchList?.watchListItems?.findIndex(x => x.id === props.watchListItemID);
+
+                    if (watchlistItemIndex) {
+                        watchList?.watchListItems?.splice(watchlistItemIndex!, 1);
+                    }
+                    else if (watchlistItemIndex! >= 0) {
+                        watchList?.watchListItems?.splice(watchlistItemIndex!, 1);
+                    }
+
+                    setUserWatchListDTO(watchLists);
+                    console.log(watchList)
                     notifyDataDeleted();
                 }
             })
