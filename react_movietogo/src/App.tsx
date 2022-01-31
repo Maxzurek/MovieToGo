@@ -25,7 +25,7 @@ configureInterceptor();
 
 export default function App() {
 
-  const [claims, setClaims] = useState<Claim[]>(getClaims);
+  const [claims, setClaims] = useState<Claim[]>([]);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
   const [isOkMessageModalOpen, setOkMessageModalOpen] = useState(false);
   const [okMessageModalContent, setOkMessageModalContent] = useState('');
@@ -35,17 +35,18 @@ export default function App() {
 
   useEffect(() => {
 
+    setClaims(getClaims);
+    fetchTheMovieDbGenres();
+
+  }, [])
+
+  useEffect(() => {
+
     if (okMessageModalContent) {
       setOkMessageModalOpen(true);
     }
 
   }, [okMessageModalContent])
-
-  useEffect(() => {
-
-    fetchTheMovieDbGenres();
-
-  }, [])
 
   useEffect(() => {
 
@@ -132,7 +133,7 @@ export default function App() {
                     </Route>)}
                 </Routes>
               </Container>
-              
+
               <AuthenticationModal open={isAuthModalOpen} setOpen={setAuthModalOpen} defaultSelection="login" />
               <OkMessageModal message={okMessageModalContent} setMessage={setOkMessageModalContent} open={isOkMessageModalOpen} setOpen={setOkMessageModalOpen} />
             </ModalContext.Provider>
