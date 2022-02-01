@@ -18,16 +18,16 @@ export default function WatchListUpdate(props: WatchListUpdateProps) {
     const [activeItem, setActiveItem] = useState(0);
 
 
-    const fetchWatchList = async () => {
-        userWatchListDTO!.map(async (watchList, watchListName) => {
-            await axios.get(movieToGoUrlWatchListsUser)
-            .then(response =>{
-                console.log(response)
-            })
+    // const fetchWatchList = async () => {
+    //     userWatchListDTO!.map(async (watchList, watchListName) => {
+    //         await axios.get(movieToGoUrlWatchListsUser)
+    //         .then(response =>{
+    //             console.log(response)
+    //         })
 
-            }
+    //         }
                 
-        }       
+    //     }       
         
         
     
