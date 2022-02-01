@@ -3,15 +3,19 @@ import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Container, Divider, Loader, Segment } from "semantic-ui-react";
 import { useStateIfMounted } from "use-state-if-mounted";
+import App from "../../App";
 import { theMovieDbTrendingDaily, theMovieDbPopulars, theMovieDbInTheater, movieToGoUrlMovies, movieToGoUrlMovieVotesByMovieId } from "../../endpoints";
 import { TheMovieDbDTO, MovieToGoDTO } from "../../models/movie.models";
 import { getClaims } from "../authentication/handleJWT";
 import AppDataContext from "../contexts/AppDataContext";
+import AuthenticationContext from "../contexts/AuthenticationContext";
 import MovieCards from "./MovieCards";
 
 export default function LandingPage() {
 
     const { userWatchListDTO } = useContext(AppDataContext);
+
+    const {claims} = useContext(AuthenticationContext)
 
     const [trendingTheMovieDbDTO, setTrendingTheMovieDbDTO] = useStateIfMounted<TheMovieDbDTO[]>([]);
     const [trendingMovieToGoDTO, setTrendingMovieToGoDTO] = useStateIfMounted<MovieToGoDTO[]>([]);
@@ -28,7 +32,7 @@ export default function LandingPage() {
 
         fetchData();
 
-    }, [location.key])
+    }, [location.key,claims])
 
     const fetchData = async () => {
 
