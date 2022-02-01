@@ -100,7 +100,7 @@ export default function IndividualMovie(props: IndividualMovieProps) {
                                     trigger={<Button onClick={props.isInWatchList ? () => deleteMovieFromWatchList() : () => { }}
                                         circular icon={props.isInWatchList ? 'delete' : 'add'} basic size="mini" color="vk" />} /></>}
                                 icon={null}>
-                                <Dropdown.Menu>
+                                <Dropdown.Menu direction="left">
                                     {props.isInWatchList ? undefined : renderDropDownItems()}
 
                                 </Dropdown.Menu>
