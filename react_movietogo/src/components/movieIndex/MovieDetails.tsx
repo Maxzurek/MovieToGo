@@ -100,13 +100,6 @@ export default function MovieDetails(props: movieDetails) {
                     <br />
                     <Grid columns={2} doubling stackable textAlign="center" >
 
-                        {/* <Grid.Column  >
-                            <Header color="teal">IMDB RATING</Header>
-                            <ListContent  >
-                                <ItemContent as="h4"> {props.movieToGoDTO?.voteAverage}</ItemContent>
-                            </ListContent>
-                        </Grid.Column> */}
-
                         <Grid.Column>
                             <Header color="teal">RELEASE DATE</Header>
                             <ListContent  >
@@ -146,14 +139,6 @@ export default function MovieDetails(props: movieDetails) {
                                 <ListItemsGenres genresIDs={props.theMovieDbDTO?.genres} />
                             </ListContent>
                         </Grid.Column>
-
-                        {/* <Grid.Column>
-                            <Header color="teal">VOTE COUNT</Header>
-                            <ListContent >
-                                <ItemContent as="h4" >{props.movieToGoDTO?.voteCount ? props.movieToGoDTO?.voteCount : 0}</ItemContent>
-                            </ListContent>
-                        </Grid.Column> */}
-
                     </Grid>
                 </Segment>
             </Container>

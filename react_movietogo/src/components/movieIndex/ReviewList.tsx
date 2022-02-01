@@ -23,7 +23,7 @@ export default function ReviewList(props: reviewListProps) {
 
     const renderReviewCard = () => {
         return (
-            <Card>
+            <Card style={{ margin: 4, width: 350 }}>
                 <Card.Content >
                     <Icon name='user' size="large" color="teal" /> {props.movieReviewDTO.user.userName}
 
