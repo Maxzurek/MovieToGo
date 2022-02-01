@@ -19,6 +19,8 @@ function Arrow({ children, disabled, onClick }: {
     useEffect(() => {
         window.addEventListener("resize", resize);
         resize();
+        
+        return () => window.removeEventListener("resize", resize);
     });
 
     return (
