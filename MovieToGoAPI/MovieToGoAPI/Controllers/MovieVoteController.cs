@@ -170,7 +170,7 @@ namespace MovieToGoAPI.Controllers
             }
 
             movieVote = mapper.Map(MovieVoteDTO, movieVote);
-            await context.SaveChangesAsync();
+            MovieVote addedMovieVote = await movieService.RegisterMovieVote(context, movieVote);
 
             return Ok(mapper.Map<MovieVoteDTO>(movieVote));
         }

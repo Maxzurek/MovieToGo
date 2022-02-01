@@ -9,6 +9,7 @@ import AppDataContext from "../contexts/AppDataContext";
 import axios, { AxiosResponse } from "axios";
 import { theMovieDbApiKey, theMovieDbMovie } from "../../endpoints";
 import NotifyDataChangedContext from "../contexts/NotifyDataChangedContext";
+import WatchListUpdate from "./WatchListUpdate";
 
 interface WatchListIndexProps {
     theMovieDbDTO?: TheMovieDbDTO[];
@@ -40,7 +41,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
         return (
             userWatchListDTO?.map((watchlist, index) => {
                 return (
-                    <MenuItem
+                  <> <MenuItem
                         key={index}
                         index={index}
                         active={activeItem === index}
@@ -48,6 +49,17 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                         style={menuItemsStyle}>
                         {watchlist.name}
                     </MenuItem>
+                    <Button fluid
+                                color="blue"
+                                icon
+                                index={-1}
+                                name='watchListCreation'
+                                active={activeItem === -1}
+                                onClick={() => setActiveItem(-2)}
+                            >
+                                <Icon name='sync' /> Update WatchList
+                            </Button>
+                   </>  
                 )
 
             })
@@ -85,7 +97,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
             .then(promise => {
                 setIsLoading(false)
 
-                if (userWatchListDTO) {
+                if (userWatchListDTO && userWatchListDTO.length > 0) {
                     setSelectedWatchListDTO(userWatchListDTO[activeItem])
                 }
             })
@@ -126,18 +138,22 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                     </GridColumn>
                     <GridColumn width={13}>
                         <Segment loading={isLoading}>
-                            {activeItem >= 0 && !isLoading ?
+                            {activeItem >= 0 && !isLoading && userWatchListDTO ?
                                 <WatchListItemContainer watchListDTO={selectedWatchListDTO!} />
                                 :
                                 undefined}
-                            {!userWatchListDTO ?
-                                <Container fluid textAlign="center"><Header>You have no watchlist yet</Header></Container>
+                            {!userWatchListDTO && activeItem >= 0? 
+                                <Container fluid textAlign="center"><Header>You have no watchlist</Header></Container>
                                 :
                                 undefined}
                             {activeItem == -1 ?
                                 <WatchListCreate setActiveItem={setActiveItem} />
                                 :
                                 undefined}
+                            {activeItem == -2 ?
+                                <WatchListUpdate setActiveItem={setActiveItem} />
+                                :
+                                undefined}    
                         </Segment>
                     </GridColumn>
                 </GridRow>
