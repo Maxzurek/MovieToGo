@@ -1,4 +1,4 @@
-import { Button, Container, Label, Image, Card, Dropdown, Popup, Segment, Header } from "semantic-ui-react";
+import { Button, Container, Label, Image, Card, Dropdown, Popup, Segment, Header, DropdownItem, Item } from "semantic-ui-react";
 import { movieToGoUrlWatchListItems, movieToGoUrlWatchLists, theMovieDbImages } from "../../endpoints";
 import Authorized from "../authentication/Authorized";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,6 @@ export default function IndividualMovie(props: IndividualMovieProps) {
     const { userWatchListDTO, setUserWatchListDTO } = useContext(AppDataContext);
 
     const handleOnClick = () => {
-
         navigate('/movie', { state: { theMovieDbId: props.theMovieDbDTO?.id, movieToGoId: props.movieToGoDTO?.id } })
     }
 
@@ -37,6 +36,25 @@ export default function IndividualMovie(props: IndividualMovieProps) {
             return undefined;
         }
     }
+
+    const renderDropDownActions = () => {
+        const optionsList = [
+            { key: 1, text: 'Remove from watchlist', value: 1 },
+            { key: 2, text: 'Mark as watched', value: 2 },
+        ]
+        return (
+            optionsList.map((item) => {
+                return (
+                    <DropdownItem
+                        key={item.key}
+                        icon={item.key == 1 ? "delete" : "eye"}
+                        text={item.text}
+                        onClick={deleteMovieFromWatchList}
+                    />
+                )
+            }))
+    }
+
     const deleteMovieFromWatchList = async () => {
         await axios.delete(movieToGoUrlWatchListItems + `?Id=${props.watchListItemID}`)
             .then((response) => {
@@ -64,9 +82,8 @@ export default function IndividualMovie(props: IndividualMovieProps) {
     const getPopupContent = () => {
 
         if (props.isInWatchList) {
-            return "Remove From WatchList"
+            return "More actions"
         } else {
-
             return props.watchListDTO ? "Add Movie to Watchlist" : "No Watchlist"
         }
     }
@@ -78,7 +95,9 @@ export default function IndividualMovie(props: IndividualMovieProps) {
                     <Header as='h3'>Overall Rating: {props.movieToGoDTO.voteAverage}/10</Header>
                     : <Header as='h3'>No Rating Yet</Header>}
             </Segment>
+
             <Image src={theMovieDbImages + props.theMovieDbDTO?.poster_path} style={{ cursor: "pointer" }} onClick={handleOnClick} />
+
             <Card.Content>
                 <Container as={'a'} onClick={handleOnClick} >
                     <Header as='h3' color="blue">{props.theMovieDbDTO?.title}</Header>
@@ -97,12 +116,12 @@ export default function IndividualMovie(props: IndividualMovieProps) {
                             <Dropdown
                                 item
                                 trigger={<><Popup on='hover' content={getPopupContent()}
-                                    trigger={<Button onClick={props.isInWatchList ? () => deleteMovieFromWatchList() : () => { }}
-                                        circular icon={props.isInWatchList ? 'delete' : 'add'} basic size="mini" color="vk" />} /></>}
+                                    trigger={<Button circular icon={props.isInWatchList ? 'ellipsis horizontal' : 'add'} basic size="mini" color="vk" />} /></>}
                                 icon={null}>
                                 <Dropdown.Menu direction="left">
-                                    {props.isInWatchList ? undefined : renderDropDownItems()}
-
+                                    {props.isInWatchList ?
+                                        renderDropDownActions()
+                                        : renderDropDownItems()}
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Label>
@@ -121,5 +140,7 @@ export interface IndividualMovieProps {
     isInWatchList?: boolean | undefined;
     watchListId?: number | undefined;
     watchListItemID?: number | undefined;
+    // deleteFromWatchList():void;
+    // markAsWatched():void;
     watchListDTO?: WatchListDTO[] | undefined;
 }
