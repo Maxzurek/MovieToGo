@@ -17,8 +17,6 @@ export default function WatchListItemContainer(props: WatchListItemContainerProp
 
     const { displayOkMessage } = useContext(ModalContext)
     const { userWatchListDTO, setUserWatchListDTO } = useContext(AppDataContext);
-    const [isDeleted, setIsDeleted] = useState(false)
-    const [activeItem, setActiveItem] = useState(0);
 
 
     const deleteWatchList = async () => {
@@ -27,15 +25,23 @@ export default function WatchListItemContainer(props: WatchListItemContainerProp
         await axios.delete(movieToGoUrlWatchLists + `?id=${props.watchListDTO.id}`)
             .then(response => {
 
-                let watchListDTO: WatchListDTO[] = []
+                let watchList = userWatchListDTO?.findIndex(x => x.id === props.watchListDTO.id)
+                console.log("delete")
+                console.log(watchList)
+                
+ 
+                if(watchList || watchList! >= 0){
 
-                if (userWatchListDTO) {
-                    watchListDTO = userWatchListDTO.slice()
+                    let watchListSplice  = userWatchListDTO?.splice(watchList!, 1)
+                    console.log(watchListSplice)
+                    
                 }
-                setIsDeleted(true)
-                setUserWatchListDTO(watchListDTO)
+
+                
+                
+                setUserWatchListDTO(userWatchListDTO)
                 displayOkMessage("WatchList Deleted!")
-                console.log(watchListDTO.length)
+                
 
             })
             .catch(error => console.log(error))
@@ -76,21 +82,9 @@ export default function WatchListItemContainer(props: WatchListItemContainerProp
 
     const headerSegment = () => {
         return (
-            <> <Segment color="blue" inverted fluid textAlign="center"><Header as='h1'>{props.watchListDTO.name}</Header></Segment>
-                <Container textAlign="right" fluid>
-                    <Dropdown icon="ellipsis horizontal" >
-                        <Dropdown.Menu direction="left">
-                            <Form onSubmit={handleItemClickDelete}>
-
-
-                                <Button fluid color="red" type="submit">Delete</Button>
-                                
-                            </Form>
-                            <Button fluid color="blue" type="submit">Update</Button>
-                            
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Container>
+            <> <Segment color="blue" inverted textAlign="center"><Header as='h1'>{props.watchListDTO.name}</Header></Segment>
+               
+                
                 <Grid centered stackable>
                     {props?.watchListDTO?.watchListItems?.map((watchListItemDTO, index) => {
                         return (
@@ -110,13 +104,7 @@ export default function WatchListItemContainer(props: WatchListItemContainerProp
         )
     }
     useEffect(() => {
-        if (isDeleted) {
-
-            setUserWatchListDTO(userWatchListDTO)
-
-        }
-        console.log(userWatchListDTO?.length)
-
+    
     }, [userWatchListDTO])
     return (
         <Container fluid >
@@ -125,13 +113,8 @@ export default function WatchListItemContainer(props: WatchListItemContainerProp
 
                 headerSegment()
 
-                : <><Segment color="red" inverted fluid textAlign="center"><Header as='h1'>This watchlist is empty ...</Header></Segment><Container textAlign="right" fluid>
-                    <Dropdown icon="ellipsis horizontal" >
-                        <Dropdown.Menu direction="left">
-                            <Button fluid onClick={deleteWatchList} color="red">Delete</Button>
-                            <Button fluid color="blue" type="submit">Update</Button>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                : <><Segment color="red" inverted textAlign="center"><Header as='h1'>This watchlist is empty ...</Header></Segment><Container textAlign="right" fluid>
+                    
                 </Container></>
             }
 

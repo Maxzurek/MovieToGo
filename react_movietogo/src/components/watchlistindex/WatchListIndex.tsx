@@ -1,15 +1,16 @@
 
 import { useContext, useEffect, useState } from "react";
-import { Button, Container, Dropdown, Grid, GridColumn, GridRow, Header, Icon, Loader, Menu, MenuItem, Segment } from "semantic-ui-react";
+import { Button, Container, Dropdown, DropdownItem, Form, Grid, GridColumn, GridRow, Header, Icon, Label, Loader, Menu, MenuItem, Segment } from "semantic-ui-react";
 import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { WatchListDTO, WatchListItemDTO } from "../../models/watchlist.models";
 import WatchListItemContainer from "./WatchListItemContainer";
 import WatchListCreate from "../watchlistindex/WatchListCreate";
 import AppDataContext from "../contexts/AppDataContext";
 import axios, { AxiosResponse } from "axios";
-import { theMovieDbApiKey, theMovieDbMovie } from "../../endpoints";
+import { movieToGoUrlWatchLists, theMovieDbApiKey, theMovieDbMovie } from "../../endpoints";
 import NotifyDataChangedContext from "../contexts/NotifyDataChangedContext";
 import WatchListUpdate from "./WatchListUpdate";
+import ModalContext from "../contexts/ModalContext";
 
 interface WatchListIndexProps {
     theMovieDbDTO?: TheMovieDbDTO[];
@@ -22,6 +23,8 @@ export default function WatchListIndex(props: WatchListIndexProps) {
 
 
     const { userWatchListDTO, setUserWatchListDTO } = useContext(AppDataContext)
+    const { displayOkMessage } = useContext(ModalContext)
+    
     const [activeItem, setActiveItem] = useState(0);
     const [selectedWatchListDTO, setSelectedWatchListDTO] = useState<WatchListDTO | undefined>()
     const [isLoading, setIsLoading] = useState(false)
@@ -37,33 +40,71 @@ export default function WatchListIndex(props: WatchListIndexProps) {
         }
     }
 
+    const updateWatchList = () => {
+        setActiveItem(-2)
+    }
+
+    const deleteWatchList = async () => {
+
+
+        await axios.delete(movieToGoUrlWatchLists + `?id=${selectedWatchListDTO?.id}`)
+            .then(response => {
+
+                let watchList = userWatchListDTO?.findIndex(x => x.id === selectedWatchListDTO?.id)
+                console.log("delete")
+                console.log(watchList)
+                
+ 
+                if(watchList || watchList! >= 0){
+
+                    let watchListSplice  = userWatchListDTO?.splice(watchList!, 1)
+                    console.log(watchListSplice)
+                    
+                }
+
+                
+                
+                setUserWatchListDTO(userWatchListDTO)
+                displayOkMessage("WatchList Deleted!")
+                
+
+            })
+            .catch(error => console.log(error))
+
+
+    }
+
     const renderMenuItems = () => {
         return (
             userWatchListDTO?.map((watchlist, index) => {
                 return (
-                  <> <MenuItem
+                    <MenuItem
                         key={index}
                         index={index}
                         active={activeItem === index}
                         onClick={handleItemClick}
                         style={menuItemsStyle}>
                         {watchlist.name}
+                        <Label style={{backgroundColor : "transparent"}}>
+                            <Dropdown icon="ellipsis horizontal" >
+                                
+                                <Dropdown.Menu >
+                                    <DropdownItem text="Delete" onClick={deleteWatchList}/>
+                                    <DropdownItem text="Rename" onClick={updateWatchList} />
+                                </Dropdown.Menu>
+                            </Dropdown></Label>
                     </MenuItem>
-                    <Button fluid
-                                color="blue"
-                                icon
-                                index={-1}
-                                name='watchListCreation'
-                                active={activeItem === -1}
-                                onClick={() => setActiveItem(-2)}
-                            >
-                                <Icon name='sync' /> Update WatchList
-                            </Button>
-                   </>  
+
+
                 )
 
             })
         )
+    }
+    const setSelectedWatchList = (index: number) => {
+        setActiveItem(index)
+        setSelectedWatchListDTO(userWatchListDTO![index])
+
     }
 
     const fetchTheMovieDbData = async () => {
@@ -142,18 +183,18 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                                 <WatchListItemContainer watchListDTO={selectedWatchListDTO!} />
                                 :
                                 undefined}
-                            {!userWatchListDTO && activeItem >= 0? 
+                            {!userWatchListDTO && activeItem >= 0 ?
                                 <Container fluid textAlign="center"><Header>You have no watchlist</Header></Container>
                                 :
                                 undefined}
                             {activeItem == -1 ?
-                                <WatchListCreate setActiveItem={setActiveItem} />
+                                <WatchListCreate setActiveItem={setActiveItem} setSelectedWatchListDTO={setSelectedWatchListDTO} />
                                 :
                                 undefined}
                             {activeItem == -2 ?
                                 <WatchListUpdate setActiveItem={setActiveItem} />
                                 :
-                                undefined}    
+                                undefined}
                         </Segment>
                     </GridColumn>
                 </GridRow>

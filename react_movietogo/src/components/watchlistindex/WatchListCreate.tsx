@@ -8,6 +8,7 @@ import ModalContext from "../contexts/ModalContext";
 
 interface WatchListCreateProps {
     setActiveItem: React.Dispatch<React.SetStateAction<number>>
+    setSelectedWatchListDTO: React.Dispatch<React.SetStateAction<WatchListDTO | undefined>>
 }
 
 export default function WatchListCreate(props: WatchListCreateProps) {
@@ -16,24 +17,27 @@ export default function WatchListCreate(props: WatchListCreateProps) {
     const [name, setName] = useState('');
     const { displayOkMessage } = useContext(ModalContext)
 
+
     async function createWatchList() {
         const watchListCreationDTO: WatchListCreationDTO = { name: name }
 
         await axios.post(movieToGoUrlWatchLists, watchListCreationDTO)
             .then((response: AxiosResponse<WatchListDTO>) => {
 
-                let watchListDTO: WatchListDTO[] = []
+                let watchListDTOs: WatchListDTO[] = []
 
                 if (userWatchListDTO) {
-                    watchListDTO = userWatchListDTO.slice()
+                    watchListDTOs = userWatchListDTO.slice()
                 }
+                
 
-                watchListDTO.push(response.data)
-                setUserWatchListDTO(watchListDTO)
+                watchListDTOs.push(response.data)
+                setUserWatchListDTO(watchListDTOs)
                 displayOkMessage("WatchList Created!")
 
-                console.log(watchListDTO?.length)
-                props.setActiveItem(watchListDTO?.length - 1)
+                console.log(watchListDTOs?.length)
+                props.setActiveItem(watchListDTOs?.length - 1)
+                props.setSelectedWatchListDTO(response.data)
 
             })
             .catch((error: AxiosError) => {
