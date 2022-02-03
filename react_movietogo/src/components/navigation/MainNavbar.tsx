@@ -64,7 +64,7 @@ export default function MainNavbar() {
                                         trigger={<><Icon name='user outline' />{getLoggedInUsernameAndRole()}</>}
                                         icon={null}
                                     >
-                                        <Dropdown.Menu>
+                                        <Dropdown.Menu  style={{right: 0, left: "auto"}}>
                                             <Dropdown.Item icon='list' text=' WatchLists' name="watchLists" onClick={() => navigate('/watchlist')} />
                                             <Authorized
                                                 authorized={<Dropdown.Item icon='wrench' text=' Admin Tools' name="adminTools" onClick={() => navigate('/admin')} />}
