@@ -11,6 +11,7 @@ import NotifyDataChangedContext from "../contexts/NotifyDataChangedContext";
 import WatchlistMenuItem from "./WatchlistMenuItem";
 import Media from "../mediaContexr/Media";
 import WatchlistContext from "./WatchlistContext";
+import { off } from "process";
 
 interface WatchListIndexProps {
     theMovieDbDTO?: TheMovieDbDTO[];
@@ -102,6 +103,14 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                     .then((response) => {
 
                         let movieVoteDTO = response.data;
+
+                        // Our API returns an empty string if we don't have a vote for the movie we are mapping
+                            // We then want to set it to undefined so we can properly post a vote in the MovieRating component
+                            // instead of a put.
+                        if(response.status === 204){
+                            movieVoteDTO = undefined; 
+                        }
+                        
                         watchListItem.movie!.movieVote = movieVoteDTO;
                     })
                     .catch((error) => {
