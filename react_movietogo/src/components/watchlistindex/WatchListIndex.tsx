@@ -215,9 +215,9 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                                 {userWatchListDTO && userWatchListDTO.length > 0 ? renderMenuItems() : undefined}
                                 <Divider section />
                                 <MenuItem
-                                    color="green"
+                                    style={{color: "green"}}
                                     icon='plus'
-                                    content="New watchlist"
+                                    content="New Watchlist"
                                     name='watchListCreation'
                                     active={activeItem === -1}
                                     onClick={() => createWatchList()}
@@ -267,10 +267,10 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                             {userWatchListDTO && userWatchListDTO.length > 0 ? renderMenuItems() : undefined}
                             <Divider section />
                             <MenuItem
+                                style={{color: "green"}}
                                 icon='plus'
-                                content="New watchlist"
+                                content="New Watchlist"
                                 name='watchListCreation'
-                                color="green"
                                 onClick={() => {
                                     setVisibleSidebar(false);
                                 }}
