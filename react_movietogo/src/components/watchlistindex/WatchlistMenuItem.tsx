@@ -10,20 +10,29 @@ interface WatchlistMenuItemProps {
     index: number;
     watchlistDTO: WatchListDTO;
     active: boolean;
-    handleMenuItemClick(index: number): void;
-    handleDeleteWatchList(watchlistId: number): void;
+    handleMenuItemClick(index: number, watchlistId: number): void;
+    handleDeleteWatchList(index: number, watchlistId: number): void;
+    newEntry?: boolean;
 }
 
 export default function WatchlistMenuItem(props: WatchlistMenuItemProps) {
 
-    const { selectedWatchListDTO, setSelectedWatchListDTO: setSelectedWatchlistDTO } = useContext(WatchlistContext);
+    const { selectedWatchListDTO } = useContext(WatchlistContext);
     const notifyWatchlistChanged = useContext(NotifyDataChangedContext);
 
-    const [editable, setEditable] = useState(false);
+    const [editable, setEditable] = useState<boolean | undefined>();
     const [editInputValue, setEditInputValue] = useState(props.watchlistDTO.name);
     const [editInputError, setEditInputError] = useState(false);
 
     const input = useRef<Input>(null);
+
+    useEffect(() => {
+
+        if (props.newEntry) {
+            setEditable(true);
+        }
+
+    }, [])
 
     useEffect(() => {
         if (editable) {
@@ -94,10 +103,9 @@ export default function WatchlistMenuItem(props: WatchlistMenuItemProps) {
                 </>
                 :
                 <MenuItem
-                    key={props.index}
                     index={props.index}
                     active={props.active}
-                    onClick={() => props.handleMenuItemClick(props.index)}
+                    onClick={() => { props.handleMenuItemClick(props.index, props.watchlistDTO.id) }}
                     style={{ padding: "13px 10px", fontSize: 14 }}
                 >
                     {props.watchlistDTO.name}
@@ -107,8 +115,14 @@ export default function WatchlistMenuItem(props: WatchlistMenuItemProps) {
                             trigger={
                                 <Dropdown icon="ellipsis horizontal" style={{ fontSize: 16 }} direction="left">
                                     <Dropdown.Menu >
-                                        <DropdownItem text="Rename" onClick={() => setEditable(true)} />
-                                        <DropdownItem text="Delete" onClick={() => props.handleDeleteWatchList(props.watchlistDTO.id)} />
+                                        <DropdownItem
+                                            text="Rename"
+                                            onClick={() => setEditable(true)}
+                                        />
+                                        <DropdownItem
+                                            text="Delete"
+                                            onClick={() => props.handleDeleteWatchList(props.index, props.watchlistDTO.id)}
+                                        />
                                     </Dropdown.Menu>
                                 </Dropdown>
                             }>

@@ -1,9 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Button, Container, Divider, Grid, GridColumn, GridRow, Header, Icon, Menu, MenuItem, Modal, ModalActions, ModalContent, Ref, Segment, Sidebar } from "semantic-ui-react";
 import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
-import { WatchListDTO } from "../../models/watchlist.models";
+import { WatchListCreationDTO, WatchListDTO } from "../../models/watchlist.models";
 import WatchListItemContainer from "./WatchListItemContainer";
-import WatchListCreate from "../watchlistindex/WatchListCreate";
 import AppDataContext from "../contexts/AppDataContext";
 import axios, { AxiosResponse } from "axios";
 import { movieToGoUrlMovieVotesByMovieId, movieToGoUrlWatchLists, theMovieDbApiKey, theMovieDbMovie } from "../../endpoints";
@@ -43,7 +42,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
             fetchData();
         }
 
-    }, [userWatchListDTO])
+    },[])
 
     useEffect(() => {
 
@@ -106,10 +105,10 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                         // Our API returns an empty string if we don't have a vote for the movie we are mapping
                         // We then want to set it to undefined so we can properly post a vote in the MovieRating component
                         // instead of a put.
-                        if(response.status === 204){
-                            movieVoteDTO = undefined; 
+                        if (response.status === 204) {
+                            movieVoteDTO = undefined;
                         }
-                        
+
                         watchListItem.movie!.movieVote = movieVoteDTO;
                     })
                     .catch((error) => {
@@ -119,16 +118,43 @@ export default function WatchListIndex(props: WatchListIndexProps) {
         }))
     }
 
-    const handleMenuItemClick = (index: number) => {
+    const handleMenuItemClick = async (index: number, selectedWatchlistID: number) => {
 
         setActiveItem(index);
+        setSelectedWatchListDTO(userWatchListDTO?.find(x => x.id === selectedWatchlistID));
         setVisibleSidebar(false);
     }
 
-    const handleDeleteWatchList = (watchlistId: number) => {
+    const handleDeleteWatchList = (index:number, watchlistId: number) => {
 
+        setActiveItem(index)
         setWatchlistIdToRemove(watchlistId);
         setOpenModal(true);
+    }
+
+    async function createWatchList() {
+
+        let defaultNewWatchlistName = "New Watchlist";
+
+        const watchListCreationDTO: WatchListCreationDTO = { name: defaultNewWatchlistName }
+
+        await axios.post(movieToGoUrlWatchLists, watchListCreationDTO)
+            .then((response: AxiosResponse<WatchListDTO>) => {
+
+                let watchListDTOs: WatchListDTO[] = []
+
+                if (userWatchListDTO) {
+                    watchListDTOs = userWatchListDTO.slice()
+                }
+
+                watchListDTOs.push(response.data)
+                setUserWatchListDTO(watchListDTOs)
+
+                setActiveItem(watchListDTOs?.length - 1)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     const deleteWatchList = async () => {
@@ -166,6 +192,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                         key={index}
                         watchlistDTO={watchlistDTO}
                         active={activeItem === index}
+                        {...(watchlistDTO?.name === "New Watchlist" ? { newEntry: true } : {})}
                         handleMenuItemClick={handleMenuItemClick}
                         handleDeleteWatchList={handleDeleteWatchList}
                     />
@@ -193,7 +220,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                                     content="New watchlist"
                                     name='watchListCreation'
                                     active={activeItem === -1}
-                                    onClick={() => setActiveItem(-1)}
+                                    onClick={() => createWatchList()}
                                 />
                             </Menu>
                         </GridColumn>
@@ -206,11 +233,6 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                                 }
                                 {activeItem >= 0 && selectedWatchListDTO && !loadingData ?
                                     <WatchListItemContainer watchListDTO={selectedWatchListDTO!} />
-                                    :
-                                    undefined
-                                }
-                                {activeItem === -1 ?
-                                    <WatchListCreate setActiveItem={setActiveItem} />
                                     :
                                     undefined
                                 }
@@ -248,9 +270,8 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                                 icon='plus'
                                 content="New watchlist"
                                 name='watchListCreation'
-                                active={activeItem === -1}
+                                color="green"
                                 onClick={() => {
-                                    setActiveItem(-1);
                                     setVisibleSidebar(false);
                                 }}
                             />
@@ -277,11 +298,6 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                                         }
                                         {activeItem >= 0 && selectedWatchListDTO ?
                                             <WatchListItemContainer watchListDTO={selectedWatchListDTO!} />
-                                            :
-                                            undefined
-                                        }
-                                        {activeItem === -1 ?
-                                            <WatchListCreate setActiveItem={setActiveItem} />
                                             :
                                             undefined
                                         }
@@ -325,7 +341,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                     </Header>
                     <ModalContent>
                         <p>
-                            Are you sure you want to delete {userWatchListDTO?.find(x => x.id === watchlistIdToRemove)?.name}
+                            Are you sure you want to delete {userWatchListDTO? userWatchListDTO.find(x => x.id === watchlistIdToRemove)?.name : undefined}
                         </p>
                     </ModalContent>
                     <ModalActions>
