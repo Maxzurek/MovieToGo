@@ -127,7 +127,7 @@ export default function App() {
             >
 
               <MainNavbar />
-              <DisplayApiErrors error={fetchError} />
+              {/* <DisplayApiErrors error={fetchError} /> TODO centralize API calls inside 1 provider and display errors if any */}
 
               <Container fluid>
                 <Routes>
