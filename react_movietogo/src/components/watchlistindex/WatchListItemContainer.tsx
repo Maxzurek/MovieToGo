@@ -20,8 +20,8 @@ export default function WatchListItemContainer(props: WatchListItemContainerProp
                     props?.watchListDTO?.watchListItems?.map((watchListItemDTO, index) => {
                         return (
                             <IndividualMovie
-                                theMovieDbDTO={watchListItemDTO.theMovieDbDTO!}
-                                movieToGoDTO={watchListItemDTO.movie!}
+                                theMovieDbDTO={watchListItemDTO.theMovieDbDTO}
+                                movieToGoDTO={watchListItemDTO.movie}
                                 itemId={index.toString()}
                                 isInWatchList
                                 watchListItemID={watchListItemDTO.id}
@@ -32,7 +32,7 @@ export default function WatchListItemContainer(props: WatchListItemContainerProp
                     })
 
                     :
-                    <Container fluid textAlign="center" style={{marginTop: 30}}>
+                    <Container fluid textAlign="center" style={{ marginTop: 30 }}>
                         <Header>This watchlist is empty ...</Header>
                         <Link to={"/"}>
                             <Button fluid>Discover movies now!</Button>
