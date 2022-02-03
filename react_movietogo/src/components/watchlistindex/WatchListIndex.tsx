@@ -105,8 +105,8 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                         let movieVoteDTO = response.data;
 
                         // Our API returns an empty string if we don't have a vote for the movie we are mapping
-                            // We then want to set it to undefined so we can properly post a vote in the MovieRating component
-                            // instead of a put.
+                        // We then want to set it to undefined so we can properly post a vote in the MovieRating component
+                        // instead of a put.
                         if(response.status === 204){
                             movieVoteDTO = undefined; 
                         }
