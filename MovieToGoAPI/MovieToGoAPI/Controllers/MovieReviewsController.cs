@@ -123,15 +123,15 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Creating Movie Review");
 
-            string? userId = await authorizationService.validateUserClaim(this, userManager);
+            User? user = await authorizationService.ValidateUserClaim(this, userManager);
 
-            if (userId == null)
+            if (user == null)
             {
                 return Unauthorized("Unauthorized. You must be logged in in order to post a movie review");
             }
 
             MovieReview? movieReview = mapper.Map<MovieReview>(movieReviewCreationDTO);
-            movieReview.UserID = userId;
+            movieReview.UserID = user.Id;
 
             EntityEntry<MovieReview> entityEntry = context.MovieReviews.Add(movieReview);
 

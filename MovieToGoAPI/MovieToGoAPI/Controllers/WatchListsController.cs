@@ -100,14 +100,14 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting a user's WatchLists");
 
-            string? userId = await authorizationService.validateUserClaim(this, userManager);
+            User? user = await authorizationService.ValidateUserClaim(this, userManager);
 
-            if (userId == null)
+            if (user == null)
             {
                 return Unauthorized("Unauthorized. You must be logged in in order to get a user watchlist");
             }
 
-            List<WatchList> watchlists = await context.WatchLists.Include(x => x.User).Include(x => x.WatchListItems).Where(x => x.UserId == userId).ToListAsync();
+            List<WatchList> watchlists = await context.WatchLists.Include(x => x.User).Include(x => x.WatchListItems).Where(x => x.UserId == user.Id).ToListAsync();
 
             if (watchlists.Count == 0)
             {
@@ -131,15 +131,15 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Creating a WatchList");
 
-            string? userId = await authorizationService.validateUserClaim(this, userManager);
+            User? user = await authorizationService.ValidateUserClaim(this, userManager);
 
-            if (userId == null)
+            if (user == null)
             {
                 return Unauthorized("Unauthorized. You must be logged in in order to post a watchlist");
             }
 
             WatchList watchList = mapper.Map<WatchList>(watchListCreationDTO);
-            watchList.UserId = userId;
+            watchList.UserId = user.Id;
 
             EntityEntry<WatchList> entityEntry = context.WatchLists.Add(watchList);
 

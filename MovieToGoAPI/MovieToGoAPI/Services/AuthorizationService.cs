@@ -11,14 +11,14 @@ namespace MovieToGoAPI.Services
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="userManager"></param>
-        /// <returns>The user Id if the user claim is valid else null</returns>
-        public async Task<string?> validateUserClaim(Controller controller, UserManager<User> userManager)
+        /// <returns>The user entity if the user claim is valid else null</returns>
+        public async Task<User?> ValidateUserClaim(Controller controller, UserManager<User> userManager)
         {
             string? username = controller.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "username")?.Value;
 
             User user = await userManager.FindByNameAsync(username);
 
-            return user?.Id;
+            return user;
         }
     }
 }

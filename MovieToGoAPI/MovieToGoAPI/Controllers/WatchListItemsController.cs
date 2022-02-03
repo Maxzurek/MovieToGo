@@ -127,9 +127,9 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Creating a watchlist item");
 
-            string? userId = await authorizationService.validateUserClaim(this, userManager);
+            User? user = await authorizationService.ValidateUserClaim(this, userManager);
 
-            if (userId == null)
+            if (user == null)
             {
                 return Unauthorized("Unauthorized. You must be logged in in order to post a watchlist item");
             }

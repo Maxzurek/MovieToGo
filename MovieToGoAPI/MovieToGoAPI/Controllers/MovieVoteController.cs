@@ -101,14 +101,14 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Getting a MovieVote by Id");
 
-            string? userId = await authorizationService.validateUserClaim(this, userManager);
+            User? user = await authorizationService.ValidateUserClaim(this, userManager);
 
-            if (userId == null)
+            if (user == null)
             {
                 return Unauthorized("Unauthorized. You must be logged in in order to post a movie vote");
             }
 
-            MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.MovieId == MovieId && x.UserId == userId);
+            MovieVote? movieVote = await context.MovieVotes.FirstOrDefaultAsync(x => x.MovieId == MovieId && x.UserId == user.Id);
 
             if (movieVote == null)
             {
@@ -132,15 +132,15 @@ namespace MovieToGoAPI.Controllers
         {
             logger.LogInformation("Creating a MovieVote");
 
-            string? userId = await authorizationService.validateUserClaim(this, userManager);
+            User? user = await authorizationService.ValidateUserClaim(this, userManager);
 
-            if(userId == null)
+            if(user == null)
             {
                 return Unauthorized("Unauthorized. You must be logged in in order to post a movie vote");
             }
 
             MovieVote movieVote = mapper.Map<MovieVote>(movieVoteCreationDTO);
-            movieVote.UserId = userId;
+            movieVote.UserId = user.Id;
 
             MovieVote addedMovieVote = await movieService.RegisterMovieVote(context, movieVote);
 
