@@ -11,15 +11,16 @@ import ModalContext from './components/contexts/ModalContext';
 import AuthenticationModal from './components/modals/AuthenticationModal';
 import OkMessageModal from './components/modals/OkMessageModal';
 import configureInterceptor from './components/authentication/httpInterceptor';
-import { GenresDTO, NavigationMovieDTO } from './models/movie.models';
+import { GenresDTO } from './models/movie.models';
 import { WatchListDTO } from './models/watchlist.models';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { movieToGoUrlWatchListsUser, theMovieDbGenres } from './endpoints';
 import AppDataContext from './components/contexts/AppDataContext';
 import { useStateIfMounted } from 'use-state-if-mounted';
 import RedirectionPage from './components/navigation/RedirectionPage';
 import { adminRole, loggedInUser } from './roles';
 import MediaProvider from './components/mediaContexr/MediaProvider';
+import DisplayApiErrors from './components/utilities/DisplayApiErrors';
 
 configureInterceptor();
 
@@ -32,6 +33,7 @@ export default function App() {
 
   const [genresDTO, setGenresDTO] = useStateIfMounted<GenresDTO[]>([]);
   const [userWatchListDTO, setUserWatchListDTO] = useStateIfMounted<WatchListDTO[] | undefined>(undefined);
+  const [fetchError, setFetchError] = useStateIfMounted<AxiosError | undefined>(undefined);
 
   useEffect(() => {
 
@@ -64,17 +66,20 @@ export default function App() {
     await axios.get(theMovieDbGenres)
 
       .then((response) => {
+        setFetchError(undefined)
         setGenresDTO(response.data.genres)
       })
-      .catch(error => console.log(error))
+      .catch(error => setFetchError(error))
   }
 
   const fetchUserWatchListDTO = async () => {
     if (claims.length > 0) {
       await axios.get(movieToGoUrlWatchListsUser)
         .then(response => {
+          setFetchError(undefined)
           setUserWatchListDTO(response.data)
         })
+        .catch(error => setFetchError(error))
     }
   }
 
@@ -122,6 +127,7 @@ export default function App() {
             >
 
               <MainNavbar />
+              <DisplayApiErrors error={fetchError} />
 
               <Container fluid>
                 <Routes>

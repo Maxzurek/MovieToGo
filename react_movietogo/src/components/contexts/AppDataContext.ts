@@ -1,5 +1,5 @@
 import React from "react";
-import { GenresDTO, NavigationMovieDTO } from "../../models/movie.models";
+import { GenresDTO } from "../../models/movie.models";
 import { WatchListDTO } from "../../models/watchlist.models";
 
 const AppDataContext = React.createContext<{

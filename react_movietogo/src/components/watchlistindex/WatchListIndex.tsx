@@ -11,7 +11,6 @@ import NotifyDataChangedContext from "../contexts/NotifyDataChangedContext";
 import WatchlistMenuItem from "./WatchlistMenuItem";
 import Media from "../mediaContexr/Media";
 import WatchlistContext from "./WatchlistContext";
-import { off } from "process";
 
 interface WatchListIndexProps {
     theMovieDbDTO?: TheMovieDbDTO[];

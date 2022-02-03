@@ -32,7 +32,6 @@ npm run
 
 - [Maxzurek](https://github.com/Maxzurek)
 - [FHRAKATE](https://github.com/FHRAKATE)
-- [mRDubeau](https://github.com/mRDubeau)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

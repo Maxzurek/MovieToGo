@@ -1,7 +1,7 @@
 import axios from "axios";
 import { FormikHelpers } from "formik";
 import { useState } from "react";
-import { Button, Container, Header, Message, Segment } from "semantic-ui-react";
+import { Container, Header, Message, Segment } from "semantic-ui-react";
 import { movieToGoUrlAccountsCreate, movieToGoUrlMovieVotes } from "../../endpoints";
 import { UserCreationDTO } from "../../models/authentication.models";
 import { MovieVoteCreationDTO } from "../../models/movie.models";
@@ -30,13 +30,13 @@ export default function TestFormsTool() {
 
     const submitVote = async (values: MovieVoteCreationDTO, actions: FormikHelpers<MovieVoteCreationDTO>) => {
 
-        try{
+        try {
             await axios.post(movieToGoUrlMovieVotes, values);
             setMovieVoteErrors({})
             setVoteSubmissionSuccessMessage('');
             setVoteSubmissionSuccessMessage('Vote submitted!');
         }
-        catch(error){
+        catch (error) {
             setMovieVoteErrors(error);
         }
     }
@@ -57,7 +57,7 @@ export default function TestFormsTool() {
         <Container fluid>
             <Segment color="blue" inverted>
                 <Header textAlign="center" size="huge">
-                    Test Forms Tool 
+                    Test Forms Tool
                 </Header>
             </Segment>
             <Segment>
@@ -68,9 +68,9 @@ export default function TestFormsTool() {
             </Segment>
             <Segment>
                 <h3>Movie Vote Form</h3>
-                <MovieVoteFormTest model={movieVoteCreationDTO} onSubmit={submitVote}/>
+                <MovieVoteFormTest model={movieVoteCreationDTO} onSubmit={submitVote} />
                 <DisplayApiErrors error={movieVoteErrors} />
-                {voteSubmissionSuccessMessage ?<Container textAlign="center"><Message positive>{voteSubmissionSuccessMessage}</Message></Container> : undefined}
+                {voteSubmissionSuccessMessage ? <Container textAlign="center"><Message positive>{voteSubmissionSuccessMessage}</Message></Container> : undefined}
             </Segment>
         </Container>
     )
