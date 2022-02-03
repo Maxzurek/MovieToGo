@@ -11,6 +11,7 @@ import NotifyDataChangedContext from "../contexts/NotifyDataChangedContext";
 import ModalContext from "../contexts/ModalContext";
 import WatchlistMenuItem from "./WatchlistMenuItem";
 import Media from "../mediaContexr/Media";
+import WatchlistContext from "./WatchlistContext";
 
 interface WatchListIndexProps {
     theMovieDbDTO?: TheMovieDbDTO[];
@@ -269,6 +270,11 @@ export default function WatchListIndex(props: WatchListIndexProps) {
         <NotifyDataChangedContext.Provider value={() => {
             fetchData();
         }}>
+            <WatchlistContext.Provider value={{
+                selectedWatchListDTO: selectedWatchListDTO,
+                setSelectedWatchListDTO: setSelectedWatchListDTO
+            }}>
+
             <Media mobile tablet>
                 {renderTabletAndMobileMenu()}
             </Media>
@@ -309,6 +315,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                 </ModalActions>
             </Modal>
 
+            </WatchlistContext.Provider>
         </NotifyDataChangedContext.Provider>
     )
 }; 

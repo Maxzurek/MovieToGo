@@ -1,8 +1,10 @@
 import axios, { AxiosResponse } from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Dropdown, DropdownItem, Input, Label, MenuItem, Popup } from "semantic-ui-react";
 import { movieToGoUrlWatchLists } from "../../endpoints";
 import { WatchListDTO, WatchListUpdateDTO } from "../../models/watchlist.models";
+import NotifyDataChangedContext from "../contexts/NotifyDataChangedContext";
+import WatchlistContext from "./WatchlistContext";
 
 interface WatchlistMenuItemProps {
     index: number;
@@ -13,6 +15,9 @@ interface WatchlistMenuItemProps {
 }
 
 export default function WatchlistMenuItem(props: WatchlistMenuItemProps) {
+
+    const { selectedWatchListDTO, setSelectedWatchListDTO: setSelectedWatchlistDTO } = useContext(WatchlistContext);
+    const notifyWatchlistChanged = useContext(NotifyDataChangedContext);
 
     const [editable, setEditable] = useState(false);
     const [editInputValue, setEditInputValue] = useState(props.watchlistDTO.name);
@@ -26,7 +31,7 @@ export default function WatchlistMenuItem(props: WatchlistMenuItemProps) {
         }
     }, [editable])
 
-    const updateWatchlist = () => {
+    const updateWatchlist = async () => {
 
         if (editInputValue?.length === 0) {
             setEditInputError(true);
@@ -39,13 +44,21 @@ export default function WatchlistMenuItem(props: WatchlistMenuItemProps) {
 
         setEditInputError(false);
 
-        let watchListUpdateDTO: WatchListUpdateDTO = {
+        let watchlistUpdateDTO: WatchListUpdateDTO = {
             name: editInputValue
         }
 
-        axios.put(`${movieToGoUrlWatchLists}/${props.watchlistDTO.id}`, watchListUpdateDTO)
+        await axios.put(`${movieToGoUrlWatchLists}/${props.watchlistDTO.id}`, watchlistUpdateDTO)
             .then((response: AxiosResponse<WatchListDTO>) => {
-                props.watchlistDTO.name = response.data.name;
+
+                let updatedWatchlistDTO = response.data;
+
+                props.watchlistDTO.name = updatedWatchlistDTO.name;
+
+                if (selectedWatchListDTO?.id === props.watchlistDTO.id) {
+                    notifyWatchlistChanged();
+                }
+
                 setEditable(false);
             })
     }
