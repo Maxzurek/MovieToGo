@@ -1,10 +1,9 @@
 import axios from "axios"
-import { useState, useReducer, useContext } from "react";
+import { useState, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
-import { SearchProps, SearchResultData, Search, Input } from "semantic-ui-react"
+import { SearchProps, SearchResultData, Search } from "semantic-ui-react"
 import { movieToGoUrlMovies, theMovieDbImages, theMovieDbSearchByKeyword } from "../../endpoints";
-import { MovieCreationDTO, MovieToGoDTO, NavigationMovieDTO, TheMovieDbDTO } from "../../models/movie.models"
-import AppDataContext from "../contexts/AppDataContext";
+import { MovieCreationDTO, MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models"
 
 interface MovieResult {
     id: number;
@@ -43,11 +42,12 @@ const reducer = (state: State, action: Action): State => {
             return { ...state, loading: true, value: action.query }
         case 'FINISH_SEARCH':
             return {
-                 ...state, 
-                 loading: false, 
-                 results: action.results, 
-                 theMovieDbData: action.theMovieDbData, 
-                 movieToGoData: action.movieToGoData }
+                ...state,
+                loading: false,
+                results: action.results,
+                theMovieDbData: action.theMovieDbData,
+                movieToGoData: action.movieToGoData
+            }
         case 'UPDATE_SELECTION':
             return { ...state, value: action.selection }
         default:
@@ -77,9 +77,9 @@ export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
             var movieToGoData: MovieToGoDTO[] = [];
             let response = await axios.get(theMovieDbSearchByKeyword + keyword);
             let results = response.data.results;
-            
+
             results.map(async (result: any, index: number) => {
-                
+
                 let movieResult: MovieResult = {
                     id: 0,
                     title: "",
@@ -96,7 +96,7 @@ export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
                         movieResult.image = theMovieDbImages + result.poster_path;
 
                         filteredResults.push(movieResult);
-                        if(movieToGoDTO){
+                        if (movieToGoDTO) {
                             movieToGoData.push(movieToGoDTO);
                         }
 
@@ -107,7 +107,7 @@ export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
                             return bDate.getTime() - aDate.getTime();
                         })
 
-                        dispatch({ type: 'FINISH_SEARCH', results: filteredResults, theMovieDbData: results, movieToGoData: movieToGoData})
+                        dispatch({ type: 'FINISH_SEARCH', results: filteredResults, theMovieDbData: results, movieToGoData: movieToGoData })
                     })
             })
 
@@ -158,16 +158,17 @@ export default function TheMovieDbSearchBar(props: TheMovieDbSearchBarProps) {
 
         const theMovieDbId = data.result.id;
         const selectedTheMovieDbData = theMovieDbData?.find(data => data.id === theMovieDbId);
-        const selectedMovieToGoData = movieToGoData?.find( data => data.theMovieDbId === theMovieDbId) ;
+        const selectedMovieToGoData = movieToGoData?.find(data => data.theMovieDbId === theMovieDbId);
 
+        dispatch({ type: 'CLEAN_QUERY' });
 
-        navigate('/movie', {state: {theMovieDbId: selectedTheMovieDbData?.id, movieToGoId: selectedMovieToGoData?.id}})
+        navigate('/movie', { state: { theMovieDbId: selectedTheMovieDbData?.id, movieToGoId: selectedMovieToGoData?.id } })
     }
 
     return (
         <Search
             fluid
-            input={{fluid:true}}
+            input={{ fluid: true }}
             placeholder='Search movies'
             results={results}
             value={value}
