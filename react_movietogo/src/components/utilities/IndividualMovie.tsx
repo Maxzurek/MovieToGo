@@ -110,7 +110,7 @@ export default function IndividualMovie(props: IndividualMovieProps) {
         if (props.isInWatchList) {
             return "More actions"
         } else {
-            return props.watchListDTOs ? "Add Movie to Watchlist" : "No Watchlist"
+            return props.watchListDTOs && props.watchListDTOs.length > 0 ? "Add Movie to Watchlist" : "No Watchlist"
         }
     }
 
