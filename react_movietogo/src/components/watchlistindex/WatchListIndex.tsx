@@ -42,7 +42,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
             fetchData();
         }
 
-    },[])
+    }, [])
 
     useEffect(() => {
 
@@ -125,7 +125,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
         setVisibleSidebar(false);
     }
 
-    const handleDeleteWatchList = (index:number, watchlistId: number) => {
+    const handleDeleteWatchList = (index: number, watchlistId: number) => {
 
         setActiveItem(index)
         setWatchlistIdToRemove(watchlistId);
@@ -215,7 +215,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                                 {userWatchListDTO && userWatchListDTO.length > 0 ? renderMenuItems() : undefined}
                                 <Divider section />
                                 <MenuItem
-                                    style={{color: "green"}}
+                                    style={{ color: "green" }}
                                     icon='plus'
                                     content="New Watchlist"
                                     name='watchListCreation'
@@ -247,7 +247,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
     const renderTabletAndMobileMenu = () => {
         return (
             <>
-                <Sidebar.Pushable as={Segment.Group} raised style={{height: 850}}>
+                <Sidebar.Pushable as={Segment.Group} raised style={{ height: 850 }}>
                     <Sidebar
                         as={Menu}
                         animation='push'
@@ -267,13 +267,11 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                             {userWatchListDTO && userWatchListDTO.length > 0 ? renderMenuItems() : undefined}
                             <Divider section />
                             <MenuItem
-                                style={{color: "green"}}
+                                style={{ color: "green" }}
                                 icon='plus'
                                 content="New Watchlist"
                                 name='watchListCreation'
-                                onClick={() => {
-                                    setVisibleSidebar(false);
-                                }}
+                                onClick={() => createWatchList()}
                             />
                         </Menu>
                     </Sidebar>
@@ -341,7 +339,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                     </Header>
                     <ModalContent>
                         <Header>
-                            Are you sure you want to delete: {userWatchListDTO? userWatchListDTO.find(x => x.id === watchlistIdToRemove)?.name : undefined}
+                            Are you sure you want to delete: {userWatchListDTO ? userWatchListDTO.find(x => x.id === watchlistIdToRemove)?.name : undefined}
                         </Header>
                     </ModalContent>
                     <ModalActions>
