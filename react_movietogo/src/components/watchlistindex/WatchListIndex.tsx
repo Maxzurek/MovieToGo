@@ -255,7 +255,6 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                         as={Menu}
                         animation='push'
                         icon='labeled'
-                        inverted
                         onHide={() => setVisibleSidebar(false)}
                         vertical
                         target={segmentRef}
