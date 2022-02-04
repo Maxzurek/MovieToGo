@@ -21,7 +21,7 @@ export default function MovieCards(props: moviesCardsProps) {
                         key={index}
                         theMovieDbDTO={theMovieDbDTO}
                         movieToGoDTO={props.movieToGoDTO[index]}
-                        watchListDTO={props.watchListDTO}
+                        watchListDTOs={props.watchListDTO}
                         itemId={index.toString()}
                     />
                 ))}

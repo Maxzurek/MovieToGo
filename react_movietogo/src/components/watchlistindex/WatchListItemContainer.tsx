@@ -20,12 +20,12 @@ export default function WatchListItemContainer(props: WatchListItemContainerProp
                     props?.watchListDTO?.watchListItems?.map((watchListItemDTO, index) => {
                         return (
                             <IndividualMovie
+                                key={index}
                                 theMovieDbDTO={watchListItemDTO.theMovieDbDTO}
                                 movieToGoDTO={watchListItemDTO.movie}
                                 itemId={index.toString()}
                                 isInWatchList
-                                watchListItemID={watchListItemDTO.id}
-                                key={index}
+                                watchListItemDTO={watchListItemDTO}
                                 watchListId={props.watchListDTO.id}
                             />
                         )
