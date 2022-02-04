@@ -12,7 +12,6 @@ interface WatchlistMenuItemProps {
     active: boolean;
     handleMenuItemClick(index: number, watchlistId: number): void;
     handleDeleteWatchList(index: number, watchlistId: number): void;
-    newEntry?: boolean;
 }
 
 export default function WatchlistMenuItem(props: WatchlistMenuItemProps) {
@@ -25,14 +24,6 @@ export default function WatchlistMenuItem(props: WatchlistMenuItemProps) {
     const [editInputError, setEditInputError] = useState(false);
 
     const input = useRef<Input>(null);
-
-    useEffect(() => {
-
-        if (props.newEntry) {
-            setEditable(true);
-        }
-
-    }, [])
 
     useEffect(() => {
         if (editable) {
@@ -88,7 +79,7 @@ export default function WatchlistMenuItem(props: WatchlistMenuItemProps) {
                         onBlur={() => updateWatchlist()}
                         ref={input}
                     />
-                    <Label style={{ backgroundColor: "transparent" }}>
+                    <Label style={{ color: 'black', backgroundColor: "transparent" }}>
                         <Popup
                             content="More actions"
                             trigger={
@@ -109,17 +100,23 @@ export default function WatchlistMenuItem(props: WatchlistMenuItemProps) {
                     style={{ padding: "13px 10px", fontSize: 14 }}
                 >
                     {props.watchlistDTO.name}
-                    <Label style={{ backgroundColor: "transparent" }}>
+                    <Label style={{ color: 'black', backgroundColor: "transparent" }}>
                         <Popup
                             content="More actions"
                             trigger={
-                                <Dropdown icon="ellipsis horizontal" style={{ fontSize: 16 }} direction="left">
-                                    <Dropdown.Menu >
+                                <Dropdown
+                                    icon="ellipsis horizontal"
+                                    style={{ fontSize: 16 }}
+                                    direction="left"
+                                >
+                                    <Dropdown.Menu style={{ color: "red" }}>
                                         <DropdownItem
+                                            style={{ color: "red" }}
                                             text="Rename"
                                             onClick={() => setEditable(true)}
                                         />
                                         <DropdownItem
+                                            style={{ color: "red" }}
                                             text="Delete"
                                             onClick={() => props.handleDeleteWatchList(props.index, props.watchlistDTO.id)}
                                         />

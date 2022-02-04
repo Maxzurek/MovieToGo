@@ -217,7 +217,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                                 <MenuItem
                                     style={{ color: "green" }}
                                     icon='plus'
-                                    content="New Watchlist"
+                                    content="Create Watchlist"
                                     name='watchListCreation'
                                     active={activeItem === -1}
                                     onClick={() => createWatchList()}
@@ -272,7 +272,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                             <MenuItem
                                 style={{ color: "green" }}
                                 icon='plus'
-                                content="New Watchlist"
+                                content="Create Watchlist"
                                 name='watchListCreation'
                                 onClick={() => createWatchList()}
                             />
