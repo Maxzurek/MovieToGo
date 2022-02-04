@@ -336,13 +336,13 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                     size='small'
                 >
                     <Header icon>
-                        <Icon name='archive' />
+                        <Icon name='trash' />
                         Removing a watchlist
                     </Header>
                     <ModalContent>
-                        <p>
-                            Are you sure you want to delete {userWatchListDTO? userWatchListDTO.find(x => x.id === watchlistIdToRemove)?.name : undefined}
-                        </p>
+                        <Header>
+                            Are you sure you want to delete: {userWatchListDTO? userWatchListDTO.find(x => x.id === watchlistIdToRemove)?.name : undefined}
+                        </Header>
                     </ModalContent>
                     <ModalActions>
                         <Button inverted onClick={() => {
