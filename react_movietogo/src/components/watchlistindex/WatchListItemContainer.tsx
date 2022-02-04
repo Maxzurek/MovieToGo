@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button, Container, Grid, Header, Segment } from "semantic-ui-react";
+import { Button, Container, Divider, Grid, Header, Segment } from "semantic-ui-react";
 import { WatchListDTO } from "../../models/watchlist.models";
 import IndividualMovie from "../utilities/IndividualMovie";
 
@@ -30,10 +30,10 @@ export default function WatchListItemContainer(props: WatchListItemContainerProp
                             />
                         )
                     })
-
                     :
                     <Container fluid textAlign="center" style={{ marginTop: 30 }}>
                         <Header>This watchlist is empty ...</Header>
+                        <Divider />
                         <Link to={"/"}>
                             <Button fluid>Discover movies now!</Button>
                         </Link>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Button, Container, Divider, Grid, GridColumn, GridRow, Header, Icon, Menu, MenuItem, Modal, ModalActions, ModalContent, Ref, Segment, Sidebar } from "semantic-ui-react";
+import { Button, Container, Dimmer, Divider, Grid, GridColumn, GridRow, Header, Icon, Loader, Menu, MenuItem, Modal, ModalActions, ModalContent, Ref, Segment, Sidebar } from "semantic-ui-react";
 import { MovieToGoDTO, TheMovieDbDTO } from "../../models/movie.models";
 import { WatchListCreationDTO, WatchListDTO } from "../../models/watchlist.models";
 import WatchListItemContainer from "./WatchListItemContainer";
@@ -225,7 +225,10 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                             </Menu>
                         </GridColumn>
                         <GridColumn width={13}>
-                            <Segment loading={loadingData}>
+                            <Container fluid >
+                                <Dimmer>
+                                    <Loader active={loadingData} />
+                                </Dimmer>
                                 {userWatchListDTO && userWatchListDTO.length > 0 ?
                                     undefined
                                     :
@@ -236,7 +239,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                                     :
                                     undefined
                                 }
-                            </Segment>
+                            </Container>
                         </GridColumn>
                     </GridRow>
                 </Grid>
@@ -288,7 +291,10 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                             </GridColumn>
                             <GridColumn width={14}>
                                 <Ref innerRef={segmentRef}>
-                                    <Segment loading={loadingData}>
+                                    <Container fluid >
+                                        <Dimmer>
+                                            <Loader active={loadingData} />
+                                        </Dimmer>
                                         {userWatchListDTO && userWatchListDTO.length > 0 ?
                                             undefined
                                             :
@@ -299,7 +305,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
                                             :
                                             undefined
                                         }
-                                    </Segment>
+                                    </Container>
                                 </Ref>
                             </GridColumn>
                         </GridRow>

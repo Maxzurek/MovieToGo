@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Container, Dropdown, Grid, GridColumn, GridRow, Header, Icon, Image, Item, Menu, MenuItem } from "semantic-ui-react";
+import { Container, Dropdown, Grid, GridColumn, GridRow, Icon, Image, Item, Menu, MenuItem } from "semantic-ui-react";
 import { adminRole } from "../../roles";
 import Authorized from "../authentication/Authorized";
 import { logout } from "../authentication/handleJWT";
@@ -64,7 +64,7 @@ export default function MainNavbar() {
                                         trigger={<><Icon name='user outline' />{getLoggedInUsernameAndRole()}</>}
                                         icon={null}
                                     >
-                                        <Dropdown.Menu  style={{right: 0, left: "auto"}}>
+                                        <Dropdown.Menu style={{ right: 0, left: "auto" }}>
                                             <Dropdown.Item icon='list' text=' WatchLists' name="watchLists" onClick={() => navigate('/watchlist')} />
                                             <Authorized
                                                 authorized={<Dropdown.Item icon='wrench' text=' Admin Tools' name="adminTools" onClick={() => navigate('/admin')} />}
@@ -91,7 +91,7 @@ export default function MainNavbar() {
 
     const renderMobileNavBar = () => {
         return (
-            <Container fluid style={{ backgroundColor: "rgba(47, 108, 179, 0.3)", marginBottom: 30 }}>
+            <Container fluid style={{ backgroundColor: "rgba(47, 108, 179, 0.3)" }}>
                 <Grid as={Menu} pointing secondary size='large' icon='labeled' color="blue" verticalAlign="bottom" columns={2}>
                     <GridRow style={{ padding: 0 }}>
 
@@ -131,7 +131,7 @@ export default function MainNavbar() {
                     </GridRow>
                 </Grid>
 
-                <Container fluid style={{paddingLeft: 10, paddingRight: 20}}>
+                <Container >
                     <TheMovieDbSearchBar />
                 </Container>
 
