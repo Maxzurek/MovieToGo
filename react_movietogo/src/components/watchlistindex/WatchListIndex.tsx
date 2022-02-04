@@ -247,7 +247,7 @@ export default function WatchListIndex(props: WatchListIndexProps) {
     const renderTabletAndMobileMenu = () => {
         return (
             <>
-                <Sidebar.Pushable as={Segment.Group} raised>
+                <Sidebar.Pushable as={Segment.Group} raised style={{height: 850}}>
                     <Sidebar
                         as={Menu}
                         animation='push'
